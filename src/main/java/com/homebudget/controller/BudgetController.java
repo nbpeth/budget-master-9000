@@ -17,9 +17,7 @@ public class BudgetController {
 
     @GetMapping("/")
     public String index(){
-
-
-        return "";
+        return "HI FRIENDS";
     }
 
 }
