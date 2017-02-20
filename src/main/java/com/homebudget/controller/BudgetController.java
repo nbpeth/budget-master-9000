@@ -12,12 +12,12 @@ import javax.websocket.server.PathParam;
 import java.util.Date;
 import java.util.List;
 
-@RestController("/expenses")
+@RestController(value = "/expenses")
 public class BudgetController {
     @Autowired
     ExpenseService expenseService;
 
-    @PostMapping("/")
+    @PostMapping()
     public ResponseEntity<Expense> submitExpense(@ModelAttribute Expense expense){
 
         expenseService.saveExpense(expense);
@@ -36,7 +36,7 @@ public class BudgetController {
         return new ResponseEntity<>(expense, HttpStatus.OK);
     }
 
-    @GetMapping("/")
+    @GetMapping()
     public ResponseEntity<Iterable<Expense>> getAllExpenses(){
         return new ResponseEntity<>(expenseService.getAllExpenses(), HttpStatus.CREATED);
     }

@@ -37,8 +37,8 @@ public class ExpenseService {
 
     public List<Expense> getExpense(String month, String day, String year){
         try{
-            Date expenseDate = new SimpleDateFormat("MM/dd/yyyy").parse(month+"/"+day+"/"+year);
 
+            Date expenseDate = new SimpleDateFormat("MM/dd/yyyy").parse(month+"/"+day+"/"+year);
             return expenseRepository.findByExpenseDate(expenseDate);
         }
         catch(ParseException e){
