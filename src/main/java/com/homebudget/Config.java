@@ -18,14 +18,14 @@ import javax.sql.DataSource;
 @PropertySource("classpath:application.properties")
 public class Config {
 
-//    @Bean
-//    public DataSource dataSource() {
-//        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-//        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-//        dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/");
-//        dataSource.setUsername("nbpeth");
-//        return dataSource;
-//    }
+    @Bean
+    public DataSource dataSource() {
+        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+        dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/home_budget");
+        dataSource.setUsername("nbpeth");
+        return dataSource;
+    }
 
     @Bean
     public ExpenseService expenseService(){
