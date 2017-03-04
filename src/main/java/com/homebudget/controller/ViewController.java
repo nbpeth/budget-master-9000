@@ -1,17 +1,17 @@
 package com.homebudget.controller;
 
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController
-public class ExpenseController {
+@Controller
+public class ViewController {
 
-    @GetMapping("/plants/{plant}")
-    public String root(@PathVariable String plant){
+    @GetMapping("/")
+    public String index(){
 
-
-        return "hey michelle, I love you! and I love " + plant + " !!!!";
+        return "index.html";
     }
 
 }

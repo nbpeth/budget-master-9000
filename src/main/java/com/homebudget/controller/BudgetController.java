@@ -36,7 +36,7 @@ public class BudgetController {
         return new ResponseEntity<>(expense, HttpStatus.OK);
     }
 
-    @GetMapping()
+    @GetMapping("/expenses")
     public ResponseEntity<Iterable<Expense>> getAllExpenses(){
         return new ResponseEntity<>(expenseService.getAllExpenses(), HttpStatus.OK);
     }

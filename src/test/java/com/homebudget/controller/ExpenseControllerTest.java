@@ -6,11 +6,11 @@ import static org.junit.Assert.*;
 
 public class ExpenseControllerTest {
 
-    ExpenseController expenseController;
+    ViewController expenseController;
 
     @Before
     public void setup(){
-        expenseController = new ExpenseController();
+        expenseController = new ViewController();
     }
 
     @Test
