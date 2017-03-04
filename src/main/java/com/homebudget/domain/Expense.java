@@ -1,12 +1,15 @@
 package com.homebudget.domain;
 
 
+import org.hibernate.annotations.NamedQuery;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import java.util.Date;
 
 @Entity
+@NamedQuery(name = "Expense.findAllOrderByDate", query = "SELECT e FROM Expense e order by expenseDate desc")
 public class Expense {
     @Id
     @GeneratedValue
@@ -89,6 +92,6 @@ public class Expense {
 
     @Override
     public String toString(){
-        return this.expenseDate + " " + this.getLocation() + " " + this.getCost();
+        return this.expenseDate + " " + this.getLocation() + " " + this.getCost() + " " + this.getDayOfWeek() + " " + this.getDescription() + " ";
     }
 }

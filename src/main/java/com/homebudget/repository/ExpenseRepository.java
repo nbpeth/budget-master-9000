@@ -13,4 +13,6 @@ public interface ExpenseRepository extends CrudRepository<Expense, Integer> {
 
     List<Expense> findByExpenseDate(Date date);
 
+    List<Expense> findAllOrderByDate();
+
 }

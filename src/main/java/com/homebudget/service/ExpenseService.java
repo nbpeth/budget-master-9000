@@ -28,25 +28,35 @@ public class ExpenseService {
     }
 
     public void deleteExpense(Expense expense){
-        expenseRepository.delete(expense);
+        try{
+            expenseRepository.delete(expense);
+        }
+        catch(Exception e){
+
+        }
     }
 
     public Iterable<Expense> getAllExpenses(){
-        return expenseRepository.findAll();
+        return expenseRepository.findAllOrderByDate();
     }
 
-    public List<Expense> getExpense(String month, String day, String year){
-        try{
+    public List<Expense> getExpense(String month, String day, String year) {
+        List<Expense> expenses = new ArrayList<>();
 
-            Date expenseDate = new SimpleDateFormat("MM/dd/yyyy").parse(month+"/"+day+"/"+year);
-            return expenseRepository.findByExpenseDate(expenseDate);
+        try {
+            Date expenseDate = new SimpleDateFormat("MM/dd/yyyy").parse(month + "/" + day + "/" + year);
+            expenses = expenseRepository.findByExpenseDate(expenseDate);
+
+        } catch (ParseException e) {
+
         }
-        catch(ParseException e){
 
-        }
+        return expenses;
 
-        return new ArrayList<>();
+    }
 
+    public Expense getById(Integer id){
+        return expenseRepository.findOne(id);
     }
 
 }
