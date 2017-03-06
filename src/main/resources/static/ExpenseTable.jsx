@@ -1,3 +1,18 @@
+/*var Expense = React.createClass({
+    render: function(){
+        return(
+            <tr>
+                <td>{this.props.expense.location}</td>
+                <td>${this.props.expense.cost}</td>
+                <td>{this.props.expense.expenseType}</td>
+                <td>{this.props.expense.description}</td>
+                <td>{this.props.expense.dayOfWeek}</td>
+                <td>{this.props.expense.expenseDate}</td>
+            </tr>
+        );
+    }
+});*/
+
 class Expense extends React.Component {
     render (){
         return(
@@ -17,7 +32,7 @@ class ExpenseTable extends React.Component {
     render() {
         var rows = [];
         var n=0;
-        this.props.expenses.forEach((expense) => {
+        this.props.expenses.forEach(function(expense){
             rows.push(<Expense expense={expense} key={n++}/>);
         });
         return(
@@ -40,54 +55,4 @@ class ExpenseTable extends React.Component {
     }
 };
 
-class TitleBar extends React.Component{
-    render(){
-        return(
-            <div className="container-fluid bg-primary">
-	            <h1>Budget Master 9000</h1>
-            </div>
-        );
-    }
-};
-
-class Body extends React.Component{
-    render () {
-        return(
-            <div>
-                <TitleBar />
-                <div className="container">
-                    <ExpenseTable expenses={this.props.expenses} id="table" />
-                </div>
-            </div>
-        );
-    }
-};
-
-var App = React.createClass({
-    getExpenses: function() {
-        var self = this;
-        $.ajax({
-            url: "http://localhost:8080/expenses"
-        }).then(function (data) {
-            self.setState({expenses: data});
-        });
-    },
-
-    getInitialState: function () {
-        return {expenses: []};
-    },
-
-    componentDidMount: function () {
-        this.getExpenses();
-    },
-    render: function(){
-        return(
-            <Body expenses={this.state.expenses}/>
-        );
-    }
-});
-
-ReactDOM.render(
-  <App />, document.getElementById('root')
-);
-
+export default ExpenseTable;
