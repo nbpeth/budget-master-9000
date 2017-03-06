@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ 	return __webpack_require__(__webpack_require__.s = 2);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -72,6 +72,158 @@
 
 "use strict";
 
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _ExpenseTable = __webpack_require__(1);
+
+var _ExpenseTable2 = _interopRequireDefault(_ExpenseTable);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+/*class Expense extends React.Component {
+    render (){
+        return(
+            <tr>
+                <td>{this.props.expense.location}</td>
+                <td>${this.props.expense.cost}</td>
+                <td>{this.props.expense.expenseType}</td>
+                <td>{this.props.expense.description}</td>
+                <td>{this.props.expense.dayOfWeek}</td>
+                <td>{this.props.expense.expenseDate}</td>
+            </tr>
+        );
+    }
+};
+
+class ExpenseTable extends React.Component {
+    render() {
+        var rows = [];
+        var n=0;
+        this.props.expenses.forEach((expense) => {
+            rows.push(<Expense expense={expense} key={n++}/>);
+        });
+        return(
+            <table className="table table-striped" id="expenseTable">
+                <thead className="bg-info">
+                    <tr>
+                        <td><h3>Location</h3></td>
+                        <td><h3>Cost</h3></td>
+                        <td><h3>Type</h3></td>
+                        <td><h3>Description</h3></td>
+                        <td><h3>Day</h3></td>
+                        <td><h3>Date</h3></td>
+                    </tr>
+                </thead>
+                <tbody>
+                    {rows}
+                </tbody>
+            </table>
+        );
+    }
+};*/
+
+var TitleBar = function (_React$Component) {
+    _inherits(TitleBar, _React$Component);
+
+    function TitleBar() {
+        _classCallCheck(this, TitleBar);
+
+        return _possibleConstructorReturn(this, (TitleBar.__proto__ || Object.getPrototypeOf(TitleBar)).apply(this, arguments));
+    }
+
+    _createClass(TitleBar, [{
+        key: "render",
+        value: function render() {
+            return React.createElement(
+                "div",
+                { className: "container-fluid bg-primary" },
+                React.createElement(
+                    "h1",
+                    null,
+                    "Budget Master 9000"
+                )
+            );
+        }
+    }]);
+
+    return TitleBar;
+}(React.Component);
+
+;
+
+var Body = function (_React$Component2) {
+    _inherits(Body, _React$Component2);
+
+    function Body() {
+        _classCallCheck(this, Body);
+
+        return _possibleConstructorReturn(this, (Body.__proto__ || Object.getPrototypeOf(Body)).apply(this, arguments));
+    }
+
+    _createClass(Body, [{
+        key: "render",
+        value: function render() {
+            return React.createElement(
+                "div",
+                null,
+                React.createElement(TitleBar, null),
+                React.createElement(
+                    "div",
+                    { className: "container" },
+                    React.createElement(_ExpenseTable2.default, { expenses: this.props.expenses, id: "table" })
+                )
+            );
+        }
+    }]);
+
+    return Body;
+}(React.Component);
+
+;
+
+var App = React.createClass({
+    displayName: "App",
+
+    getExpenses: function getExpenses() {
+        var self = this;
+        $.ajax({
+            url: "http://localhost:8080/expenses"
+        }).then(function (data) {
+            self.setState({ expenses: data });
+        });
+    },
+
+    getInitialState: function getInitialState() {
+        return { expenses: [] };
+    },
+
+    componentDidMount: function componentDidMount() {
+        this.getExpenses();
+    },
+    render: function render() {
+        return React.createElement(Body, { expenses: this.state.expenses });
+    }
+});
+
+ReactDOM.render(React.createElement(App, null), document.getElementById('root'));
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
@@ -232,93 +384,10 @@ var ExpenseTable = function (_React$Component2) {
 
 ;
 
-var TitleBar = function (_React$Component3) {
-    _inherits(TitleBar, _React$Component3);
-
-    function TitleBar() {
-        _classCallCheck(this, TitleBar);
-
-        return _possibleConstructorReturn(this, (TitleBar.__proto__ || Object.getPrototypeOf(TitleBar)).apply(this, arguments));
-    }
-
-    _createClass(TitleBar, [{
-        key: "render",
-        value: function render() {
-            return React.createElement(
-                "div",
-                { className: "container-fluid bg-primary" },
-                React.createElement(
-                    "h1",
-                    null,
-                    "Budget Master 9000"
-                )
-            );
-        }
-    }]);
-
-    return TitleBar;
-}(React.Component);
-
-;
-
-var Body = function (_React$Component4) {
-    _inherits(Body, _React$Component4);
-
-    function Body() {
-        _classCallCheck(this, Body);
-
-        return _possibleConstructorReturn(this, (Body.__proto__ || Object.getPrototypeOf(Body)).apply(this, arguments));
-    }
-
-    _createClass(Body, [{
-        key: "render",
-        value: function render() {
-            return React.createElement(
-                "div",
-                null,
-                React.createElement(TitleBar, null),
-                React.createElement(
-                    "div",
-                    { className: "container" },
-                    React.createElement(ExpenseTable, { expenses: this.props.expenses, id: "table" })
-                )
-            );
-        }
-    }]);
-
-    return Body;
-}(React.Component);
-
-;
-
-var App = React.createClass({
-    displayName: "App",
-
-    getExpenses: function getExpenses() {
-        var self = this;
-        $.ajax({
-            url: "http://localhost:8080/expenses"
-        }).then(function (data) {
-            self.setState({ expenses: data });
-        });
-    },
-
-    getInitialState: function getInitialState() {
-        return { expenses: [] };
-    },
-
-    componentDidMount: function componentDidMount() {
-        this.getExpenses();
-    },
-    render: function render() {
-        return React.createElement(Body, { expenses: this.state.expenses });
-    }
-});
-
-ReactDOM.render(React.createElement(App, null), document.getElementById('root'));
+exports.default = ExpenseTable;
 
 /***/ }),
-/* 1 */
+/* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
