@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 2);
+/******/ 	return __webpack_require__(__webpack_require__.s = 3);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -87,50 +87,50 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-/*class Expense extends React.Component {
-    render (){
-        return(
-            <tr>
-                <td>{this.props.expense.location}</td>
-                <td>${this.props.expense.cost}</td>
-                <td>{this.props.expense.expenseType}</td>
-                <td>{this.props.expense.description}</td>
-                <td>{this.props.expense.dayOfWeek}</td>
-                <td>{this.props.expense.expenseDate}</td>
-            </tr>
+var App = React.createClass({
+    displayName: "App",
+
+    render: function render() {
+        return React.createElement(
+            "div",
+            null,
+            React.createElement(Body, null)
         );
     }
-};
+});
 
-class ExpenseTable extends React.Component {
-    render() {
-        var rows = [];
-        var n=0;
-        this.props.expenses.forEach((expense) => {
-            rows.push(<Expense expense={expense} key={n++}/>);
-        });
-        return(
-            <table className="table table-striped" id="expenseTable">
-                <thead className="bg-info">
-                    <tr>
-                        <td><h3>Location</h3></td>
-                        <td><h3>Cost</h3></td>
-                        <td><h3>Type</h3></td>
-                        <td><h3>Description</h3></td>
-                        <td><h3>Day</h3></td>
-                        <td><h3>Date</h3></td>
-                    </tr>
-                </thead>
-                <tbody>
-                    {rows}
-                </tbody>
-            </table>
-        );
+var Body = function (_React$Component) {
+    _inherits(Body, _React$Component);
+
+    function Body() {
+        _classCallCheck(this, Body);
+
+        return _possibleConstructorReturn(this, (Body.__proto__ || Object.getPrototypeOf(Body)).apply(this, arguments));
     }
-};*/
 
-var TitleBar = function (_React$Component) {
-    _inherits(TitleBar, _React$Component);
+    _createClass(Body, [{
+        key: "render",
+        value: function render() {
+            return React.createElement(
+                "div",
+                null,
+                React.createElement(TitleBar, null),
+                React.createElement(
+                    "div",
+                    { className: "container" },
+                    React.createElement(_ExpenseTable2.default, { id: "table" })
+                )
+            );
+        }
+    }]);
+
+    return Body;
+}(React.Component);
+
+;
+
+var TitleBar = function (_React$Component2) {
+    _inherits(TitleBar, _React$Component2);
 
     function TitleBar() {
         _classCallCheck(this, TitleBar);
@@ -158,60 +158,6 @@ var TitleBar = function (_React$Component) {
 
 ;
 
-var Body = function (_React$Component2) {
-    _inherits(Body, _React$Component2);
-
-    function Body() {
-        _classCallCheck(this, Body);
-
-        return _possibleConstructorReturn(this, (Body.__proto__ || Object.getPrototypeOf(Body)).apply(this, arguments));
-    }
-
-    _createClass(Body, [{
-        key: "render",
-        value: function render() {
-            return React.createElement(
-                "div",
-                null,
-                React.createElement(TitleBar, null),
-                React.createElement(
-                    "div",
-                    { className: "container" },
-                    React.createElement(_ExpenseTable2.default, { expenses: this.props.expenses, id: "table" })
-                )
-            );
-        }
-    }]);
-
-    return Body;
-}(React.Component);
-
-;
-
-var App = React.createClass({
-    displayName: "App",
-
-    getExpenses: function getExpenses() {
-        var self = this;
-        $.ajax({
-            url: "http://localhost:8080/expenses"
-        }).then(function (data) {
-            self.setState({ expenses: data });
-        });
-    },
-
-    getInitialState: function getInitialState() {
-        return { expenses: [] };
-    },
-
-    componentDidMount: function componentDidMount() {
-        this.getExpenses();
-    },
-    render: function render() {
-        return React.createElement(Body, { expenses: this.state.expenses });
-    }
-});
-
 ReactDOM.render(React.createElement(App, null), document.getElementById('root'));
 
 /***/ }),
@@ -226,6 +172,12 @@ Object.defineProperty(exports, "__esModule", {
 });
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _expenseService = __webpack_require__(2);
+
+var _expenseService2 = _interopRequireDefault(_expenseService);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
@@ -291,20 +243,30 @@ var Expense = function (_React$Component) {
 var ExpenseTable = function (_React$Component2) {
     _inherits(ExpenseTable, _React$Component2);
 
-    function ExpenseTable() {
+    function ExpenseTable(props) {
         _classCallCheck(this, ExpenseTable);
 
-        return _possibleConstructorReturn(this, (ExpenseTable.__proto__ || Object.getPrototypeOf(ExpenseTable)).apply(this, arguments));
+        var _this2 = _possibleConstructorReturn(this, (ExpenseTable.__proto__ || Object.getPrototypeOf(ExpenseTable)).call(this, props));
+
+        _this2.state = { expenses: [] };
+        return _this2;
     }
 
     _createClass(ExpenseTable, [{
+        key: "componentDidMount",
+        value: function componentDidMount() {
+            (0, _expenseService2.default)(this);
+        }
+    }, {
         key: "render",
         value: function render() {
             var rows = [];
-            var n = 0;
-            this.props.expenses.forEach(function (expense) {
-                rows.push(React.createElement(Expense, { expense: expense, key: n++ }));
-            });
+            if (this.state.expenses) {
+                var n = 0;
+                this.state.expenses.forEach(function (expense) {
+                    rows.push(React.createElement(Expense, { expense: expense, key: n++ }));
+                });
+            }
             return React.createElement(
                 "table",
                 { className: "table table-striped", id: "expenseTable" },
@@ -388,6 +350,33 @@ exports.default = ExpenseTable;
 
 /***/ }),
 /* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+var getExpenses = function getExpenses(delegate) {
+    $.ajax({
+        url: "http://localhost:8080/expenses"
+    }).then(function (data) {
+        delegate.setState({ expenses: data });
+    });
+};
+
+var submitExpense = function submitExpense(data, delegae) {};
+
+exports.default = getExpenses;
+
+// module.exports = {
+//     getExpenses: getExpenses(),
+//     submitExpense: submitExpense
+// }
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";

@@ -1,3 +1,6 @@
+import getExpenses from './expenseService.js';
+
+
 class Expense extends React.Component {
     render (){
         return(
@@ -14,12 +17,23 @@ class Expense extends React.Component {
 };
 
 class ExpenseTable extends React.Component {
-    render() {
-        var rows = [];
-        var n=0;
-        this.props.expenses.forEach(function(expense){
-            rows.push(<Expense expense={expense} key={n++}/>);
-        });
+    constructor(props){
+        super(props);
+        this.state = {expenses:[]};
+    }
+    componentDidMount(){
+        getExpenses(this);
+        
+    }
+
+    render() {    
+        var rows = []; 
+        if(this.state.expenses){
+            var n=0;
+            this.state.expenses.forEach((expense) => {
+                rows.push(<Expense expense={expense} key={n++}/>);
+            });
+        }   
         return(
             <table className="table table-striped" id="expenseTable">
                 <thead className="bg-info">
