@@ -63,7 +63,7 @@
 /******/ 	__webpack_require__.p = "";
 
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 3);
+/******/ 	return __webpack_require__(__webpack_require__.s = 4);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -75,7 +75,7 @@
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _ExpenseTable = __webpack_require__(1);
+var _ExpenseTable = __webpack_require__(2);
 
 var _ExpenseTable2 = _interopRequireDefault(_ExpenseTable);
 
@@ -173,12 +173,6 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _expenseService = __webpack_require__(2);
-
-var _expenseService2 = _interopRequireDefault(_expenseService);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -188,15 +182,17 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var Expense = function (_React$Component) {
     _inherits(Expense, _React$Component);
 
-    function Expense() {
+    function Expense(props) {
         _classCallCheck(this, Expense);
 
-        return _possibleConstructorReturn(this, (Expense.__proto__ || Object.getPrototypeOf(Expense)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (Expense.__proto__ || Object.getPrototypeOf(Expense)).call(this, props));
     }
 
     _createClass(Expense, [{
         key: "render",
         value: function render() {
+            var date = new Date(this.props.expense.expenseDate);
+            var formattedDate = date.getDate();
             return React.createElement(
                 "tr",
                 null,
@@ -229,7 +225,7 @@ var Expense = function (_React$Component) {
                 React.createElement(
                     "td",
                     null,
-                    this.props.expense.expenseDate
+                    formattedDate
                 )
             );
         }
@@ -240,100 +236,131 @@ var Expense = function (_React$Component) {
 
 ;
 
-var ExpenseTable = function (_React$Component2) {
-    _inherits(ExpenseTable, _React$Component2);
+exports.default = Expense;
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+
+Object.defineProperty(exports, "__esModule", {
+    value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+var _expenseService = __webpack_require__(3);
+
+var _expenseService2 = _interopRequireDefault(_expenseService);
+
+var _Expense = __webpack_require__(1);
+
+var _Expense2 = _interopRequireDefault(_Expense);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+var ExpenseTable = function (_React$Component) {
+    _inherits(ExpenseTable, _React$Component);
 
     function ExpenseTable(props) {
         _classCallCheck(this, ExpenseTable);
 
-        var _this2 = _possibleConstructorReturn(this, (ExpenseTable.__proto__ || Object.getPrototypeOf(ExpenseTable)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (ExpenseTable.__proto__ || Object.getPrototypeOf(ExpenseTable)).call(this, props));
 
-        _this2.state = { expenses: [] };
-        return _this2;
+        _this.state = { expenses: [] };
+        return _this;
     }
 
     _createClass(ExpenseTable, [{
-        key: "componentDidMount",
+        key: 'componentDidMount',
         value: function componentDidMount() {
             (0, _expenseService2.default)(this);
         }
     }, {
-        key: "render",
+        key: 'render',
         value: function render() {
             var rows = [];
             if (this.state.expenses) {
                 var n = 0;
                 this.state.expenses.forEach(function (expense) {
-                    rows.push(React.createElement(Expense, { expense: expense, key: n++ }));
+                    rows.push(React.createElement(_Expense2.default, { expense: expense, key: n++ }));
                 });
             }
             return React.createElement(
-                "table",
-                { className: "table table-striped", id: "expenseTable" },
+                'table',
+                { className: 'table table-striped', id: 'expenseTable' },
                 React.createElement(
-                    "thead",
-                    { className: "bg-info" },
+                    'thead',
+                    { className: 'bg-info' },
                     React.createElement(
-                        "tr",
+                        'tr',
                         null,
                         React.createElement(
-                            "td",
+                            'td',
                             null,
                             React.createElement(
-                                "h3",
+                                'h3',
                                 null,
-                                "Location"
+                                'Location'
                             )
                         ),
                         React.createElement(
-                            "td",
+                            'td',
                             null,
                             React.createElement(
-                                "h3",
+                                'h3',
                                 null,
-                                "Cost"
+                                'Cost'
                             )
                         ),
                         React.createElement(
-                            "td",
+                            'td',
                             null,
                             React.createElement(
-                                "h3",
+                                'h3',
                                 null,
-                                "Type"
+                                'Type'
                             )
                         ),
                         React.createElement(
-                            "td",
+                            'td',
                             null,
                             React.createElement(
-                                "h3",
+                                'h3',
                                 null,
-                                "Description"
+                                'Description'
                             )
                         ),
                         React.createElement(
-                            "td",
+                            'td',
                             null,
                             React.createElement(
-                                "h3",
+                                'h3',
                                 null,
-                                "Day"
+                                'Day'
                             )
                         ),
                         React.createElement(
-                            "td",
+                            'td',
                             null,
                             React.createElement(
-                                "h3",
+                                'h3',
                                 null,
-                                "Date"
+                                'Date'
                             )
                         )
                     )
                 ),
                 React.createElement(
-                    "tbody",
+                    'tbody',
                     null,
                     rows
                 )
@@ -349,7 +376,7 @@ var ExpenseTable = function (_React$Component2) {
 exports.default = ExpenseTable;
 
 /***/ }),
-/* 2 */
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -376,7 +403,7 @@ exports.default = getExpenses;
 // }
 
 /***/ }),
-/* 3 */
+/* 4 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
