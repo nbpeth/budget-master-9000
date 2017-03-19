@@ -17,7 +17,6 @@ import java.util.Properties;
 @EnableJpaRepositories({"com.homebudget.repository"})
 @EntityScan
 @EnableTransactionManagement
-@PropertySource({"application.properties"})
 public class Config {
 
     @Bean
