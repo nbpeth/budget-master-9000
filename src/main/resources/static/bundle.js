@@ -79,6 +79,7 @@ Object.defineProperty(exports, "__esModule", {
 exports.loadDataAction = loadDataAction;
 exports.deleteExpenseAction = deleteExpenseAction;
 exports.createExpenseAction = createExpenseAction;
+exports.toggleForm = toggleForm;
 function loadDataAction() {
     return {
         type: "LOAD_DATA"
@@ -96,6 +97,12 @@ function createExpenseAction(data) {
     return {
         type: "CREATE_EXPENSE",
         data: data
+    };
+};
+
+function toggleForm() {
+    return {
+        type: "TOGGLE_FORM"
     };
 };
 
@@ -119,7 +126,8 @@ var _reducers2 = _interopRequireDefault(_reducers);
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var defaultState = {
-    expenses: []
+    expenses: [],
+    showForm: false
 };
 
 exports.default = (0, _redux.createStore)(_reducers2.default, defaultState);
@@ -148,7 +156,6 @@ function expenseManagerApp(state, action) {
             return newState;
 
         case 'DELETE_EXPENSE':
-            //probably should remove the row rather than fetch all the new rows on delete?
             var newState = Object.assign({}, state);
             (0, _expenseService.deleteExpense)(action.id);
             newState.expenses = getExpensesData();
@@ -160,6 +167,12 @@ function expenseManagerApp(state, action) {
             var json = JSON.stringify(action.data);
             (0, _expenseService.submitExpense)(json);
             newState.expenses = getExpensesData();
+
+            return newState;
+
+        case 'TOGGLE_FORM':
+            var newState = Object.assign({}, state);
+            newState.showForm = state.showForm ? false : true;
 
             return newState;
 
@@ -822,6 +835,12 @@ var _reducers = __webpack_require__(2);
 
 var _reducers2 = _interopRequireDefault(_reducers);
 
+var _expensesStore = __webpack_require__(1);
+
+var _expensesStore2 = _interopRequireDefault(_expensesStore);
+
+var _actions = __webpack_require__(0);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -845,23 +864,43 @@ var App = React.createClass({
 var Body = function (_React$Component) {
     _inherits(Body, _React$Component);
 
-    function Body() {
+    function Body(props) {
         _classCallCheck(this, Body);
 
-        return _possibleConstructorReturn(this, (Body.__proto__ || Object.getPrototypeOf(Body)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (Body.__proto__ || Object.getPrototypeOf(Body)).call(this, props));
     }
 
     _createClass(Body, [{
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            var _this2 = this;
+
+            _expensesStore2.default.subscribe(function () {
+                var state = _expensesStore2.default.getState();
+                _this2.setState({
+                    showForm: state.showForm
+                });
+            });
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            _expensesStore2.default.dispatch((0, _actions.loadDataAction)());
+        }
+    }, {
         key: 'render',
         value: function render() {
+            var showForm = _expensesStore2.default.getState().showForm;
+
             return React.createElement(
                 'div',
                 null,
                 React.createElement(TitleBar, null),
+                React.createElement(Navigation, null),
                 React.createElement(
                     'div',
                     { className: 'container' },
-                    React.createElement(_CreateExpenseForm2.default, null),
+                    showForm ? React.createElement(_CreateExpenseForm2.default, null) : null,
                     React.createElement(_ExpenseTable2.default, { id: 'table' })
                 )
             );
@@ -901,6 +940,44 @@ var TitleBar = function (_React$Component2) {
 }(React.Component);
 
 ;
+
+var Navigation = function (_React$Component3) {
+    _inherits(Navigation, _React$Component3);
+
+    function Navigation() {
+        _classCallCheck(this, Navigation);
+
+        return _possibleConstructorReturn(this, (Navigation.__proto__ || Object.getPrototypeOf(Navigation)).apply(this, arguments));
+    }
+
+    _createClass(Navigation, [{
+        key: 'render',
+        value: function render() {
+            var showForm = _expensesStore2.default.getState().showForm;
+
+            var handleClick = function handleClick() {
+                _expensesStore2.default.dispatch((0, _actions.toggleForm)());
+            };
+            return React.createElement(
+                'div',
+                { className: 'container-fluid bg-success' },
+                React.createElement(
+                    'a',
+                    { href: '#' },
+                    React.createElement(
+                        'h4',
+                        { onClick: function onClick() {
+                                handleClick();
+                            } },
+                        showForm ? "Hide Form" : "Enter Expense"
+                    )
+                )
+            );
+        }
+    }]);
+
+    return Navigation;
+}(React.Component);
 
 ReactDOM.render(React.createElement(App, null), document.getElementById('root'));
 
@@ -1107,13 +1184,24 @@ var Expense = function (_React$Component) {
     function Expense(props) {
         _classCallCheck(this, Expense);
 
-        return _possibleConstructorReturn(this, (Expense.__proto__ || Object.getPrototypeOf(Expense)).call(this, props));
+        var _this = _possibleConstructorReturn(this, (Expense.__proto__ || Object.getPrototypeOf(Expense)).call(this, props));
+
+        _this.state = {
+            deleteConfirmed: false
+        };
+        return _this;
     }
 
     _createClass(Expense, [{
-        key: 'deleteExpense',
-        value: function deleteExpense(id) {
-            _expensesStore2.default.dispatch((0, _actions.deleteExpenseAction)(id));
+        key: 'handleClick',
+        value: function handleClick(id) {
+            if (this.state.deleteConfirmed) {
+                _expensesStore2.default.dispatch((0, _actions.deleteExpenseAction)(id));
+                this.setState({ deleteConfirmed: false });
+            } else {
+                this.setState({ deleteConfirmed: true });
+            }
+            this.forceUpdate();
         }
     }, {
         key: 'render',
@@ -1122,6 +1210,10 @@ var Expense = function (_React$Component) {
 
             var date = new Date(this.props.expense.expenseDate);
             var formattedDate = date.getDate();
+
+            var deleteConfirmed = this.state.deleteConfirmed;
+            var buttonClass = deleteConfirmed ? "btn btn-danger" : "btn btn-success";
+            var buttonLanguage = deleteConfirmed ? "Confirm?" : "Delete";
 
             return React.createElement(
                 'tr',
@@ -1162,10 +1254,10 @@ var Expense = function (_React$Component) {
                     null,
                     React.createElement(
                         'button',
-                        { className: 'btn btn-danger', onClick: function onClick() {
-                                _this2.deleteExpense(_this2.props.expense.id);
+                        { className: buttonClass, onClick: function onClick() {
+                                _this2.handleClick(_this2.props.expense.id);
                             } },
-                        'Delete'
+                        buttonLanguage
                     )
                 )
             );

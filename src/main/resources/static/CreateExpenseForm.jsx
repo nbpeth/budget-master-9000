@@ -35,20 +35,23 @@ class CreateExpenseForm extends React.Component {
 			  				<input type="email" className="form-control" id="location" aria-describedby="emailHelp" placeholder="Location" s/><br/>
 			  				<input type="number" className="form-control" id="cost" placeholder="Cost"/><br/>
 							  <select className="form-control" id="type">
-						      <option>Groceries</option>
-						      <option>Household Supplies</option>
-						      <option>Entertainment</option>
-						      <option>Restaurant</option>
-						      <option>Miscellaneous</option>
+								<option>Groceries</option>
+								<option>Household Supplies</option>
+								<option>Entertainment</option>
+								<option>Restaurant</option>
+								<option>Health and Fitness</option>
+								<option>Clothing</option>
+								<option>Miscellaneous</option>
+
 		    				</select><br/>
 			  				<select className="form-control" id="day">
-						      <option>Monday</option>
-						      <option>Tuesday</option>
-						      <option>Wednesday</option>
-						      <option>Thursday</option>
-						      <option>Friday</option>
-						      <option>Saturday</option>
-						      <option>Sunday</option>
+								<option>Monday</option>
+								<option>Tuesday</option>
+								<option>Wednesday</option>
+								<option>Thursday</option>
+								<option>Friday</option>
+								<option>Saturday</option>
+								<option>Sunday</option>
 		    				</select><br/>
 			  				<input type="text" className="form-control" id="description" placeholder="Description"/><p/>
 

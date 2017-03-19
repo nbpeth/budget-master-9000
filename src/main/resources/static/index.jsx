@@ -1,7 +1,8 @@
 import ExpenseTable from './ExpenseTable.jsx';
 import CreateExpenseForm from './CreateExpenseForm.jsx';
 import expenseManagerApp from './reducers.js';
-
+import store from './expensesStore.js';
+import { toggleForm, loadDataAction } from './actions.js';
 
 var App = React.createClass({
     render: function(){
@@ -14,12 +15,30 @@ var App = React.createClass({
 });
 
 class Body extends React.Component{
+    constructor(props){
+        super(props);
+    }
+    componentWillMount() {
+        store.subscribe(() => {
+            var state = store.getState();
+            this.setState({
+                showForm:state.showForm
+            });
+        });
+    }
+    
+    componentDidMount(){
+        store.dispatch(loadDataAction());
+    }
     render () {
+        const showForm = store.getState().showForm
+
         return(
             <div>
                 <TitleBar />
+                <Navigation />
                 <div className="container">
-                    <CreateExpenseForm />
+                    {showForm ? <CreateExpenseForm /> : null}
                     <ExpenseTable id="table" />
                 </div>
             </div>
@@ -36,6 +55,21 @@ class TitleBar extends React.Component{
         );
     }
 };
+
+class Navigation extends React.Component{
+    render(){
+        const showForm = store.getState().showForm
+
+        const handleClick = () => {  
+            store.dispatch(toggleForm());
+        }
+        return(
+            <div className="container-fluid bg-success">
+	            <a href="#"><h4 onClick={ () => { handleClick() }}>{showForm ? "Hide Form" : "Enter Expense"}</h4></a>
+            </div>
+        );
+    }
+}
 
 ReactDOM.render(
   <App />, document.getElementById('root')

@@ -17,3 +17,9 @@ export function createExpenseAction(data) {
         data: data
     };
 };
+
+export function toggleForm() {
+    return {
+        type: "TOGGLE_FORM"
+    };
+};

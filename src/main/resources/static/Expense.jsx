@@ -4,14 +4,29 @@ import { deleteExpenseAction } from './actions.js';
 class Expense extends React.Component {
     constructor(props){
         super(props);
+        this.state = {
+            deleteConfirmed:false,
+        };
     }
-    deleteExpense(id){
-        store.dispatch(deleteExpenseAction(id));
-    };
+
+    handleClick(id){
+        if(this.state.deleteConfirmed){
+            store.dispatch(deleteExpenseAction(id));
+            this.setState({deleteConfirmed: false});
+        }
+        else{
+            this.setState({deleteConfirmed: true});
+        }
+        this.forceUpdate();
+    }
 
     render (){
         const date = new Date(this.props.expense.expenseDate);
         const formattedDate = date.getDate();
+
+        const deleteConfirmed = this.state.deleteConfirmed;
+        const buttonClass = deleteConfirmed ? "btn btn-danger" : "btn btn-success";
+        const buttonLanguage = deleteConfirmed ? "Confirm?" : "Delete";
 
         return(
             <tr>
@@ -22,11 +37,15 @@ class Expense extends React.Component {
                 <td>{this.props.expense.dayOfWeek}</td>
                 <td>{formattedDate}</td>
                 
-                <td><button className="btn btn-danger" onClick={ () => {this.deleteExpense(this.props.expense.id)}}>Delete</button></td>
+                <td>
+                    <button className={buttonClass} onClick={ () => { this.handleClick(this.props.expense.id)} }>{ buttonLanguage }</button>
+                    {/*<button className="btn btn-danger" onClick={ () => { this.deleteExpense(this.props.expense.id)} }>Delete</button>*/}
+                </td>
 
             </tr>
         );
     }
 };
+
 
 export default Expense;

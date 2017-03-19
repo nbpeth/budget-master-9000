@@ -2,14 +2,15 @@ import { getExpenses, deleteExpense, submitExpense } from './expenseService.js';
 
 function expenseManagerApp(state, action) {
     switch (action.type) {
-        case 'LOAD_DATA': //make async and safely parse response
+        //make service calls async
+        case 'LOAD_DATA':
             var newState = Object.assign({}, state);
             var expenses = getExpensesData();
             newState.expenses = expenses;
 
             return newState;
 
-        case 'DELETE_EXPENSE': //probably should remove the row rather than fetch all the new rows on delete?
+        case 'DELETE_EXPENSE':
             var newState = Object.assign({}, state);
             deleteExpense(action.id);
             newState.expenses = getExpensesData();
@@ -21,6 +22,12 @@ function expenseManagerApp(state, action) {
             var json = JSON.stringify(action.data)
             submitExpense(json);
             newState.expenses = getExpensesData();
+
+            return newState;
+
+        case 'TOGGLE_FORM':
+            var newState = Object.assign({}, state);
+            newState.showForm = state.showForm ? false : true;
 
             return newState;
 
