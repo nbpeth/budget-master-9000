@@ -25,8 +25,8 @@ class Expense extends React.Component {
         const formattedDate = date.getDate();
 
         const deleteConfirmed = this.state.deleteConfirmed;
-        const buttonClass = deleteConfirmed ? "btn btn-danger" : "btn btn-success";
-        const buttonLanguage = deleteConfirmed ? "Confirm?" : "Delete";
+        var buttonClass = deleteConfirmed ? "btn btn-danger" : "btn btn-success";
+        var buttonLanguage = deleteConfirmed ? "Confirm?" : "Delete";
 
         return(
             <tr>
@@ -39,7 +39,6 @@ class Expense extends React.Component {
                 
                 <td>
                     <button className={buttonClass} onClick={ () => { this.handleClick(this.props.expense.id)} }>{ buttonLanguage }</button>
-                    {/*<button className="btn btn-danger" onClick={ () => { this.deleteExpense(this.props.expense.id)} }>Delete</button>*/}
                 </td>
 
             </tr>

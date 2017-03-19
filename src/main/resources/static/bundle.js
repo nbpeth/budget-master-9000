@@ -147,10 +147,11 @@ var _expenseService = __webpack_require__(14);
 
 function expenseManagerApp(state, action) {
     switch (action.type) {
+        //make service calls async
         case 'LOAD_DATA':
-            //make async and safely parse response
             var newState = Object.assign({}, state);
             var expenses = getExpensesData();
+            console.log(expenses);
             newState.expenses = expenses;
 
             return newState;
@@ -182,7 +183,7 @@ function expenseManagerApp(state, action) {
 };
 
 var getExpensesData = function getExpensesData() {
-    return JSON.parse((0, _expenseService.getExpenses)());
+    return JSON.parse((0, _expenseService.getExpenses)())["content"];
 };
 
 exports.default = expenseManagerApp;
@@ -1083,6 +1084,16 @@ var CreateExpenseForm = function (_React$Component) {
 								'option',
 								null,
 								'Restaurant'
+							),
+							React.createElement(
+								'option',
+								null,
+								'Health and Fitness'
+							),
+							React.createElement(
+								'option',
+								null,
+								'Clothing'
 							),
 							React.createElement(
 								'option',

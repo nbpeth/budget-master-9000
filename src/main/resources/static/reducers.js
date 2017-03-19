@@ -6,6 +6,7 @@ function expenseManagerApp(state, action) {
         case 'LOAD_DATA':
             var newState = Object.assign({}, state);
             var expenses = getExpensesData();
+            console.log(expenses);
             newState.expenses = expenses;
 
             return newState;
@@ -37,7 +38,7 @@ function expenseManagerApp(state, action) {
 };
 
 const getExpensesData = () => {
-    return JSON.parse(getExpenses());
+    return JSON.parse(getExpenses())["content"];
 }
 
 export default expenseManagerApp;

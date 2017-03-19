@@ -4,6 +4,8 @@ import com.homebudget.domain.Expense;
 import com.homebudget.repository.ExpenseRepository;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.format.datetime.DateFormatter;
 import org.springframework.stereotype.Service;
 
@@ -27,17 +29,8 @@ public class ExpenseService {
         expenseRepository.delete(id);
     }
 
-    public void deleteExpense(Expense expense){
-        try{
-            expenseRepository.delete(expense);
-        }
-        catch(Exception e){
-
-        }
-    }
-
-    public Iterable<Expense> getAllExpenses(){
-        return expenseRepository.findAllOrderByDate();
+    public Page<Expense> getAllExpenses(Pageable pageable){
+        return expenseRepository.findAllOrderByDate(pageable);
     }
 
     public List<Expense> getExpense(String month, String day, String year) {

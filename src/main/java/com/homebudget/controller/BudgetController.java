@@ -5,6 +5,8 @@ import com.homebudget.repository.ExpenseRepository;
 import com.homebudget.service.ExpenseService;
 import javassist.tools.web.BadHttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -37,8 +39,8 @@ public class BudgetController {
     }
 
     @GetMapping("/expenses")
-    public ResponseEntity<Iterable<Expense>> getAllExpenses(){
-        return new ResponseEntity<>(expenseService.getAllExpenses(), HttpStatus.OK);
+    public ResponseEntity<Page<Expense>> getAllExpenses(Pageable pageable){
+        return new ResponseEntity<>(expenseService.getAllExpenses(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/expenses/{id}")
