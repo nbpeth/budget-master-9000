@@ -183,7 +183,7 @@ function expenseManagerApp(state, action) {
 };
 
 var getExpensesData = function getExpensesData() {
-    return JSON.parse((0, _expenseService.getExpenses)())["content"];
+    return JSON.parse((0, _expenseService.getExpenses)()).content;
 };
 
 exports.default = expenseManagerApp;

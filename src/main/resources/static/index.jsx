@@ -25,11 +25,10 @@ class Body extends React.Component{
                 showForm:state.showForm
             });
         });
-    }
-    
+    };
     componentDidMount(){
         store.dispatch(loadDataAction());
-    }
+    };
     render () {
         const showForm = store.getState().showForm
 
@@ -53,7 +52,7 @@ class TitleBar extends React.Component{
 	            <h1>Budget Master 9000</h1>
             </div>
         );
-    }
+    };
 };
 
 class Navigation extends React.Component{
@@ -62,14 +61,14 @@ class Navigation extends React.Component{
 
         const handleClick = () => {  
             store.dispatch(toggleForm());
-        }
+        };
         return(
             <div className="container-fluid bg-success">
 	            <a href="#"><h4 onClick={ () => { handleClick() }}>{showForm ? "Hide Form" : "Enter Expense"}</h4></a>
             </div>
         );
-    }
-}
+    };
+};
 
 ReactDOM.render(
   <App />, document.getElementById('root')
