@@ -1,6 +1,7 @@
 import ExpenseTable from './ExpenseTable.jsx';
 import CreateExpenseForm from './CreateExpenseForm.jsx';
 import expenseManagerApp from './reducers.js';
+import WeeklySummaryWidget from './WeeklySummaryWidget.jsx';
 import store from './expensesStore.js';
 import { toggleForm, loadDataAction } from './actions.js';
 
@@ -38,7 +39,15 @@ class Body extends React.Component{
                 <Navigation />
                 <div className="container">
                     {showForm ? <CreateExpenseForm /> : null}
-                    <ExpenseTable id="table" />
+                        
+                        <div className="row">
+                            <div className="col-6">
+                                <WeeklySummaryWidget id="weekly" />
+                            </div>
+                            <div className="col-12 col-md-auto">
+                                <ExpenseTable id="table" />
+                            </div>
+                        </div>
                 </div>
             </div>
         );

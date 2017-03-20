@@ -29,6 +29,7 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '1.5.1.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: '1.2.2.RELEASE'
 
+
     compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.5'
     compile group: 'com.h2database', name: 'h2', version: '1.4.193'
 

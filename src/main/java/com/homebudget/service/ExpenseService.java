@@ -1,6 +1,7 @@
 package com.homebudget.service;
 
 import com.homebudget.domain.Expense;
+import com.homebudget.domain.Statistics;
 import com.homebudget.repository.ExpenseRepository;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -29,23 +31,25 @@ public class ExpenseService {
         expenseRepository.delete(id);
     }
 
-    public Page<Expense> getAllExpenses(Pageable pageable){
-        return expenseRepository.findAllOrderByDate(pageable);
+    public Statistics getStats(){
+        return new Statistics()
+            .with(weeklySpend());
+
     }
 
-    public List<Expense> getExpense(String month, String day, String year) {
-        List<Expense> expenses = new ArrayList<>();
+    private Double weeklySpend(){
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.DAY_OF_WEEK, 1);
+        calendar.set(Calendar.HOUR, 0);
+        calendar.set(Calendar.MINUTE, 0);
+        calendar.set(Calendar.SECOND, 0);
+        calendar.set(Calendar.MILLISECOND, 0);
 
-        try {
-            Date expenseDate = new SimpleDateFormat("MM/dd/yyyy").parse(month + "/" + day + "/" + year);
-            expenses = expenseRepository.findByExpenseDate(expenseDate);
+        return expenseRepository.weekly(calendar.getTime(), new Date());
+    }
 
-        } catch (ParseException e) {
-
-        }
-
-        return expenses;
-
+    public Page<Expense> getAllExpenses(Pageable pageable){
+        return expenseRepository.findAllOrderByDate(pageable);
     }
 
     public Expense getById(Integer id){

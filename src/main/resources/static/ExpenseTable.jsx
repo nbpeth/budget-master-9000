@@ -32,7 +32,7 @@ class ExpenseTable extends React.Component {
         return(
             <table className="table table-striped" id="expenseTable">
                 <thead className="bg-info">
-                    <tr>
+                    <tr className=".table-hover">
                         <td><h3>Location</h3></td>
                         <td><h3>Cost</h3></td>
                         <td><h3>Type</h3></td>

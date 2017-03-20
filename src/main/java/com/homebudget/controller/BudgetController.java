@@ -1,6 +1,7 @@
 package com.homebudget.controller;
 
 import com.homebudget.domain.Expense;
+import com.homebudget.domain.Statistics;
 import com.homebudget.repository.ExpenseRepository;
 import com.homebudget.service.ExpenseService;
 import javassist.tools.web.BadHttpRequest;
@@ -31,11 +32,9 @@ public class BudgetController {
         return new ResponseEntity<>(expense, HttpStatus.CREATED);
     }
 
-    @GetMapping("/expenses/{year}/{month}/{day}")
-    public ResponseEntity<List<Expense>> getExpense(@PathVariable String month, @PathVariable String day, @PathVariable String year){
-        List<Expense> expense = expenseService.getExpense(month, day, year);
-
-        return new ResponseEntity<>(expense, HttpStatus.OK);
+    @GetMapping("/expenses/stats")
+    public ResponseEntity<Statistics> getStats(){
+        return new ResponseEntity<>(expenseService.getStats(), HttpStatus.OK);
     }
 
     @GetMapping("/expenses")
