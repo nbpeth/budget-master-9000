@@ -4,6 +4,7 @@ import com.homebudget.domain.Expense;
 import com.homebudget.domain.Statistics;
 import com.homebudget.repository.ExpenseRepository;
 import com.homebudget.service.ExpenseService;
+import com.homebudget.service.StatisticsService;
 import javassist.tools.web.BadHttpRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,13 +21,11 @@ import java.util.List;
 public class BudgetController {
     @Autowired
     ExpenseService expenseService;
+    @Autowired
+    StatisticsService statisticsService;
 
     @PostMapping("/expenses")
     public ResponseEntity<Expense> submitExpense(@RequestBody Expense expense) throws BadHttpRequest {
-        if(expense.getLocation() == null){
-            throw new BadHttpRequest();
-        }
-
         expenseService.saveExpense(expense);
 
         return new ResponseEntity<>(expense, HttpStatus.CREATED);
@@ -34,7 +33,7 @@ public class BudgetController {
 
     @GetMapping("/expenses/stats")
     public ResponseEntity<Statistics> getStats(){
-        return new ResponseEntity<>(expenseService.getStats(), HttpStatus.OK);
+        return new ResponseEntity<>(statisticsService.getStats(), HttpStatus.OK);
     }
 
     @GetMapping("/expenses")

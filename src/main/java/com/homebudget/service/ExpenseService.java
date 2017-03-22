@@ -24,28 +24,19 @@ public class ExpenseService {
     ExpenseRepository expenseRepository;
 
     public Expense saveExpense(Expense expense){
-        return expenseRepository.save(expense);
+        Expense formattedExpense = new Expense(
+            expense.getExpenseDate(),
+            expense.getLocation().toUpperCase(),
+            expense.getExpenseType(),
+            expense.getDescription(),
+            expense.getDayOfWeek().toUpperCase(),
+            expense.getCost()
+        );
+        return expenseRepository.save(formattedExpense);
     }
 
     public void deleteExpenseBy(Integer id){
         expenseRepository.delete(id);
-    }
-
-    public Statistics getStats(){
-        return new Statistics()
-            .with(weeklySpend());
-
-    }
-
-    private Double weeklySpend(){
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.DAY_OF_WEEK, 1);
-        calendar.set(Calendar.HOUR, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-
-        return expenseRepository.weekly(calendar.getTime(), new Date());
     }
 
     public Page<Expense> getAllExpenses(Pageable pageable){

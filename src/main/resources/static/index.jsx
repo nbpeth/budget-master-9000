@@ -41,10 +41,10 @@ class Body extends React.Component{
                     {showForm ? <CreateExpenseForm /> : null}
                         
                         <div className="row">
-                            <div className="col-6">
+                            <div className="col-md-3">
                                 <WeeklySummaryWidget id="weekly" />
                             </div>
-                            <div className="col-12 col-md-auto">
+                            <div className="col-md-8">
                                 <ExpenseTable id="table" />
                             </div>
                         </div>

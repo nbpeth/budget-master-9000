@@ -4,6 +4,12 @@ export function loadDataAction() {
     };
 };
 
+export function loadStatsAction() {
+    return {
+        type: "LOAD_STATS",
+    };
+};
+
 export function deleteExpenseAction(id) {
     return {
         type: "DELETE_EXPENSE",

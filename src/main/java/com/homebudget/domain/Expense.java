@@ -9,7 +9,6 @@ import javax.persistence.Id;
 import java.util.Date;
 
 @Entity
-@NamedQuery(name = "Expense.findAllOrderByDate", query = "SELECT e FROM Expense e order by expenseDate desc")
 public class Expense {
     @Id
     @GeneratedValue

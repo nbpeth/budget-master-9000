@@ -77,12 +77,19 @@ Object.defineProperty(exports, "__esModule", {
     value: true
 });
 exports.loadDataAction = loadDataAction;
+exports.loadStatsAction = loadStatsAction;
 exports.deleteExpenseAction = deleteExpenseAction;
 exports.createExpenseAction = createExpenseAction;
 exports.toggleForm = toggleForm;
 function loadDataAction() {
     return {
         type: "LOAD_DATA"
+    };
+};
+
+function loadStatsAction() {
+    return {
+        type: "LOAD_STATS"
     };
 };
 
@@ -152,21 +159,35 @@ function expenseManagerApp(state, action) {
         //make service calls async
 
         case 'LOAD_DATA':
-            var expenses = getExpensesData();
+            var expenses = parseJson((0, _expenseService.getExpenses)());
+
             newState.expenses = expenses;
+
+            return newState;
+
+        case 'LOAD_STATS':
+            var stats = JSON.parse((0, _expenseService.getStats)());
+
+            newState.stats = stats;
 
             return newState;
 
         case 'DELETE_EXPENSE':
             (0, _expenseService.deleteExpense)(action.id);
-            newState.expenses = getExpensesData();
+
+            var stats = JSON.parse((0, _expenseService.getStats)());
+            newState.stats = stats;
+            newState.expenses = parseJson((0, _expenseService.getExpenses)());
 
             return newState;
 
         case 'CREATE_EXPENSE':
             var json = JSON.stringify(action.data);
             (0, _expenseService.submitExpense)(json);
-            newState.expenses = getExpensesData();
+
+            var stats = JSON.parse((0, _expenseService.getStats)());
+            newState.stats = stats;
+            newState.expenses = parseJson((0, _expenseService.getExpenses)());
 
             return newState;
 
@@ -180,8 +201,8 @@ function expenseManagerApp(state, action) {
     }
 };
 
-var getExpensesData = function getExpensesData() {
-    return JSON.parse((0, _expenseService.getExpenses)()).content;
+var parseJson = function parseJson(data) {
+    return JSON.parse(data).content;
 };
 
 exports.default = expenseManagerApp;
@@ -909,12 +930,12 @@ var Body = function (_React$Component) {
                         { className: 'row' },
                         React.createElement(
                             'div',
-                            { className: 'col-6' },
+                            { className: 'col-md-3' },
                             React.createElement(_WeeklySummaryWidget2.default, { id: 'weekly' })
                         ),
                         React.createElement(
                             'div',
-                            { className: 'col-12 col-md-auto' },
+                            { className: 'col-md-8' },
                             React.createElement(_ExpenseTable2.default, { id: 'table' })
                         )
                     )
@@ -1225,6 +1246,7 @@ var Expense = function (_React$Component) {
         value: function handleClick(id) {
             if (this.state.deleteConfirmed) {
                 _expensesStore2.default.dispatch((0, _actions.deleteExpenseAction)(id));
+
                 this.setState({ deleteConfirmed: false });
             } else {
                 this.setState({ deleteConfirmed: true });
@@ -1236,8 +1258,7 @@ var Expense = function (_React$Component) {
         value: function render() {
             var _this2 = this;
 
-            var date = new Date(this.props.expense.expenseDate);
-            var formattedDate = date.getDate();
+            var formattedDate = this.props.expense.expenseDate;
 
             var deleteConfirmed = this.state.deleteConfirmed;
             var buttonClass = deleteConfirmed ? "btn btn-danger" : "btn btn-success";
@@ -1261,16 +1282,6 @@ var Expense = function (_React$Component) {
                     'td',
                     null,
                     this.props.expense.expenseType
-                ),
-                React.createElement(
-                    'td',
-                    null,
-                    this.props.expense.description
-                ),
-                React.createElement(
-                    'td',
-                    null,
-                    this.props.expense.dayOfWeek
                 ),
                 React.createElement(
                     'td',
@@ -1340,8 +1351,8 @@ var ExpenseTable = function (_React$Component) {
     }
 
     _createClass(ExpenseTable, [{
-        key: 'componentWillMount',
-        value: function componentWillMount() {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
             var _this2 = this;
 
             _expensesStore2.default.subscribe(function () {
@@ -1350,10 +1361,6 @@ var ExpenseTable = function (_React$Component) {
                     expenses: state.expenses
                 });
             });
-        }
-    }, {
-        key: 'componentDidMount',
-        value: function componentDidMount() {
             _expensesStore2.default.dispatch((0, _actions.loadDataAction)());
         }
     }, {
@@ -1361,6 +1368,7 @@ var ExpenseTable = function (_React$Component) {
         value: function render() {
             var rows = [];
             var expenses = _expensesStore2.default.getState().expenses;
+            console.log(expenses.length, "expenses");
 
             if (expenses.length > 0) {
                 var n = 0;
@@ -1370,7 +1378,7 @@ var ExpenseTable = function (_React$Component) {
             }
             return React.createElement(
                 'table',
-                { className: 'table table-striped', id: 'expenseTable' },
+                { className: 'table table-striped table-hoverable table-inverted', id: 'expenseTable' },
                 React.createElement(
                     'thead',
                     { className: 'bg-info' },
@@ -1410,25 +1418,7 @@ var ExpenseTable = function (_React$Component) {
                             React.createElement(
                                 'h3',
                                 null,
-                                'Description'
-                            )
-                        ),
-                        React.createElement(
-                            'td',
-                            null,
-                            React.createElement(
-                                'h3',
-                                null,
                                 'Day'
-                            )
-                        ),
-                        React.createElement(
-                            'td',
-                            null,
-                            React.createElement(
-                                'h3',
-                                null,
-                                'Date'
                             )
                         ),
                         React.createElement(
@@ -1467,6 +1457,14 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _expensesStore = __webpack_require__(1);
+
+var _expensesStore2 = _interopRequireDefault(_expensesStore);
+
+var _actions = __webpack_require__(0);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
@@ -1476,58 +1474,92 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var WeeklySummaryWidget = function (_React$Component) {
     _inherits(WeeklySummaryWidget, _React$Component);
 
-    function WeeklySummaryWidget() {
+    function WeeklySummaryWidget(props) {
         _classCallCheck(this, WeeklySummaryWidget);
 
-        return _possibleConstructorReturn(this, (WeeklySummaryWidget.__proto__ || Object.getPrototypeOf(WeeklySummaryWidget)).apply(this, arguments));
+        return _possibleConstructorReturn(this, (WeeklySummaryWidget.__proto__ || Object.getPrototypeOf(WeeklySummaryWidget)).call(this, props));
     }
 
     _createClass(WeeklySummaryWidget, [{
-        key: "render",
+        key: 'componentWillMount',
+        value: function componentWillMount() {
+            _expensesStore2.default.dispatch((0, _actions.loadStatsAction)());
+        }
+    }, {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            var _this2 = this;
+
+            _expensesStore2.default.subscribe(function () {
+                var state = _expensesStore2.default.getState();
+                _this2.setState({
+                    stats: state.stats
+                });
+            });
+        }
+    }, {
+        key: 'render',
         value: function render() {
+            var stats = _expensesStore2.default.getState().stats;
+
+            var weekExpenses;
+            var remainderCellClass = "bg-warn";
+
+            if (stats && stats.weekExpenses) {
+                weekExpenses = stats.weekExpenses;
+                remainderCellClass = 300 - weekExpenses >= 0 ? "bg-success" : "bg-danger";
+            }
             return React.createElement(
-                "div",
+                'div',
                 null,
                 React.createElement(
-                    "table",
-                    { className: "table table-striped", id: "expenseTable" },
+                    'table',
+                    { className: 'table table-striped table-bordered table-hover table-inverse', id: 'expenseTable' },
                     React.createElement(
-                        "thead",
-                        { className: "bg-info" },
-                        React.createElement(
-                            "tr",
-                            null,
-                            React.createElement(
-                                "td",
-                                null,
-                                "Weekly Spend"
-                            ),
-                            React.createElement(
-                                "td",
-                                null,
-                                "$300"
-                            )
-                        )
-                    ),
-                    React.createElement(
-                        "tbody",
+                        'tbody',
                         null,
                         React.createElement(
-                            "tr",
+                            'tr',
                             null,
                             React.createElement(
-                                "td",
+                                'td',
+                                { className: 'bg-primary' },
+                                'Weekly Budget'
+                            ),
+                            React.createElement(
+                                'td',
                                 null,
-                                "$201"
+                                '$300'
                             )
                         ),
                         React.createElement(
-                            "tr",
+                            'tr',
                             null,
                             React.createElement(
-                                "td",
+                                'td',
+                                { className: 'bg-primary' },
+                                'Spent'
+                            ),
+                            React.createElement(
+                                'td',
                                 null,
-                                "$99"
+                                '$',
+                                weekExpenses
+                            )
+                        ),
+                        React.createElement(
+                            'tr',
+                            null,
+                            React.createElement(
+                                'td',
+                                { className: 'bg-primary' },
+                                'Remaining'
+                            ),
+                            React.createElement(
+                                'td',
+                                { className: remainderCellClass },
+                                '$',
+                                weekExpenses ? 300 - parseFloat(weekExpenses) : 0
                             )
                         )
                     )
@@ -1554,6 +1586,13 @@ Object.defineProperty(exports, "__esModule", {
 var getExpenses = exports.getExpenses = function getExpenses() {
     return $.ajax({
         url: "http://localhost:8080/expenses",
+        async: false
+    }).responseText;
+};
+
+var getStats = exports.getStats = function getStats() {
+    return $.ajax({
+        url: "http://localhost:8080/expenses/stats",
         async: false
     }).responseText;
 };

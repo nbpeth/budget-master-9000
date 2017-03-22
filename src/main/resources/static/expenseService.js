@@ -5,6 +5,13 @@ export const getExpenses = () => {
     }).responseText;
 };
 
+export const getStats = () => {
+    return $.ajax({
+        url: "http://localhost:8080/expenses/stats",
+        async: false
+    }).responseText;
+};
+
 export const submitExpense = (data) => {
     console.log("service", data);
 

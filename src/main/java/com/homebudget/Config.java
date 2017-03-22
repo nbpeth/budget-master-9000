@@ -1,6 +1,7 @@
 package com.homebudget;
 
 import com.homebudget.service.ExpenseService;
+import com.homebudget.service.StatisticsService;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -44,5 +45,10 @@ public class Config {
     @Bean
     public ExpenseService expenseService(){
         return new ExpenseService();
+    }
+
+    @Bean
+    public StatisticsService statisticsService(){
+        return new StatisticsService();
     }
 }

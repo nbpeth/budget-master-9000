@@ -1,5 +1,5 @@
 import store from './expensesStore.js';
-import { createExpenseAction } from './actions.js';
+import { createExpenseAction, loadStatsAction, loadDataAction } from './actions.js';
 
 class CreateExpenseForm extends React.Component {
 	constructor(props){

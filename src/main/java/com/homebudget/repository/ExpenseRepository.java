@@ -2,6 +2,7 @@ package com.homebudget.repository;
 
 
 import com.homebudget.domain.Expense;
+import org.hibernate.annotations.NamedQuery;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
@@ -18,10 +19,10 @@ public interface ExpenseRepository extends PagingAndSortingRepository<Expense, I
     @Query("SELECT SUM(e.cost) FROM Expense e WHERE e.expenseDate between (:startDate) and (:endDate)")
     Double weekly(@Param("startDate")Date startDate, @Param("endDate")Date endDate);
 
-    List<Expense> findByExpenseDate(Date date);
-
+    @Query("SELECT e FROM Expense e order by expenseDate desc")
     Page<Expense> findAllOrderByDate(Pageable pageable);
 
+    List<Expense> findByExpenseDate(Date date);
 
 
 }

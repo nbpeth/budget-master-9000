@@ -2,19 +2,19 @@ package com.homebudget.domain;
 
 public class Statistics {
 
-    public Double getWeeklySpend() {
-        return weeklySpend;
-    }
-
-    public void setWeeklySpend(Double weeklySpend) {
-        this.weeklySpend = weeklySpend;
-    }
-
-    Double weeklySpend;
+    Double weekExpenses;
 
     public Statistics with(Double weeklySpend){
-        this.weeklySpend = weeklySpend;
+        this.weekExpenses = weeklySpend;
         return this;
+    }
+
+    public Double getWeekExpenses() {
+        return weekExpenses;
+    }
+
+    public void setWeekExpenses(Double weekExpenses) {
+        this.weekExpenses = weekExpenses;
     }
 
 }

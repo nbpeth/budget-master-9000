@@ -1,5 +1,5 @@
 import store from './expensesStore.js';
-import { deleteExpenseAction } from './actions.js';
+import { deleteExpenseAction, loadStatsAction } from './actions.js';
 
 class Expense extends React.Component {
     constructor(props){
@@ -12,6 +12,7 @@ class Expense extends React.Component {
     handleClick(id){
         if(this.state.deleteConfirmed){
             store.dispatch(deleteExpenseAction(id));
+
             this.setState({deleteConfirmed: false});
         }
         else{
@@ -21,8 +22,7 @@ class Expense extends React.Component {
     }
 
     render (){
-        const date = new Date(this.props.expense.expenseDate);
-        const formattedDate = date.getDate();
+        const formattedDate = this.props.expense.expenseDate;
 
         const deleteConfirmed = this.state.deleteConfirmed;
         var buttonClass = deleteConfirmed ? "btn btn-danger" : "btn btn-success";
@@ -33,8 +33,8 @@ class Expense extends React.Component {
                 <td>{this.props.expense.location}</td>
                 <td>${this.props.expense.cost}</td>
                 <td>{this.props.expense.expenseType}</td>
-                <td>{this.props.expense.description}</td>
-                <td>{this.props.expense.dayOfWeek}</td>
+                {/*<td>{this.props.expense.description}</td>*/}
+                {/*<td>{this.props.expense.dayOfWeek}</td>*/}
                 <td>{formattedDate}</td>
                 
                 <td>
