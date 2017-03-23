@@ -25898,6 +25898,8 @@ var CreateExpenseForm = function (_React$Component) {
 				var expenseDate = document.getElementById("datepicker").value;
 				var description = document.getElementById("description").value;
 
+				// this.formElements().map((field,index) => { return field.id:field.value  })
+
 				return {
 					location: location,
 					cost: cost,
@@ -26047,8 +26049,6 @@ var Expense = function (_React$Component) {
         value: function render() {
             var _this2 = this;
 
-            var formattedDate = this.props.expense.expenseDate;
-
             var deleteConfirmed = this.state.deleteConfirmed;
             var buttonClass = deleteConfirmed ? "btn btn-danger" : "btn btn-success";
             var buttonLanguage = deleteConfirmed ? "Confirm?" : "Delete";
@@ -26076,11 +26076,6 @@ var Expense = function (_React$Component) {
                     'td',
                     null,
                     this.props.expense.expenseDate
-                ),
-                _react2.default.createElement(
-                    'td',
-                    null,
-                    formattedDate
                 ),
                 _react2.default.createElement(
                     'td',

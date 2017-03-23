@@ -35,9 +35,7 @@ class ExpenseTable extends React.Component {
                         <td><h3>Location</h3></td>
                         <td><h3>Cost</h3></td>
                         <td><h3>Type</h3></td>
-                        {/*<td><h3>Description</h3></td>*/}
                         <td><h3>Date</h3></td>
-                        {/*<td><h3>Date</h3></td>*/}
                         <td><h3></h3></td>
                     </tr>
                 </thead>
