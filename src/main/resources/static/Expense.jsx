@@ -1,3 +1,4 @@
+import React from 'react';
 import store from './expensesStore.js';
 import { deleteExpenseAction, loadStatsAction } from './actions.js';
 
@@ -34,7 +35,7 @@ class Expense extends React.Component {
                 <td>${this.props.expense.cost}</td>
                 <td>{this.props.expense.expenseType}</td>
                 {/*<td>{this.props.expense.description}</td>*/}
-                {/*<td>{this.props.expense.dayOfWeek}</td>*/}
+                <td>{this.props.expense.expenseDate}</td>
                 <td>{formattedDate}</td>
                 
                 <td>

@@ -29,7 +29,6 @@ public class ExpenseService {
             expense.getLocation().toUpperCase(),
             expense.getExpenseType(),
             expense.getDescription(),
-            expense.getDayOfWeek().toUpperCase(),
             expense.getCost()
         );
         return expenseRepository.save(formattedExpense);

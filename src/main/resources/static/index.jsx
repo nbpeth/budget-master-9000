@@ -1,3 +1,5 @@
+import React from 'react';
+import ReactDOM from 'react-dom';
 import ExpenseTable from './ExpenseTable.jsx';
 import CreateExpenseForm from './CreateExpenseForm.jsx';
 import expenseManagerApp from './reducers.js';
@@ -5,15 +7,18 @@ import WeeklySummaryWidget from './WeeklySummaryWidget.jsx';
 import store from './expensesStore.js';
 import { toggleForm, loadDataAction } from './actions.js';
 
-var App = React.createClass({
-    render: function(){
+class App extends React.Component {
+    constructor(props){
+        super(props);
+    }
+    render(){
         return(
             <div>
                 <Body />
             </div>
         );
     }
-});
+}
 
 class Body extends React.Component{
     constructor(props){

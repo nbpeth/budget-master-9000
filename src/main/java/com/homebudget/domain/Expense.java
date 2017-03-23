@@ -1,6 +1,7 @@
 package com.homebudget.domain;
 
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.hibernate.annotations.NamedQuery;
 
 import javax.persistence.Entity;
@@ -17,19 +18,18 @@ public class Expense {
     String location;
     String expenseType;
     String description;
-    String dayOfWeek;
+    @JsonFormat(pattern = "MM/dd/yyyy")
     Date expenseDate;
 
     public Expense(){
 
     }
 
-    public Expense(Date expenseDate, String location, String expenseType, String description, String dayOfWeek, Double cost){
+    public Expense(Date expenseDate, String location, String expenseType, String description, Double cost){
         this.cost = cost;
         this.location = location;
         this.expenseType = expenseType;
         this.description = description;
-        this.dayOfWeek = dayOfWeek;
         this.expenseDate = expenseDate;
     }
 
@@ -73,14 +73,6 @@ public class Expense {
         this.description = description;
     }
 
-    public String getDayOfWeek() {
-        return dayOfWeek;
-    }
-
-    public void setDayOfWeek(String dayOfWeek) {
-        this.dayOfWeek = dayOfWeek;
-    }
-
     public Date getExpenseDate() {
         return expenseDate;
     }
@@ -91,6 +83,6 @@ public class Expense {
 
     @Override
     public String toString(){
-        return this.expenseDate + " " + this.getLocation() + " " + this.getCost() + " " + this.getDayOfWeek() + " " + this.getDescription() + " ";
+        return this.expenseDate + " " + this.getLocation() + " " + this.getCost()  + " " + this.getDescription() + " ";
     }
 }

@@ -1,3 +1,4 @@
+import React from 'react';
 import Expense from './Expense.jsx';
 import store from './expensesStore.js';
 import { loadDataAction, loadStatsAction } from './actions.js';
@@ -20,7 +21,6 @@ class ExpenseTable extends React.Component {
     render() {    
         var rows = []; 
         var expenses = store.getState().expenses;
-        console.log(expenses.length,"expenses");
 
         if(expenses.length > 0){
             var n=0;
@@ -36,7 +36,7 @@ class ExpenseTable extends React.Component {
                         <td><h3>Cost</h3></td>
                         <td><h3>Type</h3></td>
                         {/*<td><h3>Description</h3></td>*/}
-                        <td><h3>Day</h3></td>
+                        <td><h3>Date</h3></td>
                         {/*<td><h3>Date</h3></td>*/}
                         <td><h3></h3></td>
                     </tr>

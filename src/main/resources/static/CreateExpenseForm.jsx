@@ -1,13 +1,40 @@
+import React from 'react';
 import store from './expensesStore.js';
 import { createExpenseAction, loadStatsAction, loadDataAction } from './actions.js';
+import moment from 'moment';
+import DatePicker from 'react-datepicker';
+
 
 class CreateExpenseForm extends React.Component {
 	constructor(props){
         super(props);
+		this.state = {startDate:moment()};
     }
+
+	formElements() {
+		return [
+			document.getElementById("location"),
+			document.getElementById("cost"),
+			document.getElementById("type"),
+			document.getElementById("datepicker"),
+			document.getElementById("description")
+		];
+	}
 
 	createExpense(data){
 		store.dispatch(createExpenseAction(data));
+
+		this.formElements().forEach((field)=>{
+			field.value = null;
+		});
+	}
+
+	componentDidMount(){
+		this.setState({startDate:moment()});
+	}
+
+	handleDateChange(date){
+		this.setState({startDate:date});
 	}
  
     render(){
@@ -15,24 +42,25 @@ class CreateExpenseForm extends React.Component {
 			var location = document.getElementById("location").value;
 			var cost = document.getElementById("cost").value;
 			var expenseType = document.getElementById("type").value;
-			var dayOfWeek = document.getElementById("day").value;
+			var expenseDate = document.getElementById("datepicker").value;
 			var description = document.getElementById("description").value;
+
+			// this.formElements().map((field,index) => { return field.id:field.value  })
 
 			return {
 				location: location,
 				cost: cost,
 				expenseType: expenseType,
-				dayOfWeek: dayOfWeek, 
 				description: description, 
-				expenseDate: new Date()
-			}
-		}
+				expenseDate: expenseDate
+			};
+		};
         return(
             <div>
 				<h3>Create</h3>
 					<form>
 			  			<div className="form-group">
-			  				<input type="email" className="form-control" id="location" aria-describedby="emailHelp" placeholder="Location" s/><br/>
+			  				<input type="email" className="form-control" id="location" aria-describedby="emailHelp" placeholder="Location" /><br/>
 			  				<input type="number" className="form-control" id="cost" placeholder="Cost"/><br/>
 							  <select className="form-control" id="type">
 								<option>Groceries</option>
@@ -44,15 +72,7 @@ class CreateExpenseForm extends React.Component {
 								<option>Miscellaneous</option>
 
 		    				</select><br/>
-			  				<select className="form-control" id="day">
-								<option>Monday</option>
-								<option>Tuesday</option>
-								<option>Wednesday</option>
-								<option>Thursday</option>
-								<option>Friday</option>
-								<option>Saturday</option>
-								<option>Sunday</option>
-		    				</select><br/>
+							<DatePicker selected={this.state.startDate} onChange={this.handleDateChange.bind(this)} id="datepicker"/>
 			  				<input type="text" className="form-control" id="description" placeholder="Description"/><p/>
 
 		    				<button type="button" className="btn btn-primary" onClick={ () => this.createExpense(getFormData())} >Submit</button>
