@@ -21,16 +21,37 @@ class WeeklySummaryWidget extends React.Component {
         });
     }
 
+    determineCellColor(value){
+        return value && value >= 0 ? "bg-success" : "bg-danger";
+    }
+
     render() {
         var stats = store.getState().stats;
 
         var weekExpenses;
+        var weeklyRollup;
+        var weeklyRows = [];
         var remainderCellClass = "bg-warn";
         
-        if(stats && stats.weekExpenses){
+        if(stats && stats.weekExpenses && stats.weeklyRollup){
             weekExpenses = stats.weekExpenses;
-            remainderCellClass = 300 - weekExpenses >= 0 ? "bg-success" : "bg-danger";
-            
+            weeklyRollup = stats.weeklyRollup;
+//stats.weeklyRollup.filter((x) => x.sum)
+            remainderCellClass = this.determineCellColor(300 - weekExpenses);
+            weeklyRollup.filter((week) => week.sum).forEach((week) => {
+                weeklyRows.push(
+                    <tr key={week.weekStart}>
+                        <td>
+                            {week.weekStart}
+                        </td>
+                        <td>
+                            {week.weekEnd}
+                        </td>
+                        <td className={this.determineCellColor(week.sum)}>
+                            {week.sum}
+                        </td>
+                    </tr>);
+                })
         }
         return(
             <div>
@@ -63,7 +84,12 @@ class WeeklySummaryWidget extends React.Component {
                         </tr>
                         
                     </tbody>
-                    
+                </table>
+                <table className="table table-striped table-bordered table-hover table-inverse" id="weeklyRollupTable">
+                    <tbody>
+                        <tr><td className="bg-primary">Start</td><td className="bg-primary">Stop</td><td className="bg-primary">Total</td></tr>
+                        { weeklyRows ? weeklyRows : null }
+                    </tbody>
                 </table>
             </div>
         );

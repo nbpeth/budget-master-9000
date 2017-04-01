@@ -26294,16 +26294,50 @@ var WeeklySummaryWidget = function (_React$Component) {
             });
         }
     }, {
+        key: 'determineCellColor',
+        value: function determineCellColor(value) {
+            return value && value >= 0 ? "bg-success" : "bg-danger";
+        }
+    }, {
         key: 'render',
         value: function render() {
+            var _this3 = this;
+
             var stats = _expensesStore2.default.getState().stats;
 
             var weekExpenses;
+            var weeklyRollup;
+            var weeklyRows = [];
             var remainderCellClass = "bg-warn";
 
-            if (stats && stats.weekExpenses) {
+            if (stats && stats.weekExpenses && stats.weeklyRollup) {
                 weekExpenses = stats.weekExpenses;
-                remainderCellClass = 300 - weekExpenses >= 0 ? "bg-success" : "bg-danger";
+                weeklyRollup = stats.weeklyRollup;
+                //stats.weeklyRollup.filter((x) => x.sum)
+                remainderCellClass = this.determineCellColor(300 - weekExpenses);
+                weeklyRollup.filter(function (week) {
+                    return week.sum;
+                }).forEach(function (week) {
+                    weeklyRows.push(_react2.default.createElement(
+                        'tr',
+                        { key: week.weekStart },
+                        _react2.default.createElement(
+                            'td',
+                            null,
+                            week.weekStart
+                        ),
+                        _react2.default.createElement(
+                            'td',
+                            null,
+                            week.weekEnd
+                        ),
+                        _react2.default.createElement(
+                            'td',
+                            { className: _this3.determineCellColor(week.sum) },
+                            week.sum
+                        )
+                    ));
+                });
             }
             return _react2.default.createElement(
                 'div',
@@ -26358,6 +26392,34 @@ var WeeklySummaryWidget = function (_React$Component) {
                                 weekExpenses ? 300 - parseFloat(weekExpenses) : 0
                             )
                         )
+                    )
+                ),
+                _react2.default.createElement(
+                    'table',
+                    { className: 'table table-striped table-bordered table-hover table-inverse', id: 'weeklyRollupTable' },
+                    _react2.default.createElement(
+                        'tbody',
+                        null,
+                        _react2.default.createElement(
+                            'tr',
+                            null,
+                            _react2.default.createElement(
+                                'td',
+                                { className: 'bg-primary' },
+                                'Start'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { className: 'bg-primary' },
+                                'Stop'
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                { className: 'bg-primary' },
+                                'Total'
+                            )
+                        ),
+                        weeklyRows ? weeklyRows : null
                     )
                 )
             );
