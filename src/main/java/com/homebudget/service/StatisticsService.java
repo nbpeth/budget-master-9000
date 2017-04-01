@@ -34,7 +34,8 @@ public class StatisticsService {
         return expenseRepository.weekly(calendar.getTime(), new Date());
     }
 
-    public List<WeekData> weeklyRollUp() {
+    private List<WeekData> weeklyRollUp() {
+        final String dateFormat = "MM-dd-yyyy";
         Calendar calendar = (Calendar) Calendar.getInstance().clone();
         calendar.set(Calendar.HOUR, 0);
         calendar.set(Calendar.MINUTE, 0);
@@ -47,7 +48,7 @@ public class StatisticsService {
                 .mapToObj(i -> {
                     Date weekEnd;
                     Date weekStart;
-                    if (i == 0) {
+                    if (i == 1) {
                         calendar.add(Calendar.DAY_OF_WEEK, -currentDay);
                         weekEnd = calendar.getTime();
                     } else {
@@ -57,8 +58,8 @@ public class StatisticsService {
                     weekStart = calendar.getTime();
 
                     return new WeekData(
-                            new SimpleDateFormat("MM-dd-yyyy").format(weekStart),
-                            new SimpleDateFormat("MM-dd-yyyy").format(weekEnd),
+                            new SimpleDateFormat(dateFormat).format(weekStart),
+                            new SimpleDateFormat(dateFormat).format(weekEnd),
                             expenseRepository.weekly(weekStart, weekEnd)
                     ).id(i);
                 })
