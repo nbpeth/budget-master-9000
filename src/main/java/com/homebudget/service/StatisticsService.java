@@ -18,14 +18,15 @@ public class StatisticsService {
 
     public Statistics getStats() {
         return new Statistics()
-                .with(weekExpenses())
-                .with(weeklyRollUp());
+            .with(weekExpenses())
+            .with(weeklyRollUp());
 
     }
 
     private Double weekExpenses() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.DAY_OF_WEEK, 1);
+        Calendar calendar = (Calendar) Calendar.getInstance().clone();
+
+        calendar.add(Calendar.DAY_OF_WEEK, - (Calendar.DAY_OF_WEEK - 1));
         calendar.set(Calendar.HOUR, 0);
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
@@ -41,29 +42,33 @@ public class StatisticsService {
         calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
         calendar.set(Calendar.MILLISECOND, 0);
-        int currentDay = calendar.DAY_OF_WEEK - 2;
 
+        return IntStream.range(0, 4)
+            .mapToObj(i -> {
+                Date weekEnd;
+                Date weekStart;
+                if (i == 0) {
+                    calendar.add(Calendar.DAY_OF_WEEK, - (calendar.DAY_OF_WEEK > 1 ? calendar.DAY_OF_WEEK - 1 : 0));
+                    calendar.add(Calendar.MILLISECOND, -1);
+                    weekEnd = calendar.getTime();
+                    calendar.add(Calendar.MILLISECOND, 1);
 
-        return IntStream.range(1, 5)
-                .mapToObj(i -> {
-                    Date weekEnd;
-                    Date weekStart;
-                    if (i == 1) {
-                        calendar.add(Calendar.DAY_OF_WEEK, -currentDay);
-                        weekEnd = calendar.getTime();
-                    } else {
-                        weekEnd = calendar.getTime();
-                    }
-                    calendar.add(Calendar.DAY_OF_WEEK, -7);
-                    weekStart = calendar.getTime();
+                } else {
+                    calendar.add(Calendar.MILLISECOND, -1);
+                    weekEnd = calendar.getTime();
+                    calendar.add(Calendar.MILLISECOND, 1);
+                }
 
-                    return new WeekData(
-                            new SimpleDateFormat(dateFormat).format(weekStart),
-                            new SimpleDateFormat(dateFormat).format(weekEnd),
-                            expenseRepository.weekly(weekStart, weekEnd)
-                    ).id(i);
-                })
-                .collect(Collectors.toList());
+                calendar.add(Calendar.DAY_OF_WEEK, -7);
+                weekStart = calendar.getTime();
+
+                return new WeekData(
+                        new SimpleDateFormat(dateFormat).format(weekStart),
+                        new SimpleDateFormat(dateFormat).format(weekEnd),
+                        expenseRepository.weekly(weekStart, weekEnd)
+                ).id(i);
+            })
+            .collect(Collectors.toList());
     }
 
 }

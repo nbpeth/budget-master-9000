@@ -45,8 +45,6 @@ class CreateExpenseForm extends React.Component {
 			var expenseDate = document.getElementById("datepicker").value;
 			var description = document.getElementById("description").value;
 
-			// this.formElements().map((field,index) => { return field.id:field.value  })
-
 			return {
 				location: location,
 				cost: cost,
@@ -72,7 +70,7 @@ class CreateExpenseForm extends React.Component {
 								<option>Miscellaneous</option>
 
 		    				</select><br/>
-							<DatePicker selected={this.state.startDate} onChange={this.handleDateChange.bind(this)} id="datepicker"/>
+							<DatePicker selected={this.state.startDate} onChange={this.handleDateChange.bind(this)} id="datepicker"/><p/>
 			  				<input type="text" className="form-control" id="description" placeholder="Description"/><p/>
 
 		    				<button type="button" className="btn btn-primary" onClick={ () => this.createExpense(getFormData())} >Submit</button>

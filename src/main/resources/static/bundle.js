@@ -25711,7 +25711,6 @@ var Body = function (_React$Component2) {
                 'div',
                 null,
                 _react2.default.createElement(TitleBar, null),
-                _react2.default.createElement(Navigation, null),
                 _react2.default.createElement(
                     'div',
                     { className: 'container' },
@@ -25754,12 +25753,13 @@ var TitleBar = function (_React$Component3) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                { className: 'container-fluid bg-primary' },
+                { className: 'container-fluid bg bg-gradient' },
                 _react2.default.createElement(
                     'h1',
                     null,
                     'Budget Master 9000'
-                )
+                ),
+                _react2.default.createElement(Navigation, null)
             );
         }
     }]);
@@ -25787,14 +25787,14 @@ var Navigation = function (_React$Component4) {
                 _expensesStore2.default.dispatch((0, _actions.toggleForm)());
             };
             return _react2.default.createElement(
-                'div',
-                { className: 'container-fluid bg-success' },
+                'nav',
+                { className: 'navbar' },
                 _react2.default.createElement(
-                    'a',
-                    { href: '#' },
+                    'form',
+                    { className: 'form-inline' },
                     _react2.default.createElement(
-                        'h4',
-                        { onClick: function onClick() {
+                        'button',
+                        { className: 'btn-link', type: 'button', onClick: function onClick() {
                                 handleClick();
                             } },
                         showForm ? "Hide Form" : "Enter Expense"
@@ -25898,8 +25898,6 @@ var CreateExpenseForm = function (_React$Component) {
 				var expenseDate = document.getElementById("datepicker").value;
 				var description = document.getElementById("description").value;
 
-				// this.formElements().map((field,index) => { return field.id:field.value  })
-
 				return {
 					location: location,
 					cost: cost,
@@ -25967,6 +25965,7 @@ var CreateExpenseForm = function (_React$Component) {
 						),
 						_react2.default.createElement('br', null),
 						_react2.default.createElement(_reactDatepicker2.default, { selected: this.state.startDate, onChange: this.handleDateChange.bind(this), id: 'datepicker' }),
+						_react2.default.createElement('p', null),
 						_react2.default.createElement('input', { type: 'text', className: 'form-control', id: 'description', placeholder: 'Description' }),
 						_react2.default.createElement('p', null),
 						_react2.default.createElement(
@@ -26295,8 +26294,19 @@ var WeeklySummaryWidget = function (_React$Component) {
         }
     }, {
         key: 'determineCellColor',
-        value: function determineCellColor(value) {
-            return value && value >= 0 ? "bg-success" : "bg-danger";
+        value: function determineCellColor(qualifier) {
+            return qualifier ? "bg-success" : "bg-danger";
+        }
+    }, {
+        key: 'isUnderBudget',
+        value: function isUnderBudget(value, limit) {
+            return value && limit && value <= limit;
+        }
+    }, {
+        key: 'isAboveOrEqualToZero',
+        value: function isAboveOrEqualToZero(value) {
+            console.log(value, value && value >= 0, value >= 0);
+            return value && value >= 0;
         }
     }, {
         key: 'render',
@@ -26304,17 +26314,19 @@ var WeeklySummaryWidget = function (_React$Component) {
             var _this3 = this;
 
             var stats = _expensesStore2.default.getState().stats;
-
+            var weeklyLimit = 300;
             var weekExpenses;
             var weeklyRollup;
+            var expenseRemainder = 0;
             var weeklyRows = [];
-            var remainderCellClass = "bg-warn";
 
-            if (stats && stats.weekExpenses && stats.weeklyRollup) {
+            if (stats && stats.weekExpenses) {
                 weekExpenses = stats.weekExpenses;
+                expenseRemainder = weeklyLimit - parseFloat(weekExpenses);
+            }
+            if (stats && stats.weeklyRollup) {
                 weeklyRollup = stats.weeklyRollup;
-                //stats.weeklyRollup.filter((x) => x.sum)
-                remainderCellClass = this.determineCellColor(300 - weekExpenses);
+
                 weeklyRollup.filter(function (week) {
                     return week.sum;
                 }).forEach(function (week) {
@@ -26333,7 +26345,8 @@ var WeeklySummaryWidget = function (_React$Component) {
                         ),
                         _react2.default.createElement(
                             'td',
-                            { className: _this3.determineCellColor(week.sum) },
+                            { className: _this3.determineCellColor(_this3.isUnderBudget(week.sum, weeklyLimit)) },
+                            '$',
                             week.sum
                         )
                     ));
@@ -26387,9 +26400,9 @@ var WeeklySummaryWidget = function (_React$Component) {
                             ),
                             _react2.default.createElement(
                                 'td',
-                                { className: remainderCellClass },
+                                { className: this.determineCellColor(this.isAboveOrEqualToZero(expenseRemainder)) },
                                 '$',
-                                weekExpenses ? 300 - parseFloat(weekExpenses) : 0
+                                expenseRemainder
                             )
                         )
                     )

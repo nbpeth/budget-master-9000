@@ -12,7 +12,7 @@ import java.util.Date;
 
 @Repository
 public interface ExpenseRepository extends PagingAndSortingRepository<Expense, Integer> {
-    @Query("SELECT SUM(e.cost) FROM Expense e WHERE e.expenseDate between (:startDate) and (:endDate)")
+    @Query("SELECT SUM(e.cost) FROM Expense e WHERE e.expenseDate >= (:startDate) and e.expenseDate <= (:endDate)")
     Double weekly(@Param("startDate")Date startDate, @Param("endDate")Date endDate);
 
     @Query("SELECT expense FROM Expense expense order by expenseDate desc")

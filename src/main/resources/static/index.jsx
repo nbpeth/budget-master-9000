@@ -41,7 +41,7 @@ class Body extends React.Component{
         return(
             <div>
                 <TitleBar />
-                <Navigation />
+                {/*<Navigation />*/}
                 <div className="container">
                     {showForm ? <CreateExpenseForm /> : null}
                         
@@ -62,8 +62,9 @@ class Body extends React.Component{
 class TitleBar extends React.Component{
     render(){
         return(
-            <div className="container-fluid bg-primary">
+            <div className="container-fluid bg bg-gradient">
 	            <h1>Budget Master 9000</h1>
+                <Navigation/>
             </div>
         );
     };
@@ -77,9 +78,12 @@ class Navigation extends React.Component{
             store.dispatch(toggleForm());
         };
         return(
-            <div className="container-fluid bg-success">
-	            <a href="#"><h4 onClick={ () => { handleClick() }}>{showForm ? "Hide Form" : "Enter Expense"}</h4></a>
-            </div>
+                
+                <nav className="navbar">
+                    <form className="form-inline">
+                        <button className="btn-link" type="button" onClick={ () => { handleClick() }}>{showForm ? "Hide Form" : "Enter Expense"}</button>
+                    </form>
+                </nav>
         );
     };
 };

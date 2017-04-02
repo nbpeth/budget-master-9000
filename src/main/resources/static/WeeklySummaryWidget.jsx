@@ -21,23 +21,34 @@ class WeeklySummaryWidget extends React.Component {
         });
     }
 
-    determineCellColor(value){
-        return value && value >= 0 ? "bg-success" : "bg-danger";
+    determineCellColor(qualifier){
+        return qualifier ? "bg-success" : "bg-danger";
+    }
+
+    isUnderBudget(value, limit){
+        return value && limit && value <= limit;
+    }
+
+    isAboveOrEqualToZero(value){
+        console.log(value, value && value >= 0, value >= 0);
+        return value && value >= 0;
     }
 
     render() {
         var stats = store.getState().stats;
-
+        var weeklyLimit = 300;
         var weekExpenses;
         var weeklyRollup;
+        var expenseRemainder = 0;
         var weeklyRows = [];
-        var remainderCellClass = "bg-warn";
         
-        if(stats && stats.weekExpenses && stats.weeklyRollup){
+        if(stats && stats.weekExpenses){
             weekExpenses = stats.weekExpenses;
+            expenseRemainder = weeklyLimit - parseFloat(weekExpenses);
+        }
+        if(stats && stats.weeklyRollup){
             weeklyRollup = stats.weeklyRollup;
-//stats.weeklyRollup.filter((x) => x.sum)
-            remainderCellClass = this.determineCellColor(300 - weekExpenses);
+
             weeklyRollup.filter((week) => week.sum).forEach((week) => {
                 weeklyRows.push(
                     <tr key={week.weekStart}>
@@ -47,8 +58,8 @@ class WeeklySummaryWidget extends React.Component {
                         <td>
                             {week.weekEnd}
                         </td>
-                        <td className={this.determineCellColor(week.sum)}>
-                            {week.sum}
+                        <td className={this.determineCellColor(this.isUnderBudget(week.sum, weeklyLimit))}>
+                           ${week.sum}
                         </td>
                     </tr>);
                 })
@@ -78,8 +89,8 @@ class WeeklySummaryWidget extends React.Component {
                             <td  className="bg-primary">
                                 Remaining
                             </td>
-                            <td className={remainderCellClass}>
-                                ${weekExpenses ? (300 - parseFloat(weekExpenses)) : 0 }
+                            <td className={this.determineCellColor(this.isAboveOrEqualToZero(expenseRemainder))}>
+                                ${expenseRemainder}
                             </td>
                         </tr>
                         
