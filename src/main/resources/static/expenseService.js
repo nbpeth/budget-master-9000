@@ -1,6 +1,6 @@
 export const getExpenses = () => {
     return $.ajax({
-        url: "http://localhost:8080/expenses",
+        url: "http://localhost:8080/expenses?page=1&limit=10",
         async: false
     }).responseText;
 };
