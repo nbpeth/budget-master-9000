@@ -25753,13 +25753,17 @@ var TitleBar = function (_React$Component3) {
         value: function render() {
             return _react2.default.createElement(
                 'div',
-                { className: 'container-fluid bg bg-gradient' },
+                null,
+                _react2.default.createElement(Navigation, null),
                 _react2.default.createElement(
-                    'h1',
-                    null,
-                    'Budget Master 9000'
-                ),
-                _react2.default.createElement(Navigation, null)
+                    'div',
+                    { className: 'container-fluid bg bg-gradient' },
+                    _react2.default.createElement(
+                        'h1',
+                        null,
+                        'Budget Master 9000'
+                    )
+                )
             );
         }
     }]);
@@ -25792,6 +25796,7 @@ var Navigation = function (_React$Component4) {
                 _react2.default.createElement(
                     'form',
                     { className: 'form-inline' },
+                    _react2.default.createElement('p', null),
                     _react2.default.createElement(
                         'button',
                         { className: 'btn-link', type: 'button', onClick: function onClick() {
@@ -26162,7 +26167,7 @@ var ExpenseTable = function (_React$Component) {
             var expenses = _expensesStore2.default.getState().expenses;
 
             if (expenses.length > 0) {
-                var n = 0;
+                var n = 1;
                 expenses.forEach(function (expense) {
                     rows.push(_react2.default.createElement(_Expense2.default, { expense: expense, key: n++ }));
                 });
@@ -26456,7 +26461,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var getExpenses = exports.getExpenses = function getExpenses() {
     return $.ajax({
-        url: "http://localhost:8080/expenses",
+        url: "http://localhost:8080/expenses?page=1&size=10",
         async: false
     }).responseText;
 };

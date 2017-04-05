@@ -41,7 +41,6 @@ class Body extends React.Component{
         return(
             <div>
                 <TitleBar />
-                {/*<Navigation />*/}
                 <div className="container">
                     {showForm ? <CreateExpenseForm /> : null}
                         
@@ -62,9 +61,12 @@ class Body extends React.Component{
 class TitleBar extends React.Component{
     render(){
         return(
-            <div className="container-fluid bg bg-gradient">
-	            <h1>Budget Master 9000</h1>
+            <div>
                 <Navigation/>
+
+                <div className="container-fluid bg bg-gradient">
+                    <h1>Budget Master 9000</h1>
+                </div>
             </div>
         );
     };
@@ -81,6 +83,7 @@ class Navigation extends React.Component{
                 
                 <nav className="navbar">
                     <form className="form-inline">
+                        <p/>
                         <button className="btn-link" type="button" onClick={ () => { handleClick() }}>{showForm ? "Hide Form" : "Enter Expense"}</button>
                     </form>
                 </nav>

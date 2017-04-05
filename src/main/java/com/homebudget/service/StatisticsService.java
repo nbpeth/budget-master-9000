@@ -3,6 +3,9 @@ package com.homebudget.service;
 import com.homebudget.domain.Statistics;
 import com.homebudget.domain.WeekData;
 import com.homebudget.repository.ExpenseRepository;
+import org.joda.time.DateTime;
+import org.joda.time.DateTimeConstants;
+import org.joda.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -24,43 +27,23 @@ public class StatisticsService {
     }
 
     private Double weekExpenses() {
-        Calendar calendar = (Calendar) Calendar.getInstance().clone();
-
-        calendar.add(Calendar.DAY_OF_WEEK, - (Calendar.DAY_OF_WEEK - 1));
-        calendar.set(Calendar.HOUR, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
-
-        return expenseRepository.weekly(calendar.getTime(), new Date());
+        return expenseRepository.weekly(new LocalDate().withDayOfWeek(DateTimeConstants.MONDAY).toDate(), new Date());
     }
 
     private List<WeekData> weeklyRollUp() {
-        final String dateFormat = "MM-dd-yyyy";
-        Calendar calendar = (Calendar) Calendar.getInstance().clone();
-        calendar.set(Calendar.HOUR, 0);
-        calendar.set(Calendar.MINUTE, 0);
-        calendar.set(Calendar.SECOND, 0);
-        calendar.set(Calendar.MILLISECOND, 0);
+        final String dateFormat = "MM-dd-yyyy:hh:mm:ss";
 
         return IntStream.range(0, 4)
             .mapToObj(i -> {
-                Date weekEnd;
-                Date weekStart;
+                DateTime dateTime = new DateTime();
+                Date weekEnd = truncateDate(dateTime.withDayOfWeek(DateTimeConstants.SUNDAY).plusDays(1).minusDays(7 * i)).minusMillis(1).toDate();
+                Date weekStart = truncateDate(dateTime.withDayOfWeek(DateTimeConstants.MONDAY).minusDays(7 * i)).toDate();
+
                 if (i == 0) {
-                    calendar.add(Calendar.DAY_OF_WEEK, - (calendar.DAY_OF_WEEK > 1 ? calendar.DAY_OF_WEEK - 1 : 0));
-                    calendar.add(Calendar.MILLISECOND, -1);
-                    weekEnd = calendar.getTime();
-                    calendar.add(Calendar.MILLISECOND, 1);
-
-                } else {
-                    calendar.add(Calendar.MILLISECOND, -1);
-                    weekEnd = calendar.getTime();
-                    calendar.add(Calendar.MILLISECOND, 1);
+                    int currentDay = dateTime.getDayOfWeek();
+                    weekEnd = truncateDate(dateTime.minusDays(currentDay > 1 ? currentDay - 1 : 0)).minusMillis(1).toDate();
+                    weekStart = truncateDate(dateTime.withDayOfWeek(DateTimeConstants.MONDAY)).toDate();
                 }
-
-                calendar.add(Calendar.DAY_OF_WEEK, -7);
-                weekStart = calendar.getTime();
 
                 return new WeekData(
                         new SimpleDateFormat(dateFormat).format(weekStart),
@@ -69,6 +52,14 @@ public class StatisticsService {
                 ).id(i);
             })
             .collect(Collectors.toList());
+    }
+
+    private static DateTime truncateDate(DateTime dateTime){
+        return dateTime
+                .withHourOfDay(0)
+                .withMinuteOfHour(0)
+                .withSecondOfMinute(0)
+                .withMillisOfSecond(0);
     }
 
 }

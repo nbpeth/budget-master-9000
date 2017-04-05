@@ -23,7 +23,7 @@ class ExpenseTable extends React.Component {
         var expenses = store.getState().expenses;
 
         if(expenses.length > 0){
-            var n=0;
+            var n=1;
             expenses.forEach((expense) => {
                 rows.push(<Expense expense={expense} key={n++}/>);
             });
