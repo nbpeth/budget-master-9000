@@ -18,7 +18,4 @@ public interface ExpenseRepository extends PagingAndSortingRepository<Expense, I
     @Query("SELECT expense FROM Expense expense order by expenseDate desc")
     Page<Expense> findAllOrderByDate(Pageable pageable);
 
-//    @Query("SELECT sum(expense.cost) as cost, DATE_ADD(expense.expenseDate, INTERVAL(2-DAYOFWEEK(expense.expenseDate)) DAY), DATE_ADD(expense.expenseDate, INTERVAL(8-DAYOFWEEK(expense.expenseDate)) DAY) as week_end from Expense expense")
-
-
 }

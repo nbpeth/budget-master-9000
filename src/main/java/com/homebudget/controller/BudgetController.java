@@ -27,7 +27,6 @@ public class BudgetController {
     @PostMapping("/expenses")
     public ResponseEntity<Expense> submitExpense(@RequestBody Expense expense) throws BadHttpRequest {
         expenseService.saveExpense(expense);
-
         return new ResponseEntity<>(expense, HttpStatus.CREATED);
     }
 

@@ -2,7 +2,7 @@ package com.homebudget.domain;
 
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import org.hibernate.annotations.NamedQuery;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -18,12 +18,11 @@ public class Expense {
     String location;
     String expenseType;
     String description;
+
     @JsonFormat(pattern = "MM/dd/yyyy")
     Date expenseDate;
 
-    public Expense(){
-
-    }
+    public Expense(){}
 
     public Expense(Date expenseDate, String location, String expenseType, String description, Double cost){
         this.cost = cost;

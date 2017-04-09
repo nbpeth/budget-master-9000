@@ -26461,7 +26461,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var getExpenses = exports.getExpenses = function getExpenses() {
     return $.ajax({
-        url: "http://localhost:8080/expenses?page=1&size=10",
+        url: "http://localhost:8080/expenses",
         async: false
     }).responseText;
 };

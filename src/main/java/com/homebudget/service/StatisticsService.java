@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Date;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
@@ -27,28 +28,28 @@ public class StatisticsService {
     }
 
     private Double weekExpenses() {
-        return expenseRepository.weekly(new LocalDate().withDayOfWeek(DateTimeConstants.MONDAY).toDate(), new Date());
+        java.sql.Date sqlDate = new java.sql.Date(new LocalDate().withDayOfWeek(DateTimeConstants.MONDAY).toDate().getTime());
+        return expenseRepository.weekly(sqlDate, new java.sql.Date(new Date().getTime()));
     }
 
     private List<WeekData> weeklyRollUp() {
-        final String dateFormat = "MM-dd-yyyy:hh:mm:ss";
+        final String dateFormat = "MM-dd-yyyy";
 
         return IntStream.range(0, 4)
             .mapToObj(i -> {
                 DateTime dateTime = new DateTime();
-                Date weekEnd = truncateDate(dateTime.withDayOfWeek(DateTimeConstants.SUNDAY).plusDays(1).minusDays(7 * i)).minusMillis(1).toDate();
                 Date weekStart = truncateDate(dateTime.withDayOfWeek(DateTimeConstants.MONDAY).minusDays(7 * i)).toDate();
+                Date weekEnd = truncateDate(dateTime.withDayOfWeek(DateTimeConstants.SUNDAY).plusDays(1).minusDays(7 * i)).minusMillis(1).toDate();
 
                 if (i == 0) {
-                    int currentDay = dateTime.getDayOfWeek();
-                    weekEnd = truncateDate(dateTime.minusDays(currentDay > 1 ? currentDay - 1 : 0)).minusMillis(1).toDate();
+                    weekEnd = new Date();
                     weekStart = truncateDate(dateTime.withDayOfWeek(DateTimeConstants.MONDAY)).toDate();
                 }
 
                 return new WeekData(
                         new SimpleDateFormat(dateFormat).format(weekStart),
                         new SimpleDateFormat(dateFormat).format(weekEnd),
-                        expenseRepository.weekly(weekStart, weekEnd)
+                        expenseRepository.weekly(new java.sql.Date(weekStart.getTime()), new java.sql.Date(weekEnd.getTime()))
                 ).id(i);
             })
             .collect(Collectors.toList());

@@ -32,6 +32,7 @@ public class Config {
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
+
         sessionFactoryBean.setDataSource(dataSource());
         Properties hibernateProperties = new Properties();
         hibernateProperties.put("spring.jpa.database-platform", "org.hibernate.dialect.MySQL5Dialect");
