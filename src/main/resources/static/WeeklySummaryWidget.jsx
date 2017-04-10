@@ -43,13 +43,14 @@ class WeeklySummaryWidget extends React.Component {
         var weeklyRows = [];
         
         if(stats && stats.weekExpenses){
-            weekExpenses = stats.weekExpenses;
-            expenseRemainder = weeklyLimit - parseFloat(weekExpenses);
+            weekExpenses = stats.weekExpenses.toFixed(2);
+            expenseRemainder = weeklyLimit - parseFloat(weekExpenses).toFixed(2);
         }
         if(stats && stats.weeklyRollup){
             weeklyRollup = stats.weeklyRollup;
 
             weeklyRollup.filter((week) => week.sum).forEach((week) => {
+                const sum = week.sum.toFixed(2);
                 weeklyRows.push(
                     <tr key={week.weekStart}>
                         <td>
@@ -59,7 +60,7 @@ class WeeklySummaryWidget extends React.Component {
                             {week.weekEnd}
                         </td>
                         <td className={this.determineCellColor(this.isUnderBudget(week.sum, weeklyLimit))}>
-                           ${week.sum}
+                           ${sum}
                         </td>
                     </tr>);
                 })

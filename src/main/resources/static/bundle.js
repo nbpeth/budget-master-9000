@@ -26326,8 +26326,8 @@ var WeeklySummaryWidget = function (_React$Component) {
             var weeklyRows = [];
 
             if (stats && stats.weekExpenses) {
-                weekExpenses = stats.weekExpenses;
-                expenseRemainder = weeklyLimit - parseFloat(weekExpenses);
+                weekExpenses = stats.weekExpenses.toFixed(2);
+                expenseRemainder = weeklyLimit - parseFloat(weekExpenses).toFixed(2);
             }
             if (stats && stats.weeklyRollup) {
                 weeklyRollup = stats.weeklyRollup;
@@ -26335,6 +26335,7 @@ var WeeklySummaryWidget = function (_React$Component) {
                 weeklyRollup.filter(function (week) {
                     return week.sum;
                 }).forEach(function (week) {
+                    var sum = week.sum.toFixed(2);
                     weeklyRows.push(_react2.default.createElement(
                         'tr',
                         { key: week.weekStart },
@@ -26352,7 +26353,7 @@ var WeeklySummaryWidget = function (_React$Component) {
                             'td',
                             { className: _this3.determineCellColor(_this3.isUnderBudget(week.sum, weeklyLimit)) },
                             '$',
-                            week.sum
+                            sum
                         )
                     ));
                 });

@@ -19,7 +19,7 @@ public class Expense {
     String expenseType;
     String description;
 
-    @JsonFormat(pattern = "MM/dd/yyyy")
+    @JsonFormat(pattern = "MM/dd/yyyy", timezone = "CST")
     Date expenseDate;
 
     public Expense(){}
