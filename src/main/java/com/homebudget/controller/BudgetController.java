@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = {"http://10.0.1.5","http://10.0.1.9","http://10.0.1.5:8080","http://10.0.1.9:8080"})
+//@CrossOrigin(origins = {"http://10.0.1.5","http://10.0.1.9","http://10.0.1.5:8080","http://10.0.1.9:8080"})
 public class BudgetController {
     @Autowired
     ExpenseService expenseService;
