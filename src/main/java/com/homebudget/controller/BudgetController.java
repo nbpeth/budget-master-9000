@@ -19,7 +19,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@CrossOrigin
+@CrossOrigin(origins = "http://10.0.1.9", maxAge = 3600)
 public class BudgetController {
     @Autowired
     ExpenseService expenseService;

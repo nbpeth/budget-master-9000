@@ -26456,7 +26456,7 @@ var WeeklySummaryWidget = function (_React$Component) {
                             ),
                             _react2.default.createElement(
                                 'td',
-                                null,
+                                { className: 'bg-primary' },
                                 'Graph'
                             )
                         ),
@@ -26484,6 +26484,9 @@ Object.defineProperty(exports, "__esModule", {
 });
 var getExpenses = exports.getExpenses = function getExpenses() {
     return $.ajax({
+        headers: {
+            origin: "http://10.0.1.9"
+        },
         url: "http://localhost:8080/expenses",
         async: false
     }).responseText;
@@ -26491,6 +26494,9 @@ var getExpenses = exports.getExpenses = function getExpenses() {
 
 var getStats = exports.getStats = function getStats() {
     return $.ajax({
+        headers: {
+            origin: "http://10.0.1.9"
+        },
         url: "http://localhost:8080/expenses/stats",
         async: false
     }).responseText;
@@ -26500,6 +26506,9 @@ var submitExpense = exports.submitExpense = function submitExpense(data) {
     console.log("service", data);
 
     $.ajax({
+        headers: {
+            origin: "http://10.0.1.9"
+        },
         url: "http://localhost:8080/expenses",
         type: 'POST',
         async: false,
@@ -26511,6 +26520,9 @@ var submitExpense = exports.submitExpense = function submitExpense(data) {
 
 var deleteExpense = exports.deleteExpense = function deleteExpense(id) {
     $.ajax({
+        headers: {
+            origin: "http://10.0.1.9"
+        },
         url: "http://localhost:8080/expenses/" + id,
         type: 'DELETE',
         async: false
