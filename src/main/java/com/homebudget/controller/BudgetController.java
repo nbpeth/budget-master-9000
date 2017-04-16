@@ -20,7 +20,7 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-@CrossOrigin(origins = "http://10.0.1.5")
+@CrossOrigin(origins = {"http://10.0.1.5","http://10.0.1.9","http://10.0.1.5:8080","http://10.0.1.9:8080"})
 public class BudgetController {
     @Autowired
     ExpenseService expenseService;
@@ -28,50 +28,29 @@ public class BudgetController {
     StatisticsService statisticsService;
 
     @PostMapping("/expenses")
-    public ResponseEntity<Expense> submitExpense(@RequestBody Expense expense, HttpServletResponse response) throws BadHttpRequest {
+    public ResponseEntity<Expense> submitExpense(@RequestBody Expense expense) throws BadHttpRequest {
         expenseService.saveExpense(expense);
-        response.addHeader("Access-Control-Allow-Origin", "http://10.0.1.5");
-        response.addHeader("Access-Control-Allow-Origin", "http://10.0.1.9");
-        response.addHeader("Access-Control-Allow-Origin", "http://10.0.1.5:8080");
-        response.addHeader("Access-Control-Allow-Origin", "http://10.0.1.5:8080");
         return new ResponseEntity<>(expense, HttpStatus.CREATED);
     }
 
     @GetMapping("/expenses/stats")
-    public ResponseEntity<Statistics> getStats(HttpServletRequest servletRequest, HttpServletResponse response){
+    public ResponseEntity<Statistics> getStats(HttpServletRequest servletRequest){
         System.out.println(servletRequest.getHeader("origin"));
-        response.addHeader("Access-Control-Allow-Origin", "http://10.0.1.5");
-        response.addHeader("Access-Control-Allow-Origin", "http://10.0.1.9");
-        response.addHeader("Access-Control-Allow-Origin", "http://10.0.1.5:8080");
-        response.addHeader("Access-Control-Allow-Origin", "http://10.0.1.5:8080");
-
         return new ResponseEntity<>(statisticsService.getStats(), HttpStatus.OK);
     }
 
     @GetMapping("/expenses")
-    public ResponseEntity<Page<Expense>> getAllExpenses(Pageable pageable, HttpServletResponse response){
-        response.addHeader("Access-Control-Allow-Origin", "http://10.0.1.5");
-        response.addHeader("Access-Control-Allow-Origin", "http://10.0.1.9");
-        response.addHeader("Access-Control-Allow-Origin", "http://10.0.1.5:8080");
-        response.addHeader("Access-Control-Allow-Origin", "http://10.0.1.5:8080");
+    public ResponseEntity<Page<Expense>> getAllExpenses(Pageable pageable){
         return new ResponseEntity<>(expenseService.getAllExpenses(pageable), HttpStatus.OK);
     }
 
     @GetMapping("/expenses/{id}")
-    public ResponseEntity<Expense> getById(@PathVariable Integer id, HttpServletResponse response){
-        response.addHeader("Access-Control-Allow-Origin", "http://10.0.1.5");
-        response.addHeader("Access-Control-Allow-Origin", "http://10.0.1.9");
-        response.addHeader("Access-Control-Allow-Origin", "http://10.0.1.5:8080");
-        response.addHeader("Access-Control-Allow-Origin", "http://10.0.1.5:8080");
+    public ResponseEntity<Expense> getById(@PathVariable Integer id){
         return new ResponseEntity<>(expenseService.getById(id), HttpStatus.OK);
     }
 
     @DeleteMapping("/expenses/{id}")
-    public void deleteById(@PathVariable Integer id, HttpServletResponse response){
-        response.addHeader("Access-Control-Allow-Origin", "http://10.0.1.5");
-        response.addHeader("Access-Control-Allow-Origin", "http://10.0.1.9");
-        response.addHeader("Access-Control-Allow-Origin", "http://10.0.1.5:8080");
-        response.addHeader("Access-Control-Allow-Origin", "http://10.0.1.5:8080");
+    public void deleteById(@PathVariable Integer id){
         expenseService.deleteExpenseBy(id);
     }
 
