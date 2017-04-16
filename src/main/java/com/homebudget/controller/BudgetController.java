@@ -13,11 +13,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.websocket.server.PathParam;
 import java.util.Date;
 import java.util.List;
 
-@RestController()
+@RestController
+@CrossOrigin
 public class BudgetController {
     @Autowired
     ExpenseService expenseService;
@@ -31,7 +33,8 @@ public class BudgetController {
     }
 
     @GetMapping("/expenses/stats")
-    public ResponseEntity<Statistics> getStats(){
+    public ResponseEntity<Statistics> getStats(HttpServletRequest servletRequest){
+        System.out.println(servletRequest.getHeader("origin"));
         return new ResponseEntity<>(statisticsService.getStats(), HttpStatus.OK);
     }
 

@@ -47,6 +47,7 @@ class Body extends React.Component{
                         <div className="row">
                             <div className="col-md-3">
                                 <WeeklySummaryWidget id="weekly" />
+                                
                             </div>
                             <div className="col-md-8">
                                 <ExpenseTable id="table" />
