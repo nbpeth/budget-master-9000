@@ -20,7 +20,6 @@ import java.util.Date;
 import java.util.List;
 
 @RestController
-//@CrossOrigin(origins = {"http://10.0.1.5","http://10.0.1.9","http://10.0.1.5:8080","http://10.0.1.9:8080"})
 public class BudgetController {
     @Autowired
     ExpenseService expenseService;
@@ -35,7 +34,6 @@ public class BudgetController {
 
     @GetMapping("/expenses/stats")
     public ResponseEntity<Statistics> getStats(HttpServletRequest servletRequest){
-        System.out.println(servletRequest.getHeader("origin"));
         return new ResponseEntity<>(statisticsService.getStats(), HttpStatus.OK);
     }
 
