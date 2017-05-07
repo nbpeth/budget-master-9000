@@ -1,6 +1,7 @@
 package com.homebudget;
 
 import com.homebudget.service.ExpenseService;
+import com.homebudget.service.RecurringExpenseService;
 import com.homebudget.service.StatisticsService;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
@@ -43,7 +44,7 @@ public class Config {
         Properties hibernateProperties = new Properties();
         hibernateProperties.put("spring.jpa.database-platform", "org.hibernate.dialect.MySQL5Dialect");
         hibernateProperties.put("spring.jpa.show-sql", "true");
-        hibernateProperties.put("spring.jpa.hibernate.ddl-auto", "create");
+        hibernateProperties.put("spring.jpa.hibernate.ddl-auto", "update");
         sessionFactoryBean.setHibernateProperties(hibernateProperties);
 
         return sessionFactoryBean;
@@ -52,6 +53,11 @@ public class Config {
     @Bean
     public ExpenseService expenseService(){
         return new ExpenseService();
+    }
+
+    @Bean
+    public RecurringExpenseService recurringExpenseService(){
+        return new RecurringExpenseService();
     }
 
     @Bean

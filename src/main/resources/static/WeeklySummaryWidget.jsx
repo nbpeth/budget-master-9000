@@ -1,9 +1,7 @@
 import React from 'react';
 import store from './expensesStore.js';
 import { loadStatsAction } from './actions.js';
-import PieChart from 'react-simple-pie-chart';
-
-
+import PieChart from 'react-minimal-pie-chart';
 
 class WeeklySummaryWidget extends React.Component {
     constructor(props){
@@ -43,11 +41,26 @@ class WeeklySummaryWidget extends React.Component {
         var weeklyRollup;
         var expenseRemainder = 0;
         var weeklyRows = [];
+        var pie;
+        var pieSlices = [];
         
         if(stats && stats.weekExpenses){
             weekExpenses = stats.weekExpenses.toFixed(2);
             expenseRemainder = weeklyLimit - parseFloat(weekExpenses).toFixed(2);
         }
+
+        if(stats && stats.pie){
+
+            pie = stats.pie;
+   
+            pie.forEach((slice => {
+                console.log(slice);
+                pieSlices.push({label:slice.label, value:slice.value, color: slice.color});
+                
+            }));
+            
+        }
+
         if(stats && stats.weeklyRollup){
             weeklyRollup = stats.weeklyRollup;
 
@@ -64,20 +77,7 @@ class WeeklySummaryWidget extends React.Component {
                         <td className={this.determineCellColor(this.isUnderBudget(week.sum, weeklyLimit))}>
                            ${sum}
                         </td>
-                        <td>
-                            <PieChart
-                                    slices={[
-                                        {
-                                        color: '#f00',
-                                        value: 10,
-                                        },
-                                        {
-                                        color: '#0f0',
-                                        value: 20,
-                                        },
-                                    ]}
-                                />
-                        </td>
+                        
                     </tr>);
                 })
         }
@@ -107,15 +107,21 @@ class WeeklySummaryWidget extends React.Component {
                                 Remaining
                             </td>
                             <td className={this.determineCellColor(this.isAboveOrEqualToZero(expenseRemainder))}>
-                                ${expenseRemainder}
+                                ${expenseRemainder ? expenseRemainder.toFixed(2) : null}
                             </td>
                         </tr>
                         
                     </tbody>
                 </table>
+
+                <div className="bg-info">
+                    
+                <PieChart data={pieSlices}/>
+                </div>
+                <p/>
                 <table className="table table-striped table-bordered table-hover table-inverse" id="weeklyRollupTable">
                     <tbody>
-                        <tr><td className="bg-primary">Start</td><td className="bg-primary">Stop</td><td className="bg-primary">Total</td><td className="bg-primary">Graph</td></tr>
+                        <tr><td className="bg-primary">Start</td><td className="bg-primary">Stop</td><td className="bg-primary">Total</td></tr>
                         { weeklyRows ? weeklyRows : null }
                     </tbody>
                 </table>
@@ -123,5 +129,6 @@ class WeeklySummaryWidget extends React.Component {
         );
     }
 }
+
 
 export default WeeklySummaryWidget;
