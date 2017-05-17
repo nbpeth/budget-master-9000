@@ -13,7 +13,6 @@ export const getStats = () => {
 };
 
 export const submitExpense = (data) => {
-    console.log("service", data);
 
     $.ajax({
         url: "http://localhost:8080/expenses",

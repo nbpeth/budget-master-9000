@@ -70,7 +70,8 @@ class CreateExpenseForm extends React.Component {
 								<option>Miscellaneous</option>
 
 		    				</select><br/>
-							<DatePicker selected={this.state.startDate} onChange={this.handleDateChange.bind(this)} id="datepicker"/><p/>
+							{/*<input type="date" className="form-control" id="datepicker" />*/}
+							<DatePicker selected={this.state.startDate} className="form-control" onChange={this.handleDateChange.bind(this)} id="datepicker"/><p/>
 			  				<input type="text" className="form-control" id="description" placeholder="Description"/><p/>
 
 		    				<button type="button" className="btn btn-primary" onClick={ () => this.createExpense(getFormData())} >Submit</button>

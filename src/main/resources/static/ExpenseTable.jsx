@@ -11,9 +11,7 @@ class ExpenseTable extends React.Component {
     componentDidMount(){
         store.subscribe(() => {
             var state = store.getState();
-            this.setState({
-                expenses:state.expenses
-            });
+            //probaby misusing this, checking state on render - probably should move up here
         });
         store.dispatch(loadDataAction());
     }

@@ -3,7 +3,10 @@ import expenseManagerApp from './reducers.js';
 
 var defaultState = {
     expenses: [],
-    showForm: false
+    recurringExpenses: [],
+    showForm: false,
+    display: 'expenseReport',
+    enableRecurringExpenseEditing: [],
 };
 
 export default createStore(expenseManagerApp, defaultState);

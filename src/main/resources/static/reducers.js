@@ -1,11 +1,11 @@
 import { getExpenses, getStats, deleteExpense, submitExpense } from './expenseService.js';
+import { getRecurringExpenses, deleteRecurrungExpense, submitRecurringExpense, deleteRecurringExpense, updateRecurringExpense } from './recurringExpenseService.js';
 
 function expenseManagerApp(state, action) {
     var newState = Object.assign({}, state);
 
     switch (action.type) {
         //make service calls async
-
         case 'LOAD_DATA':
             var expenses = parseJson(getExpenses());
 
@@ -44,13 +44,61 @@ function expenseManagerApp(state, action) {
 
             return newState;
 
+        case 'NAV_EXPENSE_REPORT':
+            newState.display = 'expenseReport';
+            return newState;
+
+            //recurring expenses
+        case 'UPDATE_RECURRING_EXPENSE':
+            var json = JSON.stringify(action.data);
+            var id = action.data.id;
+            updateRecurringExpense(json, id);
+
+            newState.recurringExpenses = JSON.parse(getRecurringExpenses());
+
+            return newState;
+
+        case 'LOAD_RECURRING_EXPENSE':
+            newState.recurringExpenses = JSON.parse(getRecurringExpenses());
+
+            return newState;
+
+        case 'DELETE_RECURRING_EXPENSE':
+            deleteRecurringExpense(action.data);
+
+            newState.recurringExpenses = JSON.parse(getRecurringExpenses());
+
+            return newState;
+
+        case 'CREATE_RECURRING_EXPENSE':
+            var json = JSON.stringify({ name: "", cost: 0, description: "", span: "monthly" });
+            submitRecurringExpense(json);
+
+            newState.recurringExpenses = JSON.parse(getRecurringExpenses());
+
+            return newState;
+
+        case 'NAV_RECURRING_EXPENSE_REPORT':
+            newState.display = 'recurringExpenseReport';
+            return newState;
+
+        case 'ENABLE_RECURRING_EXPENSE_EDITING':
+            newState.enableRecurringExpenseEditing.push(action.data);
+            return newState;
+
+
+        case 'DISABLE_RECURRING_EXPENSE_EDITING':
+            var index = newState.enableRecurringExpenseEditing.indexOf(action.data);
+            newState.enableRecurringExpenseEditing.splice(index, 1);
+            return newState;
+
         default:
             return state;
     }
-};
+}
 
 const parseJson = (data) => {
     return JSON.parse(data).content;
-}
+};
 
 export default expenseManagerApp;

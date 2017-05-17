@@ -15,9 +15,6 @@ class WeeklySummaryWidget extends React.Component {
     componentDidMount() {
         store.subscribe(() => {
             var state = store.getState();
-            this.setState({
-                stats:state.stats
-            });
         });
     }
 
@@ -30,7 +27,6 @@ class WeeklySummaryWidget extends React.Component {
     }
 
     isAboveOrEqualToZero(value){
-        console.log(value, value && value >= 0, value >= 0);
         return value && value >= 0;
     }
 
@@ -52,12 +48,10 @@ class WeeklySummaryWidget extends React.Component {
         if(stats && stats.pie){
 
             pie = stats.pie;
-   
-            pie.forEach((slice => {
-                console.log(slice);
+            pie.forEach((slice) => {
                 pieSlices.push({label:slice.label, value:slice.value, color: slice.color});
                 
-            }));
+            });
             
         }
 
