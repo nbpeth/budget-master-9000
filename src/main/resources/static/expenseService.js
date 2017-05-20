@@ -5,6 +5,13 @@ export const getExpenses = () => {
     }).responseText;
 };
 
+export const getExpensesPaged = (page) => {
+    return $.ajax({
+        url: "http://localhost:8080/expenses?page=" + page + "&size=15",
+        async: false
+    }).responseText;
+};
+
 export const getStats = () => {
     return $.ajax({
         url: "http://localhost:8080/expenses/stats",

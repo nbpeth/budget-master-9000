@@ -34,7 +34,7 @@ class Expense extends React.Component {
                 <td>{this.props.expense.expenseType}</td>
                 <td>{this.props.expense.expenseDate}</td>
                 
-                <td>
+                <td className="text-right">
                     <button className={buttonClass} onClick={ () => { this.handleClick(this.props.expense.id)} }>{ buttonLanguage }</button>
                 </td>
 

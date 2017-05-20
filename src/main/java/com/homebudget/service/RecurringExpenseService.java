@@ -10,7 +10,7 @@ public class RecurringExpenseService {
     private RecurringExpenseRepository recurringExpenseRepository;
 
     public Iterable<RecurringExpense> getRecurringExpenses(){
-        return recurringExpenseRepository.findAll();
+        return recurringExpenseRepository.findAllSortDesc();
     }
 
     public RecurringExpense getRecurringExpenseById(Integer id){

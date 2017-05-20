@@ -1,4 +1,4 @@
-import { getExpenses, getStats, deleteExpense, submitExpense } from './expenseService.js';
+import { getExpenses, getExpensesPaged, getStats, deleteExpense, submitExpense } from './expenseService.js';
 import { getRecurringExpenses, deleteRecurrungExpense, submitRecurringExpense, deleteRecurringExpense, updateRecurringExpense } from './recurringExpenseService.js';
 
 function expenseManagerApp(state, action) {
@@ -7,7 +7,12 @@ function expenseManagerApp(state, action) {
     switch (action.type) {
         //make service calls async
         case 'LOAD_DATA':
-            var expenses = parseJson(getExpenses());
+            // var expenses = parseJson(getExpenses());
+            var page = action.data;
+            // newState.expenses = expenses;
+
+            // return newState;
+            var expenses = JSON.parse(getExpensesPaged(page));
 
             newState.expenses = expenses;
 

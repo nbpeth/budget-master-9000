@@ -6499,89 +6499,90 @@ exports.navRecurringExpenseReport = navRecurringExpenseReport;
 exports.enableRecurringExpenseEditingAction = enableRecurringExpenseEditingAction;
 exports.disableRecurringExpenseEditingAction = disableRecurringExpenseEditingAction;
 exports.updateRecurringExpenseAction = updateRecurringExpenseAction;
-function loadDataAction() {
+function loadDataAction(page) {
     return {
-        type: "LOAD_DATA"
+        type: "LOAD_DATA",
+        data: page
     };
-};
+}
 
 function loadStatsAction() {
     return {
         type: "LOAD_STATS"
     };
-};
+}
 
 function createExpenseAction(data) {
     return {
         type: "CREATE_EXPENSE",
         data: data
     };
-};
+}
 
 function loadRecurringExpenseAction() {
     return {
         type: "LOAD_RECURRING_EXPENSE"
     };
-};
+}
 
 function deleteExpenseAction(id) {
     return {
         type: "DELETE_EXPENSE",
         id: id
     };
-};
+}
 
 function createRecurringExpenseAction() {
     return {
         type: "CREATE_RECURRING_EXPENSE"
     };
-};
+}
 
 function deleteRecurringExpenseAction(id) {
     return {
         type: "DELETE_RECURRING_EXPENSE",
         data: id
     };
-};
+}
 
 function toggleForm() {
     return {
         type: "TOGGLE_FORM"
     };
-};
+}
 
 function navExpenseReport() {
     return {
         type: "NAV_EXPENSE_REPORT"
     };
-};
+}
 
 function navRecurringExpenseReport() {
     return {
         type: "NAV_RECURRING_EXPENSE_REPORT"
     };
-};
+}
 
 function enableRecurringExpenseEditingAction(id) {
     return {
         data: id,
         type: "ENABLE_RECURRING_EXPENSE_EDITING"
     };
-};
+}
 
 function disableRecurringExpenseEditingAction(id) {
     return {
         data: id,
         type: "DISABLE_RECURRING_EXPENSE_EDITING"
     };
-};
+}
 
 function updateRecurringExpenseAction(data) {
     return {
         data: data,
         type: "UPDATE_RECURRING_EXPENSE"
     };
-};
+}
 
 /***/ }),
 /* 18 */
@@ -11301,7 +11302,12 @@ function expenseManagerApp(state, action) {
     switch (action.type) {
         //make service calls async
         case 'LOAD_DATA':
-            var expenses = parseJson((0, _expenseService.getExpenses)());
+            // var expenses = parseJson(getExpenses());
+            var page = action.data;
+            // newState.expenses = expenses;
+
+            // return newState;
+            var expenses = JSON.parse((0, _expenseService.getExpensesPaged)(page));
 
             newState.expenses = expenses;
 
@@ -26636,7 +26642,7 @@ var Expense = function (_React$Component) {
                 ),
                 _react2.default.createElement(
                     'td',
-                    null,
+                    { className: 'text-right' },
                     _react2.default.createElement(
                         'button',
                         { className: buttonClass, onClick: function onClick() {
@@ -26866,76 +26872,172 @@ var ExpenseTable = function (_React$Component) {
         key: 'render',
         value: function render() {
             var rows = [];
-            var expenses = _expensesStore2.default.getState().expenses;
+            var expenses = _expensesStore2.default.getState().expenses.content;
 
-            if (expenses.length > 0) {
+            if (expenses && expenses.length > 0) {
                 var n = 1;
                 expenses.forEach(function (expense) {
                     rows.push(_react2.default.createElement(_Expense2.default, { expense: expense, key: n++ }));
                 });
             }
             return _react2.default.createElement(
-                'table',
-                { className: 'table table-striped table-hoverable table-inverted', id: 'expenseTable' },
+                'div',
+                null,
+                _react2.default.createElement(Pagination, null),
                 _react2.default.createElement(
-                    'thead',
-                    { className: 'bg-info' },
+                    'table',
+                    { className: 'table table-striped table-bordered table-hover', id: 'expenseTable' },
                     _react2.default.createElement(
-                        'tr',
-                        { className: '.table-hover' },
+                        'thead',
+                        { className: 'bg-info' },
                         _react2.default.createElement(
-                            'td',
+                            'tr',
                             null,
                             _react2.default.createElement(
-                                'h3',
+                                'td',
                                 null,
-                                'Location'
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'td',
-                            null,
+                                _react2.default.createElement(
+                                    'h3',
+                                    null,
+                                    'Location'
+                                )
+                            ),
                             _react2.default.createElement(
-                                'h3',
+                                'td',
                                 null,
-                                'Cost'
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'td',
-                            null,
+                                _react2.default.createElement(
+                                    'h3',
+                                    null,
+                                    'Cost'
+                                )
+                            ),
                             _react2.default.createElement(
-                                'h3',
+                                'td',
                                 null,
-                                'Type'
-                            )
-                        ),
-                        _react2.default.createElement(
-                            'td',
-                            null,
+                                _react2.default.createElement(
+                                    'h3',
+                                    null,
+                                    'Type'
+                                )
+                            ),
                             _react2.default.createElement(
-                                'h3',
+                                'td',
                                 null,
-                                'Date'
+                                _react2.default.createElement(
+                                    'h3',
+                                    null,
+                                    'Date'
+                                )
+                            ),
+                            _react2.default.createElement(
+                                'td',
+                                null,
+                                _react2.default.createElement('h3', null)
                             )
-                        ),
-                        _react2.default.createElement(
-                            'td',
-                            null,
-                            _react2.default.createElement('h3', null)
                         )
+                    ),
+                    _react2.default.createElement(
+                        'tbody',
+                        null,
+                        rows
                     )
                 ),
-                _react2.default.createElement(
-                    'tbody',
-                    null,
-                    rows
-                )
+                _react2.default.createElement(Pagination, null)
             );
         }
     }]);
 
     return ExpenseTable;
+}(_react2.default.Component);
+
+;
+
+var Pagination = function (_React$Component2) {
+    _inherits(Pagination, _React$Component2);
+
+    function Pagination(props) {
+        _classCallCheck(this, Pagination);
+
+        return _possibleConstructorReturn(this, (Pagination.__proto__ || Object.getPrototypeOf(Pagination)).call(this, props));
+    }
+
+    _createClass(Pagination, [{
+        key: 'componentDidMount',
+        value: function componentDidMount() {
+            _expensesStore2.default.subscribe(function () {
+                var state = _expensesStore2.default.getState();
+            });
+        }
+    }, {
+        key: 'change',
+        value: function change(page) {
+            _expensesStore2.default.dispatch((0, _actions.loadDataAction)(page));
+        }
+    }, {
+        key: 'render',
+        value: function render() {
+            var _this3 = this;
+
+            var expenses = _expensesStore2.default.getState().expenses;
+            var currentPage = expenses.number;
+            var lastPage = expenses.totalPages;
+            var previousButton = null;
+            var nextButton = null;
+
+            if (currentPage > 0) {
+                previousButton = _react2.default.createElement(
+                    'button',
+                    { className: 'btn-link', onClick: function onClick() {
+                            _this3.change(currentPage - 1);
+                        } },
+                    'Previous'
+                );
+            }
+
+            if (currentPage < lastPage) {
+                nextButton = _react2.default.createElement(
+                    'button',
+                    { className: 'btn-link', onClick: function onClick() {
+                            _this3.change(currentPage + 1);
+                        } },
+                    'Next'
+                );
+            }
+
+            return _react2.default.createElement(
+                'table',
+                { className: 'table', id: 'pagination' },
+                _react2.default.createElement(
+                    'thead',
+                    { className: 'bg-info' },
+                    _react2.default.createElement(
+                        'tr',
+                        null,
+                        _react2.default.createElement(
+                            'td',
+                            null,
+                            _react2.default.createElement(
+                                'div',
+                                { className: 'row' },
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'col-md-6 text' },
+                                    previousButton
+                                ),
+                                _react2.default.createElement(
+                                    'div',
+                                    { className: 'col-md-6 text-right' },
+                                    nextButton
+                                )
+                            )
+                        )
+                    )
+                )
+            );
+        }
+    }]);
+
+    return Pagination;
 }(_react2.default.Component);
 
 ;
@@ -27032,22 +27134,24 @@ var RecurringExpenseTable = function (_React$Component2) {
         value: function render() {
             var rows = [];
             var recurringExpenses = _expensesStore2.default.getState().recurringExpenses;
+            var sumExpenses = 0;
 
             if (recurringExpenses && recurringExpenses.length > 0) {
                 var n = 1;
                 recurringExpenses.forEach(function (recurringExpense) {
                     rows.push(_react2.default.createElement(RecurringExpense, { recurringExpense: recurringExpense, key: n++ }));
+                    sumExpenses += recurringExpense.cost;
                 });
             }
             return _react2.default.createElement(
                 'table',
-                { className: 'table table-striped table-hoverable table-inverted', id: 'recurringExpenseTable' },
+                { className: 'table table-striped table-hover', id: 'recurringExpenseTable' },
                 _react2.default.createElement(
                     'thead',
                     { className: 'bg-info' },
                     _react2.default.createElement(
                         'tr',
-                        { className: '.table-hover' },
+                        null,
                         _react2.default.createElement(
                             'td',
                             null,
@@ -27093,6 +27197,24 @@ var RecurringExpenseTable = function (_React$Component2) {
                                 'Action'
                             )
                         )
+                    ),
+                    _react2.default.createElement(
+                        'tr',
+                        null,
+                        _react2.default.createElement('td', null),
+                        _react2.default.createElement(
+                            'td',
+                            { className: 'bg-danger text-center' },
+                            _react2.default.createElement(
+                                'h4',
+                                null,
+                                '$',
+                                sumExpenses
+                            )
+                        ),
+                        _react2.default.createElement('td', null),
+                        _react2.default.createElement('td', null),
+                        _react2.default.createElement('td', null)
                     )
                 ),
                 rows
@@ -27164,7 +27286,7 @@ var RecurringExpenseCells = function (_React$Component4) {
                 ),
                 _react2.default.createElement(
                     'td',
-                    null,
+                    { className: 'bg-warning text-center' },
                     '$',
                     this.props.recurringExpense.cost
                 ),
@@ -27414,7 +27536,7 @@ var TitleBar = function (_React$Component) {
                     _react2.default.createElement('p', null),
                     _react2.default.createElement(
                         'nav',
-                        { className: 'navbar navbar-default navbar-fixed-top' },
+                        { className: 'navbar navbar-default navbar-fixed-top bg-active' },
                         _react2.default.createElement(
                             'div',
                             { className: 'container-fluid' },
@@ -27684,6 +27806,13 @@ Object.defineProperty(exports, "__esModule", {
 var getExpenses = exports.getExpenses = function getExpenses() {
     return $.ajax({
         url: "http://localhost:8080/expenses",
+        async: false
+    }).responseText;
+};
+
+var getExpensesPaged = exports.getExpensesPaged = function getExpensesPaged(page) {
+    return $.ajax({
+        url: "http://localhost:8080/expenses?page=" + page + "&size=15",
         async: false
     }).responseText;
 };
