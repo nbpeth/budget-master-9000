@@ -27876,9 +27876,11 @@ var deleteExpense = exports.deleteExpense = function deleteExpense(id) {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+var rootUri = 'http://budgetmaster9000.herokuapp.com/expenses';
+
 var getRecurringExpenses = exports.getRecurringExpenses = function getRecurringExpenses() {
     return $.ajax({
-        url: "http://localhost:8080/expenses/recurring",
+        url: rootUri + "/recurring",
         async: false
     }).responseText;
 };
@@ -27886,7 +27888,7 @@ var getRecurringExpenses = exports.getRecurringExpenses = function getRecurringE
 var submitRecurringExpense = exports.submitRecurringExpense = function submitRecurringExpense(data) {
 
     $.ajax({
-        url: "http://localhost:8080/expenses/recurring",
+        url: rootUri + "/recurring",
         type: 'POST',
         async: false,
         data: data,
@@ -27897,7 +27899,7 @@ var submitRecurringExpense = exports.submitRecurringExpense = function submitRec
 
 var deleteRecurringExpense = exports.deleteRecurringExpense = function deleteRecurringExpense(id) {
     $.ajax({
-        url: "http://localhost:8080/expenses/recurring/" + id,
+        url: rootUri + "/recurring/" + id,
         type: 'DELETE',
         async: false
     });
@@ -27905,7 +27907,7 @@ var deleteRecurringExpense = exports.deleteRecurringExpense = function deleteRec
 
 var updateRecurringExpense = exports.updateRecurringExpense = function updateRecurringExpense(data, id) {
     $.ajax({
-        url: "http://localhost:8080/expenses/recurring/" + id,
+        url: rootUri + "/recurring/" + id,
         type: 'PATCH',
         async: false,
         data: data,
