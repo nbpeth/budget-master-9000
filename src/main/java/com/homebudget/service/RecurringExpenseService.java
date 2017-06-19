@@ -15,6 +15,7 @@ public class RecurringExpenseService {
 
     public RecurringExpense getRecurringExpenseById(Integer id){
         return recurringExpenseRepository.findOne(id);
+
     }
 
     public RecurringExpense createRecurringExpense(RecurringExpense newExpense){
