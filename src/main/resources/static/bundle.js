@@ -27823,23 +27823,25 @@ exports.default = WeeklySummaryWidget;
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
+var rootUri = 'http://budgetmaster9000.herokuapp.com';
+
 var getExpenses = exports.getExpenses = function getExpenses() {
     return $.ajax({
-        url: "http://localhost:8080/expenses",
+        url: rootUri + "/expenses",
         async: false
     }).responseText;
 };
 
 var getExpensesPaged = exports.getExpensesPaged = function getExpensesPaged(page) {
     return $.ajax({
-        url: "http://localhost:8080/expenses?page=" + page + "&size=15",
+        url: rootUri + "/expenses?page=" + page + "&size=15",
         async: false
     }).responseText;
 };
 
 var getStats = exports.getStats = function getStats() {
     return $.ajax({
-        url: "http://localhost:8080/expenses/stats",
+        url: rootUri + "/expenses/stats",
         async: false
     }).responseText;
 };
@@ -27847,7 +27849,7 @@ var getStats = exports.getStats = function getStats() {
 var submitExpense = exports.submitExpense = function submitExpense(data) {
 
     $.ajax({
-        url: "http://localhost:8080/expenses",
+        url: rootUri + "/expenses",
         type: 'POST',
         async: false,
         data: data,
@@ -27858,7 +27860,7 @@ var submitExpense = exports.submitExpense = function submitExpense(data) {
 
 var deleteExpense = exports.deleteExpense = function deleteExpense(id) {
     $.ajax({
-        url: "http://localhost:8080/expenses/" + id,
+        url: rootUri + "/expenses/" + id,
         type: 'DELETE',
         async: false
     });
