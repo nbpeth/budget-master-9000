@@ -27033,7 +27033,27 @@ var Pagination = function (_React$Component2) {
                         )
                     )
                 )
-            );
+            )
+            /*<table className="table" id="pagination">
+                <thead className="bg-info">
+                    <tr>
+                        <td>    
+                            <div className="text-center">
+                                <ul className="pagination">
+                                    <li className="page-item">{previousButton}</li>
+                                    <li className="page-item"><a href="#" className="page-link">1</a></li>
+                                    <li className="page-item"><a href="#" className="page-link">2</a></li>
+                                    <li className="page-item"><a href="#" className="page-link">3</a></li>
+                                    <li className="page-item"><a href="#" className="page-link">4</a></li>
+                                    <li className="page-item"><a href="#" className="page-link">5</a></li>
+                                    <li className="page-item">{nextButton}</li>
+                                </ul>
+                            </div>
+                        </td>
+                    </tr>
+                </thead>
+            </table>*/
+            ;
         }
     }]);
 
