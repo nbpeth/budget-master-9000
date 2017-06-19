@@ -1,4 +1,4 @@
-const rootUri = 'http://localhost:8080'
+const rootUri = 'http://budgetmaster9000.herokuapp.com'
 
 export const getExpenses = () => {
     return $.ajax({
