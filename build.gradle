@@ -28,8 +28,13 @@ dependencies {
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-data-jpa', version: '1.5.1.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-devtools', version: '1.5.1.RELEASE'
     compile group: 'org.springframework.boot', name: 'spring-boot-starter-hateoas', version: '1.2.2.RELEASE'
-    compile group: 'joda-time', name: 'joda-time', version: '2.9.9'
+    compile group: 'io.jsonwebtoken', name: 'jjwt', version: '0.2'
+    compile group: 'commons-codec', name: 'commons-codec', version: '1.5'
+    compile group: 'org.springframework.security', name: 'spring-security-core', version: '4.2.3.RELEASE'
 
+
+
+    compile group: 'joda-time', name: 'joda-time', version: '2.9.9'
 
     compile group: 'mysql', name: 'mysql-connector-java', version: '6.0.6'
     compile group: 'com.h2database', name: 'h2', version: '1.4.193'

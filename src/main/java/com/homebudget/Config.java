@@ -3,6 +3,7 @@ package com.homebudget;
 import com.homebudget.service.ExpenseService;
 import com.homebudget.service.RecurringExpenseService;
 import com.homebudget.service.StatisticsService;
+import com.homebudget.service.authentication.LoginService;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -58,6 +59,11 @@ public class Config {
     }
 
     @Bean
+    public LoginService loginService() {
+        return new LoginService();
+    }
+
+    @Bean
     public ExpenseService expenseService() {
         return new ExpenseService();
     }
@@ -70,5 +76,10 @@ public class Config {
     @Bean
     public StatisticsService statisticsService() {
         return new StatisticsService();
+    }
+
+    @Bean
+    public String apiSecret(){
+        return System.getenv("API_SECRET");
     }
 }
