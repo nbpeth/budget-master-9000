@@ -1,5 +1,5 @@
-const rootUri = 'http://localhost:8080';
-// const rootUri = 'http://budgetmaster9000.herokuapp.com';
+// const rootUri = 'http://localhost:8080';
+const rootUri = 'http://budgetmaster9000.herokuapp.com';
 
 export const login = (data) => {
     return $.ajax({
