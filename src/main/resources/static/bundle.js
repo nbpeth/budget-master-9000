@@ -27191,6 +27191,8 @@ var LoginPage = function (_React$Component) {
     }, {
         key: 'render',
         value: function render() {
+            var isLoggedIn = _expensesStore2.default.getState().isLoggedIn;
+
             var submitLogin = function submitLogin(loginInfo) {
                 _expensesStore2.default.dispatch((0, _actions.loginAction)(loginInfo));
             };
@@ -27205,7 +27207,7 @@ var LoginPage = function (_React$Component) {
             return _react2.default.createElement(
                 'div',
                 null,
-                this.state.isLoggedIn ? "HEY" : _react2.default.createElement(
+                isLoggedIn ? "HEY" : _react2.default.createElement(
                     'form',
                     { className: 'form-inline' },
                     _react2.default.createElement('input', { type: 'text', className: 'form-control mb-2 mr-sm-2 mb-sm-0', id: 'username', placeholder: 'User Name' }),
@@ -27988,7 +27990,10 @@ exports.deleteExpense = exports.submitExpense = exports.getStats = exports.getEx
 
 var _cookieService = __webpack_require__(29);
 
-var rootUri = 'http://localhost:8080'; //const rootUri = 'http://budgetmaster9000.herokuapp.com'
+var rootUri = 'http://budgetmaster9000.herokuapp.com';
+
+// const rootUri = 'http://localhost:8080';
+
 var getExpenses = exports.getExpenses = function getExpenses() {
     return $.ajax({
         beforeSend: function beforeSend(request) {
@@ -28059,7 +28064,8 @@ var getTokenFromCookie = function getTokenFromCookie() {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-var rootUri = 'http://localhost:8080';
+// const rootUri = 'http://localhost:8080';
+var rootUri = 'http://budgetmaster9000.herokuapp.com';
 
 var login = exports.login = function login(data) {
     return $.ajax({
@@ -28086,8 +28092,8 @@ exports.updateRecurringExpense = exports.deleteRecurringExpense = exports.submit
 
 var _cookieService = __webpack_require__(29);
 
-var rootUri = 'http://localhost:8080';
-// const rootUri = 'http://budgetmaster9000.herokuapp.com/expenses';
+// const rootUri = 'http://localhost:8080';
+var rootUri = 'http://budgetmaster9000.herokuapp.com/expenses';
 
 var getRecurringExpenses = exports.getRecurringExpenses = function getRecurringExpenses() {
     return $.ajax({
