@@ -89,3 +89,9 @@ export function loginAction(data) {
         type: "LOGIN"
     };
 }
+
+export function logoutAction() {
+    return {
+        type: "LOGOUT"
+    };
+}

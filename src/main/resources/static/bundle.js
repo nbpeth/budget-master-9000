@@ -6288,6 +6288,7 @@ exports.enableRecurringExpenseEditingAction = enableRecurringExpenseEditingActio
 exports.disableRecurringExpenseEditingAction = disableRecurringExpenseEditingAction;
 exports.updateRecurringExpenseAction = updateRecurringExpenseAction;
 exports.loginAction = loginAction;
+exports.logoutAction = logoutAction;
 function loadDataAction(page) {
     return {
         type: "LOAD_DATA",
@@ -6377,6 +6378,12 @@ function loginAction(data) {
     return {
         data: data,
         type: "LOGIN"
+    };
+}
+
+function logoutAction() {
+    return {
+        type: "LOGOUT"
     };
 }
 
@@ -11440,7 +11447,6 @@ function expenseManagerApp(state, action) {
 
         case 'NAV_RECURRING_EXPENSE_REPORT':
             newState.display = 'recurringExpenseReport';
-            console.log("recurringExpenseReport nav", newState);
 
             return newState;
 
@@ -11465,6 +11471,12 @@ function expenseManagerApp(state, action) {
 
                 newState.isLoggedIn = true;
             }
+            return newState;
+
+        case 'LOGOUT':
+            newState.token = "";
+            (0, _cookieService.createCookie)("token", "");
+            newState.isLoggedIn = false;
             return newState;
 
         default:
@@ -27197,6 +27209,10 @@ var LoginPage = function (_React$Component) {
                 _expensesStore2.default.dispatch((0, _actions.loginAction)(loginInfo));
             };
 
+            var submitLogout = function submitLogout() {
+                _expensesStore2.default.dispatch((0, _actions.logoutAction)());
+            };
+
             var getLoginInfo = function getLoginInfo() {
                 return {
                     "username": document.getElementById("username").value,
@@ -27204,14 +27220,30 @@ var LoginPage = function (_React$Component) {
                 };
             };
 
+            var submitOnEnter = function submitOnEnter(e) {
+                if (e.keyCode == 13) {
+                    submitLogin(getLoginInfo());
+                }
+            };
+
             return _react2.default.createElement(
                 'div',
                 null,
-                isLoggedIn ? "HEY" : _react2.default.createElement(
+                isLoggedIn ? _react2.default.createElement(
+                    'a',
+                    { href: '#', onClick: function onClick() {
+                            return submitLogout();
+                        } },
+                    'Logout'
+                ) : _react2.default.createElement(
                     'form',
                     { className: 'form-inline' },
-                    _react2.default.createElement('input', { type: 'text', className: 'form-control mb-2 mr-sm-2 mb-sm-0', id: 'username', placeholder: 'User Name' }),
-                    _react2.default.createElement('input', { type: 'password', className: 'form-control mb-2 mr-sm-2 mb-sm-0', id: 'password', placeholder: 'Password' }),
+                    _react2.default.createElement('input', { type: 'text', className: 'form-control mb-2 mr-sm-2 mb-sm-0', id: 'username', placeholder: 'User Name', onKeyDown: function onKeyDown(e) {
+                            submitOnEnter(e);
+                        } }),
+                    _react2.default.createElement('input', { type: 'password', className: 'form-control mb-2 mr-sm-2 mb-sm-0', id: 'password', placeholder: 'Password', onKeyDown: function onKeyDown(e) {
+                            submitOnEnter(e);
+                        } }),
                     _react2.default.createElement(
                         'button',
                         { type: 'button', className: 'btn btn-primary', onClick: function onClick() {
@@ -27990,10 +28022,7 @@ exports.deleteExpense = exports.submitExpense = exports.getStats = exports.getEx
 
 var _cookieService = __webpack_require__(29);
 
-var rootUri = 'http://budgetmaster9000.herokuapp.com';
-
-// const rootUri = 'http://localhost:8080';
-
+var rootUri = 'http://localhost:8080'; // const rootUri = 'http://budgetmaster9000.herokuapp.com';
 var getExpenses = exports.getExpenses = function getExpenses() {
     return $.ajax({
         beforeSend: function beforeSend(request) {
@@ -28064,8 +28093,8 @@ var getTokenFromCookie = function getTokenFromCookie() {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-// const rootUri = 'http://localhost:8080';
-var rootUri = 'http://budgetmaster9000.herokuapp.com';
+var rootUri = 'http://localhost:8080';
+// const rootUri = 'http://budgetmaster9000.herokuapp.com';
 
 var login = exports.login = function login(data) {
     return $.ajax({
@@ -28092,8 +28121,8 @@ exports.updateRecurringExpense = exports.deleteRecurringExpense = exports.submit
 
 var _cookieService = __webpack_require__(29);
 
-// const rootUri = 'http://localhost:8080';
-var rootUri = 'http://budgetmaster9000.herokuapp.com/expenses';
+var rootUri = 'http://localhost:8080';
+// const rootUri = 'http://budgetmaster9000.herokuapp.com/expenses';
 
 var getRecurringExpenses = exports.getRecurringExpenses = function getRecurringExpenses() {
     return $.ajax({

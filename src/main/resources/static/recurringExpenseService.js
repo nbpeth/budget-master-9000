@@ -1,6 +1,6 @@
 import { getCookie } from './cookieService.js';
-// const rootUri = 'http://localhost:8080';
-const rootUri = 'http://budgetmaster9000.herokuapp.com/expenses';
+const rootUri = 'http://localhost:8080';
+// const rootUri = 'http://budgetmaster9000.herokuapp.com/expenses';
 
 export const getRecurringExpenses = () => {
     return $.ajax({

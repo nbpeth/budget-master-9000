@@ -87,7 +87,6 @@ function expenseManagerApp(state, action) {
 
         case 'NAV_RECURRING_EXPENSE_REPORT':
             newState.display = 'recurringExpenseReport';
-            console.log("recurringExpenseReport nav", newState);
 
             return newState;
 
@@ -113,6 +112,12 @@ function expenseManagerApp(state, action) {
 
                 newState.isLoggedIn = true;
             }
+            return newState;
+
+        case 'LOGOUT':
+            newState.token = "";
+            createCookie("token", "");
+            newState.isLoggedIn = false;
             return newState;
 
 
