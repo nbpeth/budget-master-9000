@@ -3,7 +3,6 @@ package com.homebudget.domain.authentication;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Transient;
 import java.util.Date;
 
 @Entity
@@ -16,17 +15,6 @@ public class User {
     Date joinDate;
     String password;
     boolean active;
-
-    public String getToken() {
-        return token;
-    }
-
-    public void setToken(String token) {
-        this.token = token;
-    }
-
-    @Transient
-    String token;
 
     public boolean isActive() {
         return active;

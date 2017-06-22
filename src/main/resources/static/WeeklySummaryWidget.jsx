@@ -12,12 +12,6 @@ class WeeklySummaryWidget extends React.Component {
         store.dispatch(loadStatsAction());
     }
 
-    componentDidMount() {
-        store.subscribe(() => {
-            var state = store.getState();
-        });
-    }
-
     determineCellColor(qualifier){
         return qualifier ? "bg-success" : "bg-danger";
     }

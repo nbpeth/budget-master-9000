@@ -1,5 +1,8 @@
 import { getExpenses, getExpensesPaged, getStats, deleteExpense, submitExpense } from './expenseService.js';
 import { getRecurringExpenses, deleteRecurrungExpense, submitRecurringExpense, deleteRecurringExpense, updateRecurringExpense } from './recurringExpenseService.js';
+import { login } from './loginService.js';
+
+import { getCookie, createCookie } from './cookieService.js';
 
 function expenseManagerApp(state, action) {
     var newState = Object.assign({}, state);
@@ -9,9 +12,7 @@ function expenseManagerApp(state, action) {
         case 'LOAD_DATA':
             // var expenses = parseJson(getExpenses());
             var page = action.data;
-            // newState.expenses = expenses;
 
-            // return newState;
             var expenses = JSON.parse(getExpensesPaged(page));
 
             newState.expenses = expenses;
@@ -51,6 +52,7 @@ function expenseManagerApp(state, action) {
 
         case 'NAV_EXPENSE_REPORT':
             newState.display = 'expenseReport';
+            console.log("expense nav", newState);
             return newState;
 
             //recurring expenses
@@ -85,6 +87,8 @@ function expenseManagerApp(state, action) {
 
         case 'NAV_RECURRING_EXPENSE_REPORT':
             newState.display = 'recurringExpenseReport';
+            console.log("recurringExpenseReport nav", newState);
+
             return newState;
 
         case 'ENABLE_RECURRING_EXPENSE_EDITING':
@@ -96,6 +100,21 @@ function expenseManagerApp(state, action) {
             var index = newState.enableRecurringExpenseEditing.indexOf(action.data);
             newState.enableRecurringExpenseEditing.splice(index, 1);
             return newState;
+
+        case 'LOGIN':
+            const loginJson = JSON.stringify(action.data);
+            var loginResponse = login(loginJson);
+
+            if (loginResponse.status === 200) {
+                const token = JSON.parse(loginResponse.responseText).token;
+                newState.token = token;
+
+                createCookie("token", token);
+
+                newState.isLoggedIn = true;
+            }
+            return newState;
+
 
         default:
             return state;

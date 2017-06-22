@@ -9,10 +9,6 @@ class ExpenseTable extends React.Component {
     }
    
     componentDidMount(){
-        store.subscribe(() => {
-            var state = store.getState();
-            //probaby misusing this, checking state on render - probably should move up here
-        });
         store.dispatch(loadDataAction());
     }
     
@@ -53,12 +49,6 @@ class ExpenseTable extends React.Component {
 class Pagination extends React.Component {
     constructor(props){
         super(props);
-    }
-   
-    componentDidMount(){
-        store.subscribe(() => {
-            var state = store.getState();
-        });
     }
 
     change(page){

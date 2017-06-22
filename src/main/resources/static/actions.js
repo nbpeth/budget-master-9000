@@ -82,3 +82,10 @@ export function updateRecurringExpenseAction(data) {
         type: "UPDATE_RECURRING_EXPENSE"
     };
 }
+
+export function loginAction(data) {
+    return {
+        data: data,
+        type: "LOGIN"
+    };
+}

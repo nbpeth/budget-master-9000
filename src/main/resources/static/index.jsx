@@ -13,25 +13,30 @@ class App extends React.Component {
 
     componentDidMount(){
         store.subscribe(() => {
-            var state = store.getState();
             this.setState({
-                display:"expenseReport"
+                display:store.getState().display,
+                isLoggedIn: store.getState().isLoggedIn
             });
         });
     }
 
     render(){
         const display = store.getState().display;
-        
+        console.log("!!!!!! display ", display);
         const setDisplay = (display) => {
-            switch(display){
-                case "expenseReport":
-                    return <ExpenseReport/>;
-                case "recurringExpenseReport":
-                    return <RecurringExpenseReport/>;
-                default:
-                    return <p />;
+            if(store.getState().isLoggedIn){
+                switch(display){
+                    case "expenseReport":
+                        return <ExpenseReport/>;
+                    case "recurringExpenseReport":
+                        return <RecurringExpenseReport/>;
+                    default:
+                        return <p />;
+                }
             }
+            else{
+                return <div/>
+            } 
         };
 
         return(

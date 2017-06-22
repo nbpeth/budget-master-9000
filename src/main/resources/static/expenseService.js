@@ -1,7 +1,12 @@
-//const rootUri = 'http://budgetmaster9000.herokuapp.com'
-const rootUri = 'http://localhost:8080'
+const rootUri = 'http://budgetmaster9000.herokuapp.com'
+import { getCookie } from './cookieService.js';
+// const rootUri = 'http://localhost:8080';
+
 export const getExpenses = () => {
     return $.ajax({
+        beforeSend: function(request) {
+            request.setRequestHeader("Authorization", getTokenFromCookie());
+        },
         url: rootUri + "/expenses",
         async: false
     }).responseText;
@@ -9,6 +14,9 @@ export const getExpenses = () => {
 
 export const getExpensesPaged = (page) => {
     return $.ajax({
+        beforeSend: function(request) {
+            request.setRequestHeader("Authorization", getTokenFromCookie());
+        },
         url: rootUri + "/expenses?page=" + page + "&size=15",
         async: false
     }).responseText;
@@ -16,6 +24,9 @@ export const getExpensesPaged = (page) => {
 
 export const getStats = () => {
     return $.ajax({
+        beforeSend: function(request) {
+            request.setRequestHeader("Authorization", getTokenFromCookie());
+        },
         url: rootUri + "/expenses/stats",
         async: false
     }).responseText;
@@ -24,6 +35,9 @@ export const getStats = () => {
 export const submitExpense = (data) => {
 
     $.ajax({
+        beforeSend: function(request) {
+            request.setRequestHeader("Authorization", getTokenFromCookie());
+        },
         url: rootUri + "/expenses",
         type: 'POST',
         async: false,
@@ -35,8 +49,15 @@ export const submitExpense = (data) => {
 
 export const deleteExpense = (id) => {
     $.ajax({
+        beforeSend: function(request) {
+            request.setRequestHeader("Authorization", getTokenFromCookie());
+        },
         url: rootUri + "/expenses/" + id,
         type: 'DELETE',
         async: false
     });
+};
+
+const getTokenFromCookie = () => {
+    return getCookie("token");
 };

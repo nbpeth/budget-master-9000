@@ -4,6 +4,7 @@ import com.homebudget.service.ExpenseService;
 import com.homebudget.service.RecurringExpenseService;
 import com.homebudget.service.StatisticsService;
 import com.homebudget.service.authentication.LoginService;
+import com.homebudget.service.authentication.TokenService;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -13,6 +14,8 @@ import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import javax.sql.DataSource;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Properties;
 
 @Configuration
@@ -64,6 +67,11 @@ public class Config {
     }
 
     @Bean
+    public TokenService tokenService(){
+        return new TokenService();
+    }
+
+    @Bean
     public ExpenseService expenseService() {
         return new ExpenseService();
     }
@@ -79,7 +87,14 @@ public class Config {
     }
 
     @Bean
-    public String apiSecret(){
-        return System.getenv("API_SECRET");
+    public Map<String, String> environmentVariables(){
+        Map<String, String> envVars = new HashMap<>();
+        envVars.put("apiSecret", System.getenv("API_SECRET"));
+        envVars.put("apiSubject", System.getenv("API_SUBJECT"));
+        envVars.put("apiIssuer", System.getenv("API_ISSUER"));
+        envVars.put("apiId", "budgetMaster");
+
+
+        return envVars;
     }
 }
