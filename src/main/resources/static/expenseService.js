@@ -1,4 +1,4 @@
-const rootUri = 'http://budgetmaster9000.herokuapp.com'
+const rootUri = 'http://budgetmaster9000.herokuapp.com';
 import { getCookie } from './cookieService.js';
 // const rootUri = 'http://localhost:8080';
 
