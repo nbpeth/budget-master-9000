@@ -22,7 +22,7 @@ class App extends React.Component {
 
     render(){
         const display = store.getState().display;
-        console.log("!!!!!! display ", display);
+
         const setDisplay = (display) => {
             if(store.getState().isLoggedIn){
                 switch(display){
