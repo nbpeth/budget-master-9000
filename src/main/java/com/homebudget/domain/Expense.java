@@ -5,6 +5,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.util.Date;
 
 @Entity
@@ -16,6 +17,7 @@ public class Expense {
     String location;
     String expenseType;
     String description;
+    Integer userId;
 
     @JsonFormat(pattern = "MM/dd/yyyy", timezone = "CST")
     Date expenseDate;
@@ -28,6 +30,14 @@ public class Expense {
         this.expenseType = expenseType;
         this.description = description;
         this.expenseDate = expenseDate;
+    }
+
+    public Integer getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 
     public Double getCost() {
