@@ -7,10 +7,10 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Component;
-import java.util.Map;
-import java.util.HashMap;
 
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 @Component
 public class LoginService {
@@ -31,7 +31,7 @@ public class LoginService {
 
         String token = tokenService.generateToken();
 
-        Map<String, String> tokenMap = new HashMap<String, String>();
+        Map<String, String> tokenMap = new HashMap<>();
         tokenMap.put("token",token);
 
         return new ResponseEntity<>(tokenMap, HttpStatus.OK);

@@ -1,23 +1,21 @@
 package com.homebudget.exception;
 
-
 import org.springframework.http.HttpStatus;
 
-public class UnauthorizedException extends BudgetMasterException {
-
-    public UnauthorizedException(){
+public class BadRequestException extends BudgetMasterException {
+    public BadRequestException(){
         super();
         this.setStatus(httpStatus());
     }
 
-    public UnauthorizedException(String message){
+    public BadRequestException(String message){
         super(message);
         this.setStatus(httpStatus());
 
     }
 
     private HttpStatus httpStatus(){
-        return HttpStatus.UNAUTHORIZED;
+        return HttpStatus.BAD_REQUEST;
 
     }
 }

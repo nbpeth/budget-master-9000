@@ -94,8 +94,8 @@ public class Config {
         envVars.put("apiSecret", System.getenv("API_SECRET"));
         envVars.put("apiSubject", System.getenv("API_SUBJECT"));
         envVars.put("apiIssuer", System.getenv("API_ISSUER"));
+        envVars.put("apiKey", System.getenv("BUDGETMASTER_API_KEY"));
         envVars.put("apiId", "budgetMaster");
-
 
         return envVars;
     }

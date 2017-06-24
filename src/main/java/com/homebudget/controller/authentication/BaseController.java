@@ -1,9 +1,9 @@
 package com.homebudget.controller.authentication;
 
+import com.homebudget.exception.BudgetMasterException;
 import com.homebudget.exception.UnauthorizedException;
 import com.homebudget.service.authentication.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
@@ -22,9 +22,10 @@ public class BaseController {
         }
     }
 
-    @ExceptionHandler({UnauthorizedException.class})
-    public ResponseEntity<Void> authenticationError() {
-        return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+    @ExceptionHandler(BudgetMasterException.class)
+    public ResponseEntity<String> authenticationError(BudgetMasterException e) {
+
+        return new ResponseEntity<>(e.getMessage(), e.getStatus());
     }
 
 }
