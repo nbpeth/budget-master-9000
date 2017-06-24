@@ -26807,20 +26807,15 @@ var ExpenseReport = function (_React$Component) {
     }
 
     _createClass(ExpenseReport, [{
-        key: 'componentWillMount',
-        value: function componentWillMount() {
+        key: 'componentDidMount',
+        value: function componentDidMount() {
             var _this2 = this;
 
             _expensesStore2.default.subscribe(function () {
-                var state = _expensesStore2.default.getState();
                 _this2.setState({
-                    showForm: state.showForm
+                    showForm: _expensesStore2.default.getState().showForm
                 });
             });
-        }
-    }, {
-        key: 'componentDidMount',
-        value: function componentDidMount() {
             _expensesStore2.default.dispatch((0, _actions.loadDataAction)());
         }
     }, {
@@ -27330,19 +27325,15 @@ var RecurringExpenseTable = function (_React$Component2) {
     }
 
     _createClass(RecurringExpenseTable, [{
-        key: 'componentWillMount',
-        value: function componentWillMount() {
-            _expensesStore2.default.dispatch((0, _actions.loadRecurringExpenseAction)());
-        }
-    }, {
         key: 'componentDidMount',
         value: function componentDidMount() {
             var _this3 = this;
 
+            _expensesStore2.default.dispatch((0, _actions.loadRecurringExpenseAction)());
+
             _expensesStore2.default.subscribe(function () {
-                var state = _expensesStore2.default.getState();
                 _this3.setState({
-                    recurringExpenses: state.recurringExpenses
+                    recurringExpenses: _expensesStore2.default.getState().recurringExpenses
                 });
             });
         }
@@ -28022,9 +28013,9 @@ exports.deleteExpense = exports.submitExpense = exports.getStats = exports.getEx
 
 var _cookieService = __webpack_require__(29);
 
-var rootUri = 'http://budgetmaster9000.herokuapp.com';
+// const rootUri = 'http://budgetmaster9000.herokuapp.com';
 
-// const rootUri = 'http://localhost:8080';
+var rootUri = 'http://localhost:8080';
 
 var getExpenses = exports.getExpenses = function getExpenses() {
     return $.ajax({
@@ -28096,8 +28087,8 @@ var getTokenFromCookie = function getTokenFromCookie() {
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
-// const rootUri = 'http://localhost:8080';
-var rootUri = 'http://budgetmaster9000.herokuapp.com';
+var rootUri = 'http://localhost:8080';
+// const rootUri = 'http://budgetmaster9000.herokuapp.com';
 
 var login = exports.login = function login(data) {
     return $.ajax({
@@ -28124,8 +28115,8 @@ exports.updateRecurringExpense = exports.deleteRecurringExpense = exports.submit
 
 var _cookieService = __webpack_require__(29);
 
-// const rootUri = 'http://localhost:8080';
-var rootUri = 'http://budgetmaster9000.herokuapp.com/expenses';
+var rootUri = 'http://localhost:8080/expenses';
+// const rootUri = 'http://budgetmaster9000.herokuapp.com/expenses';
 
 var getRecurringExpenses = exports.getRecurringExpenses = function getRecurringExpenses() {
     return $.ajax({

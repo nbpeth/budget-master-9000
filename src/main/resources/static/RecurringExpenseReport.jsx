@@ -24,17 +24,15 @@ class RecurringExpenseTable extends React.Component {
         super(props);
     }
 
-    componentWillMount(){
-        store.dispatch(loadRecurringExpenseAction());
-    }
-
     componentDidMount(){
+        store.dispatch(loadRecurringExpenseAction());
+
         store.subscribe(() => {
-            var state = store.getState();
             this.setState({
-                recurringExpenses:state.recurringExpenses
+                recurringExpenses:store.getState().recurringExpenses
             });
         });
+        
     }
 
     render(){

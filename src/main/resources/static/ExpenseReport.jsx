@@ -9,19 +9,17 @@ class ExpenseReport extends React.Component{
     constructor(props){
         super(props);
     }
-    componentWillMount() {
+
+    componentDidMount(){
         store.subscribe(() => {
-            var state = store.getState();
             this.setState({
-                showForm:state.showForm
+                showForm:store.getState().showForm
             });
         });
-    };
-    componentDidMount(){
         store.dispatch(loadDataAction());
-    };
+    }
     render () {
-        const showForm = store.getState().showForm
+        const showForm = store.getState().showForm;
 
         return(
             <div>

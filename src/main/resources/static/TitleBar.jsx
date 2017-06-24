@@ -33,7 +33,6 @@ class TitleBar extends React.Component{
                         <div className="container-fluid">
                             <button className="btn-nooutline" type="button" onClick={ () => { handleClick("expense") }}>Expense Report</button>
                             <button className="btn-nooutline" type="button" onClick={ () => { handleClick("recurring") }}>Recurring Expenses</button>
-                        
                         </div>
                     </nav>
 
