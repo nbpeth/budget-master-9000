@@ -29,7 +29,7 @@ public class LoginService {
             return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
         }
 
-        String token = tokenService.generateToken();
+        String token = tokenService.generateToken(user);
 
         Map<String, String> tokenMap = new HashMap<>();
         tokenMap.put("token",token);

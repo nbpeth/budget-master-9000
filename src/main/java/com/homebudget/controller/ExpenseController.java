@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 
 @RestController
-public class BudgetController extends BaseController {
+public class ExpenseController extends BaseController {
     @Autowired ExpenseService expenseService;
     @Autowired StatisticsService statisticsService;
 

@@ -1,5 +1,6 @@
 package com.homebudget.service.authentication;
 
+import com.homebudget.domain.authentication.User;
 import com.homebudget.exception.UnauthorizedException;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
@@ -12,6 +13,7 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 import java.security.Key;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 @Component
@@ -19,7 +21,7 @@ public class TokenService {
     @Autowired
     private Map<String, String> environmentVariables;
 
-    public String generateToken() {
+    public String generateToken(User user) {
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
         Date now = new Date(System.currentTimeMillis());
 
@@ -29,12 +31,26 @@ public class TokenService {
         JwtBuilder jwtBuilder = Jwts.builder();
         jwtBuilder.setId("id")
                 .setIssuedAt(now)
-                .setSubject("auth")
-                .setIssuer("budgetMaster")
+                .setHeader(jwtHeaders())
+                .setClaims(claimsFor(user))
                 .setExpiration(new Date(now.getTime() + 2592000000L))
                 .signWith(signatureAlgorithm, signingKey);
 
         return jwtBuilder.compact();
+    }
+
+    private Map<String, Object> claimsFor(User user){
+        Map<String, Object> claims = new HashMap<>();
+        claims.put("user", user.getUsername());
+
+        return claims;
+    }
+
+    private Map<String, Object> jwtHeaders(){
+        Map<String, Object> headers = new HashMap<>();
+        headers.put("type", "JWT");
+
+        return headers;
     }
 
     public boolean validateToken(String token) throws UnauthorizedException {
@@ -48,7 +64,7 @@ public class TokenService {
             throw new UnauthorizedException();
         }
 
-        if (claims.getId().equals(environmentVariables.get("apiId")) || claims.getId().equals(environmentVariables.get("apiIssuer")) || claims.getId().equals(environmentVariables.get("apiSubject"))) {
+        if (claims.getId().equals(environmentVariables.get("apiId"))) {
             return false;
         }
 
