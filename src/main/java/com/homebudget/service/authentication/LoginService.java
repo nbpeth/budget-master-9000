@@ -1,6 +1,7 @@
 package com.homebudget.service.authentication;
 
 import com.homebudget.domain.authentication.User;
+import com.homebudget.exception.UnauthorizedException;
 import com.homebudget.repository.authentication.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -17,8 +18,14 @@ public class LoginService {
     @Autowired private UserRepository userRepository;
     @Autowired private TokenService tokenService;
 
-    public ResponseEntity<Map> authenticate(User user) {
+    private static final String INVALID_CREDENTIALS = "Invalid username or password";
+
+    public ResponseEntity<Map> authenticate(User user) throws UnauthorizedException {
         User userToAuthenticate = userRepository.findUserByName(user.getUsername());
+
+        if(userToAuthenticate == null){
+            throw new UnauthorizedException(INVALID_CREDENTIALS);
+        }
 
         String password = user.getPassword();
         String realPassword = userToAuthenticate.getPassword();
@@ -26,7 +33,7 @@ public class LoginService {
         boolean correctCredentials = validatePassword(password, realPassword);
 
         if(!correctCredentials){
-            return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
+            throw new UnauthorizedException(INVALID_CREDENTIALS);
         }
 
         String token = tokenService.generateToken(user);

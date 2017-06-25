@@ -1,7 +1,6 @@
-import { getExpenses, getExpensesPaged, getStats, deleteExpense, submitExpense } from './expenseService.js';
+import { getExpenses, getExpensesPaged, getStats, deleteExpense, submitExpense, fetchUser } from './expenseService.js';
 import { getRecurringExpenses, deleteRecurrungExpense, submitRecurringExpense, deleteRecurringExpense, updateRecurringExpense } from './recurringExpenseService.js';
 import { login } from './loginService.js';
-
 import { getCookie, createCookie } from './cookieService.js';
 
 function expenseManagerApp(state, action) {
@@ -106,11 +105,12 @@ function expenseManagerApp(state, action) {
 
             if (loginResponse.status === 200) {
                 const token = JSON.parse(loginResponse.responseText).token;
+
+                newState.isLoggedIn = true;
                 newState.token = token;
 
                 createCookie("token", token);
 
-                newState.isLoggedIn = true;
             }
             return newState;
 
@@ -118,6 +118,19 @@ function expenseManagerApp(state, action) {
             newState.token = "";
             createCookie("token", "");
             newState.isLoggedIn = false;
+            return newState;
+
+        case 'FETCH_USER':
+            const token = getCookie("token");
+            const payload = Buffer.from(token.split(".")[1], 'base64').toString();
+            const username = JSON.parse(payload).username;
+            const userResponse = fetchUser(username);
+
+            if (userResponse.status === 200) {
+                const user = JSON.parse(userResponse.responseText);
+                newState.user = user;
+            }
+
             return newState;
 
 

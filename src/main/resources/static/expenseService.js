@@ -59,6 +59,17 @@ export const deleteExpense = (id) => {
     });
 };
 
+export const fetchUser = (username) => {
+    return $.ajax({
+        beforeSend: function(request) {
+            request.setRequestHeader("Authorization", getTokenFromCookie());
+        },
+        url: rootUri + "/users/" + username,
+        type: 'GET',
+        async: false
+    });
+};
+
 const getTokenFromCookie = () => {
     return getCookie("token");
 };

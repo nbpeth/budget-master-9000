@@ -2,6 +2,7 @@ package com.homebudget.controller.authentication;
 
 import com.homebudget.domain.authentication.User;
 import com.homebudget.exception.BadRequestException;
+import com.homebudget.exception.UnauthorizedException;
 import com.homebudget.service.authentication.LoginService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -18,7 +19,7 @@ public class LoginController extends BaseController{
     @Autowired private Map<String, String> environmentVariables;
 
     @PostMapping("/auth")
-    public ResponseEntity<Map> authenticate(@RequestBody User user){
+    public ResponseEntity<Map> authenticate(@RequestBody User user) throws UnauthorizedException {
 
         return loginService.authenticate(user);
     }

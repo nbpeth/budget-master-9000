@@ -30,7 +30,9 @@
     "babel": "^6.23.0",
     "babel-core": "^6.24.0",
     "babel-loader": "^6.4.1",
+    "base-64": "^0.1.0",
     "jshint": "^2.9.4",
+    "jsonwebtoken": "^7.4.1",
     "moment": "^2.18.1",
     "react": "^15.5.4",
     "react-bootstrap": "^0.31.0",
@@ -38,6 +40,7 @@
     "react-dom": "^15.0.1",
     "react-redux": "^5.0.3",
     "redux": "^3.6.0",
+    "text-encoder-lite": "^1.0.0",
     "webpack": "^2.2.1",
     "webpack-dev-server": "^2.4.2"
   }

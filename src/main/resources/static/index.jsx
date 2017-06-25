@@ -5,6 +5,8 @@ import ExpenseReport from './ExpenseReport.jsx';
 import RecurringExpenseReport from './RecurringExpenseReport.jsx';
 import TitleBar from './TitleBar.jsx';
 import store from './expensesStore.js';
+import { fetchUserAction } from './actions.js';
+
 
 class App extends React.Component {
     constructor(props){
@@ -25,13 +27,15 @@ class App extends React.Component {
 
         const setDisplay = (display) => {
             if(store.getState().isLoggedIn){
+                // store.dispatch(fetchUserAction());
+
                 switch(display){
                     case "expenseReport":
                         return <ExpenseReport/>;
                     case "recurringExpenseReport":
                         return <RecurringExpenseReport/>;
                     default:
-                        return <p />;
+                        return <p/>;
                 }
             }
             else{

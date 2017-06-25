@@ -95,3 +95,9 @@ export function logoutAction() {
         type: "LOGOUT"
     };
 }
+
+export function fetchUserAction() {
+    return {
+        type: "FETCH_USER"
+    };
+}

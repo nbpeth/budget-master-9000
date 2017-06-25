@@ -1,7 +1,7 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import store from './expensesStore.js';
-import { loginAction, logoutAction } from './actions.js';
+import { loginAction, logoutAction, fetchUserAction } from './actions.js';
 
 
 class LoginPage extends React.Component {
@@ -12,16 +12,28 @@ class LoginPage extends React.Component {
     componentDidMount(){
         store.subscribe(() => {
             this.setState({
-                isLoggedIn: store.getState().isLoggedIn
+                isLoggedIn: store.getState().isLoggedIn,
+                user: store.getState().user
             });
         });
+        store.dispatch(fetchUserAction());   
+
+        
     }
 
     render(){ 
-        const isLoggedIn = store.getState().isLoggedIn;      
-         
+        const getUsername = () => {
+            var user;
+
+            if(store.getState().isLoggedIn){
+                user = store.getState().user.username;
+            } 
+
+            return user;
+        };
+           
          const submitLogin = (loginInfo) => {
-            store.dispatch(loginAction(loginInfo));        
+            store.dispatch(loginAction(loginInfo));     
          };
 
          const submitLogout = () => {
@@ -41,9 +53,16 @@ class LoginPage extends React.Component {
             }
          };
 
+         const getGreeting = () => {
+            return "Hello " + getUsername() + "! ";
+         };
+
         return(
             <div>
-                { isLoggedIn ? <a href ='#' onClick={ () => submitLogout()}>Logout</a> : 
+                { store.getState().isLoggedIn ?  
+                    <div>
+                        {getGreeting()} <p/> <a href ='#' onClick={ () => submitLogout()}>Logout</a> 
+                    </div> : 
                     <form className="form-inline">
                         <input type="text" className="form-control mb-2 mr-sm-2 mb-sm-0" id="username" placeholder="User Name" onKeyDown={ (e) => { submitOnEnter(e) } }/>
                         <input type="password" className="form-control mb-2 mr-sm-2 mb-sm-0" id="password" placeholder="Password" onKeyDown={ (e) => { submitOnEnter(e) } }/>

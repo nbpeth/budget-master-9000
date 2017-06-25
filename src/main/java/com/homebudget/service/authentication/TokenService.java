@@ -29,8 +29,7 @@ public class TokenService {
         Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
 
         JwtBuilder jwtBuilder = Jwts.builder();
-        jwtBuilder.setId("id")
-                .setIssuedAt(now)
+        jwtBuilder.setIssuedAt(now)
                 .setHeader(jwtHeaders())
                 .setClaims(claimsFor(user))
                 .setExpiration(new Date(now.getTime() + 2592000000L))
@@ -41,7 +40,7 @@ public class TokenService {
 
     private Map<String, Object> claimsFor(User user){
         Map<String, Object> claims = new HashMap<>();
-        claims.put("user", user.getUsername());
+        claims.put("username", user.getUsername());
 
         return claims;
     }
@@ -62,10 +61,6 @@ public class TokenService {
 
         } catch (Exception e) {
             throw new UnauthorizedException();
-        }
-
-        if (claims.getId().equals(environmentVariables.get("apiId"))) {
-            return false;
         }
 
         return true;
