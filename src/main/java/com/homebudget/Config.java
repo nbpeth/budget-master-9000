@@ -24,31 +24,31 @@ import java.util.Properties;
 @EnableTransactionManagement
 public class Config {
 
-//    @Bean
-//    public DataSource dataSource() {
-//        DriverManagerDataSource dataSource = new DriverManagerDataSource();
-//        String prodUri = "jdbc:mysql://b526f03d0cf043:b772b096@us-cdbr-iron-east-03.cleardb.net/heroku_7be06830f6ea887?reconnect=true&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=CST";
-//
-//        String username = "b526f03d0cf043";
-//        String password = "b772b096";
-//        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-//        dataSource.setUrl(prodUri);
-//        dataSource.setUsername(username);
-//        dataSource.setPassword(password);
-//
-//        return dataSource;
-//    }
-
-
     @Bean
     public DataSource dataSource() {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
+        //String prodUri = "jdbc:mysql://b526f03d0cf043:b772b096@us-cdbr-iron-east-03.cleardb.net/heroku_7be06830f6ea887?reconnect=true&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=CST";
+        String dbUri = System.getenv("CLEARDB_DATABASE_URL");
+        String username = "b526f03d0cf043";
+        String password = "b772b096";
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
-        dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/home_budget?useSSL=false&useLegacyDatetimeCode=false&serverTimezone=CST");
-        dataSource.setUsername("nbpeth");
+        dataSource.setUrl(dbUri);
+        dataSource.setUsername(username);
+        dataSource.setPassword(password);
 
         return dataSource;
     }
+
+//
+//    @Bean
+//    public DataSource dataSource() {
+//        DriverManagerDataSource dataSource = new DriverManagerDataSource();
+//        dataSource.setDriverClassName("com.mysql.jdbc.Driver");
+//        dataSource.setUrl("jdbc:mysql://127.0.0.1:3306/home_budget?useSSL=false&useLegacyDatetimeCode=false&serverTimezone=CST");
+//        dataSource.setUsername("nbpeth");
+//
+//        return dataSource;
+//    }
     @Bean
     public LocalSessionFactoryBean sessionFactory() {
         LocalSessionFactoryBean sessionFactoryBean = new LocalSessionFactoryBean();
