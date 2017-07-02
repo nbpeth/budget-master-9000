@@ -29,8 +29,10 @@ public class Config {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         //String prodUri = "jdbc:mysql://b526f03d0cf043:b772b096@us-cdbr-iron-east-03.cleardb.net/heroku_7be06830f6ea887?reconnect=true&useSSL=false&useLegacyDatetimeCode=false&serverTimezone=CST";
         String dbUri = System.getenv("CLEARDB_DATABASE_URL");
-        String username = "b526f03d0cf043";
-        String password = "b772b096";
+//        String username = "b526f03d0cf043";
+//        String password = "b772b096";
+        String username = System.getenv("DB_USERNAME");
+        String password = System.getenv("DB_PASSWORD");
         dataSource.setDriverClassName("com.mysql.jdbc.Driver");
         dataSource.setUrl(dbUri);
         dataSource.setUsername(username);
