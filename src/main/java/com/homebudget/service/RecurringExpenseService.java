@@ -9,8 +9,8 @@ public class RecurringExpenseService {
     @Autowired
     private RecurringExpenseRepository recurringExpenseRepository;
 
-    public Iterable<RecurringExpense> getRecurringExpenses(){
-        return recurringExpenseRepository.findAllSortDesc();
+    public Iterable<RecurringExpense> getRecurringExpenses(String username){
+        return recurringExpenseRepository.findAllSortDesc(username);
     }
 
     public RecurringExpense getRecurringExpenseById(Integer id){

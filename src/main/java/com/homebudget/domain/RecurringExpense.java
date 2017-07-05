@@ -13,6 +13,15 @@ public class RecurringExpense {
     String span;
     Double cost;
     String description;
+    String username;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public String getDescription() {
         return description;

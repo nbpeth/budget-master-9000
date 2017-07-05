@@ -20,7 +20,8 @@ public class RecurringExpenseController extends BaseController {
     @GetMapping("/expenses/recurring")
     public ResponseEntity<Iterable<RecurringExpense>> getRecurringExpenses(HttpServletRequest servletRequest) throws UnauthorizedException {
         Map<String, String> claims = validateToken(servletRequest);
-        Iterable<RecurringExpense> recurringExpenses = recurringExpenseService.getRecurringExpenses();
+        String username = claims.get("username");
+        Iterable<RecurringExpense> recurringExpenses = recurringExpenseService.getRecurringExpenses(username);
 
         return new ResponseEntity<>(recurringExpenses, HttpStatus.OK);
     }
@@ -36,6 +37,8 @@ public class RecurringExpenseController extends BaseController {
     @PostMapping("/expenses/recurring")
     public ResponseEntity<RecurringExpense> createRecurringExpense(HttpServletRequest servletRequest, @RequestBody RecurringExpense recurringExpense) throws UnauthorizedException {
         Map<String, String> claims = validateToken(servletRequest);
+        String username = claims.get("username");
+        recurringExpense.setUsername(username);
         RecurringExpense newRecurringExpense = recurringExpenseService.createRecurringExpense(recurringExpense);
 
         return new ResponseEntity<>(newRecurringExpense, HttpStatus.OK);
@@ -45,7 +48,7 @@ public class RecurringExpenseController extends BaseController {
     public ResponseEntity<RecurringExpense> updateRecurringExpense(HttpServletRequest servletRequest, @RequestBody RecurringExpense recurringExpense, @PathVariable Integer id) throws UnauthorizedException {
         Map<String, String> claims = validateToken(servletRequest);
         recurringExpense.setId(id);
-        //this is a sub optimal, hamfisted update, fix it
+        //validate token user matches record user?
         RecurringExpense updatedRecurringExpense = recurringExpenseService.updateRecurringExpense(recurringExpense);
 
         return new ResponseEntity<>(updatedRecurringExpense, HttpStatus.OK);
@@ -54,6 +57,7 @@ public class RecurringExpenseController extends BaseController {
     @DeleteMapping("/expenses/recurring/{id}")
     public ResponseEntity<String> deleteRecurringExpense(HttpServletRequest servletRequest, @PathVariable Integer id) throws UnauthorizedException {
         Map<String, String> claims = validateToken(servletRequest);
+        //validate token user matches record user?
         recurringExpenseService.deleteRecurringExpense(id);
 
         return new ResponseEntity<>("Great job.", HttpStatus.OK);
