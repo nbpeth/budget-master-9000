@@ -2,7 +2,6 @@ package com.homebudget.service;
 
 import com.homebudget.domain.Expense;
 import com.homebudget.repository.ExpenseRepository;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +18,8 @@ public class ExpenseService {
                 expense.getLocation().toUpperCase(),
                 expense.getExpenseType(),
                 expense.getDescription(),
-                expense.getCost()
+                expense.getCost(),
+                expense.getUsername()
         );
 
         return expenseRepository.save(formattedExpense);
@@ -29,8 +29,9 @@ public class ExpenseService {
         expenseRepository.delete(id);
     }
 
-    public Page<Expense> getAllExpenses(Pageable pageable) {
-        return expenseRepository.findAllOrderByDate(pageable);
+    public Page<Expense> getAllExpenses(Pageable pageable, String username) {
+
+        return expenseRepository.findAllOrderByDate(pageable, username);
     }
 
     public Expense getById(Integer id) {

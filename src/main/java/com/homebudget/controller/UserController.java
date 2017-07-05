@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @RestController
 public class UserController extends BaseController {
@@ -22,7 +23,7 @@ public class UserController extends BaseController {
 
     @GetMapping("/users/{username}")
     public ResponseEntity<User> getUser(HttpServletRequest httpServletRequest, @PathVariable String username) throws UnauthorizedException, NotFoundException {
-        validateToken(httpServletRequest);
+        Map<String, String> claims = validateToken(httpServletRequest);
 
         User user = userService.getUserBy(username);
         user.setPassword("");

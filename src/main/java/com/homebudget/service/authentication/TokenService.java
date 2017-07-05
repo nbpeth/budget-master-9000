@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
+import javax.validation.constraints.Null;
 import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
@@ -59,60 +60,29 @@ public class TokenService {
         return headers;
     }
 
-//    public boolean validateToken(String token) throws UnauthorizedException {
-//        Claims claims;
-//        try {
-//            claims = Jwts.parser()
-//                    .setSigningKey(DatatypeConverter.parseBase64Binary(environmentVariables.get("apiSecret")))
-//                    .parseClaimsJws(token).getBody();
-//
-//        } catch (Exception e) {
-//            throw new UnauthorizedException();
-//        }
-//
-//        return true;
-//    }
-
-    public boolean validateToken(String token) {
+    public Map<String, String> validateToken(String token) throws GeneralSecurityException, IOException, NullPointerException {
         GoogleIdTokenVerifier verifier = new GoogleIdTokenVerifier.Builder(new NetHttpTransport(), new JacksonFactory())
                 .setAudience(Collections.singletonList("559785174037-t1mifh0tkkebo55e4v26fhiqtb70a84k.apps.googleusercontent.com"))
-                // Or, if multiple clients access the backend:
-                //.setAudience(Arrays.asList(CLIENT_ID_1, CLIENT_ID_2, CLIENT_ID_3))
                 .build();
 
-// (Receive idTokenString by HTTPS POST)
+        GoogleIdToken idToken = verifier.verify(token);
+        GoogleIdToken.Payload payload = idToken.getPayload();
 
-        GoogleIdToken idToken = null;
-        try {
-            idToken = verifier.verify(token);
-        } catch (GeneralSecurityException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        if (idToken != null) {
-            GoogleIdToken.Payload payload = idToken.getPayload();
+        String userId = payload.getSubject();
+        String email = payload.getEmail();
 
-            String userId = payload.getSubject();
-            System.out.println("User ID: " + userId);
+        Map<String, String> claims = new HashMap<>();
+        claims.put("username",email);
+        claims.put("userId",userId);
 
-            // Get profile information from payload
-            String email = payload.getEmail();
-            boolean emailVerified = Boolean.valueOf(payload.getEmailVerified());
-            String name = (String) payload.get("name");
-            String pictureUrl = (String) payload.get("picture");
-            String locale = (String) payload.get("locale");
-            String familyName = (String) payload.get("family_name");
-            String givenName = (String) payload.get("given_name");
+        return claims;
 
-            System.out.println("VALIDATED");
-            System.out.println("email");
-
-            return true;
-        } else {
-            System.out.println("Invalid ID token.");
-            return false;
-        }
     }
+    //            boolean emailVerified = Boolean.valueOf(payload.getEmailVerified());
+    //            String name = (String) payload.get("name");
+    //            String pictureUrl = (String) payload.get("picture");
+    //            String locale = (String) payload.get("locale");
+    //            String familyName = (String) payload.get("family_name");
+    //            String givenName = (String) payload.get("given_name");
 
 }

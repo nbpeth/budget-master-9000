@@ -16,27 +16,28 @@ public class Expense {
     String location;
     String expenseType;
     String description;
-    Integer userId;
+    String username;
 
     @JsonFormat(pattern = "MM/dd/yyyy", timezone = "CST")
     Date expenseDate;
 
     public Expense(){}
 
-    public Expense(Date expenseDate, String location, String expenseType, String description, Double cost){
+    public Expense(Date expenseDate, String location, String expenseType, String description, Double cost, String username){
         this.cost = cost;
         this.location = location;
         this.expenseType = expenseType;
         this.description = description;
         this.expenseDate = expenseDate;
+        this.username = username;
     }
 
-    public Integer getUserId() {
-        return userId;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUserId(Integer userId) {
-        this.userId = userId;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Double getCost() {

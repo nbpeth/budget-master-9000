@@ -9,16 +9,21 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @RestController
 public class BaseController {
     @Autowired TokenService tokenService;
 
-    protected void validateToken(HttpServletRequest httpServletRequest) throws UnauthorizedException {
+    protected Map<String, String> validateToken(HttpServletRequest httpServletRequest) throws UnauthorizedException {
         String token = httpServletRequest.getHeader("Authorization");
 
-        if(!tokenService.validateToken(token)){
+        try{
+            return tokenService.validateToken(token);
+        }
+        catch(Exception e){
             throw new UnauthorizedException();
+
         }
     }
 

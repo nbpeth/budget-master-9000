@@ -19,7 +19,7 @@ public interface ExpenseRepository extends PagingAndSortingRepository<Expense, I
     @Query("SELECT SUM(e.cost)/300, e.expenseType FROM Expense e WHERE e.expenseDate >= (:startDate) and e.expenseDate <= (:endDate) group by expenseType")
     List<Object> weeklyPie(@Param("startDate")Date startDate, @Param("endDate")Date endDate);
 
-    @Query("SELECT expense FROM Expense expense order by expenseDate desc")
-    Page<Expense> findAllOrderByDate(Pageable pageable);
+    @Query("SELECT expense FROM Expense expense where expense.username = (:username) order by expenseDate desc")
+    Page<Expense> findAllOrderByDate(Pageable pageable, @Param("username")String username);
 
 }

@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
 
 @RestController
 public class ExpenseController extends BaseController {
@@ -23,7 +24,9 @@ public class ExpenseController extends BaseController {
 
     @PostMapping("/expenses")
     public ResponseEntity<Expense> submitExpense(HttpServletRequest servletRequest, @RequestBody Expense expense) throws UnauthorizedException {
-        validateToken(servletRequest);
+        Map<String, String> claims = validateToken(servletRequest);
+        String username = claims.get("username");
+        expense.setUsername(username);
 
         expenseService.saveExpense(expense);
         return new ResponseEntity<>(expense, HttpStatus.CREATED);
@@ -31,28 +34,30 @@ public class ExpenseController extends BaseController {
 
     @GetMapping("/expenses/stats")
     public ResponseEntity<Statistics> getStats(HttpServletRequest servletRequest) throws UnauthorizedException {
-        validateToken(servletRequest);
+        Map<String, String> claims = validateToken(servletRequest);
+
 
         return new ResponseEntity<>(statisticsService.getStats(), HttpStatus.OK);
     }
 
     @GetMapping("/expenses")
     public ResponseEntity<Page<Expense>> getAllExpenses(HttpServletRequest servletRequest, Pageable pageable) throws UnauthorizedException {
-        validateToken(servletRequest);
+        Map<String, String> claims = validateToken(servletRequest);
+        String username = claims.get("username");
 
-        return new ResponseEntity<>(expenseService.getAllExpenses(pageable), HttpStatus.OK);
+        return new ResponseEntity<>(expenseService.getAllExpenses(pageable, username), HttpStatus.OK);
     }
 
     @GetMapping("/expenses/{id}")
     public ResponseEntity<Expense> getById(HttpServletRequest servletRequest, @PathVariable Integer id) throws UnauthorizedException {
-        validateToken(servletRequest);
+        Map<String, String> claims = validateToken(servletRequest);
 
         return new ResponseEntity<>(expenseService.getById(id), HttpStatus.OK);
     }
 
     @DeleteMapping("/expenses/{id}")
     public void deleteById(HttpServletRequest servletRequest, @PathVariable Integer id) throws UnauthorizedException {
-        validateToken(servletRequest);
+        Map<String, String> claims = validateToken(servletRequest);
 
         expenseService.deleteExpenseBy(id);
     }
