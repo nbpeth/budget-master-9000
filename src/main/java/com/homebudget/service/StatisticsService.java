@@ -21,22 +21,21 @@ public class StatisticsService {
     @Autowired
     ExpenseRepository expenseRepository;
 
-    public Statistics getStats() {
+    public Statistics getStats(String username) {
         return new Statistics()
-            .with(weekExpenses())
-            .with(weeklyRollUp())
-            .withPie(weeklyPie());
-
+            .with(weekExpenses(username))
+            .with(weeklyRollUp(username))
+            .withPie(weeklyPie(username));
     }
 
-    private Double weekExpenses() {
+    private Double weekExpenses(String username) {
         java.sql.Date sqlDate = new java.sql.Date(new LocalDate().withDayOfWeek(DateTimeConstants.MONDAY).toDate().getTime());
-        return expenseRepository.weekly(sqlDate, new java.sql.Date(new Date().getTime()));
+        return expenseRepository.weekly(sqlDate, new java.sql.Date(new Date().getTime()), username);
     }
 
-    private List<PieChartData> weeklyPie(){
+    private List<PieChartData> weeklyPie(String username){
         java.sql.Date sqlDate = new java.sql.Date(new LocalDate().withDayOfWeek(DateTimeConstants.MONDAY).toDate().getTime());
-        List<Object> prePie = expenseRepository.weeklyPie(sqlDate, new java.sql.Date(new Date().getTime()));
+        List<Object> prePie = expenseRepository.weeklyPie(sqlDate, new java.sql.Date(new Date().getTime()), username);
         List<String> colors = Arrays.asList("red","blue","green","black","orange","purple");
 
         List<PieChartData> data = prePie.stream().map(group -> {
@@ -63,7 +62,7 @@ public class StatisticsService {
 
     }
 
-    private List<WeekData> weeklyRollUp() {
+    private List<WeekData> weeklyRollUp(String username) {
         final String dateFormat = "MM-dd-yyyy";
 
         return IntStream.range(0, 8)
@@ -80,7 +79,7 @@ public class StatisticsService {
                 return new WeekData(
                         new SimpleDateFormat(dateFormat).format(weekStart),
                         new SimpleDateFormat(dateFormat).format(weekEnd),
-                        expenseRepository.weekly(new java.sql.Date(weekStart.getTime()), new java.sql.Date(weekEnd.getTime()))
+                        expenseRepository.weekly(new java.sql.Date(weekStart.getTime()), new java.sql.Date(weekEnd.getTime()), username)
                 ).id(i);
             })
             .collect(Collectors.toList());

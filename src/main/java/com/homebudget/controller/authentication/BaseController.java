@@ -15,6 +15,11 @@ import java.util.Map;
 public class BaseController {
     @Autowired TokenService tokenService;
 
+    protected String getAndValidateUser(HttpServletRequest httpServletRequest) throws UnauthorizedException {
+        Map<String, String> claims = validateToken(httpServletRequest);
+        return claims.get("username");
+    }
+
     protected Map<String, String> validateToken(HttpServletRequest httpServletRequest) throws UnauthorizedException {
         String token = httpServletRequest.getHeader("Authorization");
 

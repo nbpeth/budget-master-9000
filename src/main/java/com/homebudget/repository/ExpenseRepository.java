@@ -13,11 +13,11 @@ import java.util.Date;
 
 @Repository
 public interface ExpenseRepository extends PagingAndSortingRepository<Expense, Integer> {
-    @Query("SELECT SUM(e.cost) FROM Expense e WHERE e.expenseDate >= (:startDate) and e.expenseDate <= (:endDate)")
-    Double weekly(@Param("startDate")Date startDate, @Param("endDate")Date endDate);
+    @Query("SELECT SUM(e.cost) FROM Expense e WHERE e.expenseDate >= (:startDate) and e.expenseDate <= (:endDate) and e.username = (:username)")
+    Double weekly(@Param("startDate")Date startDate, @Param("endDate")Date endDate, @Param("username")String username);
 
-    @Query("SELECT SUM(e.cost)/300, e.expenseType FROM Expense e WHERE e.expenseDate >= (:startDate) and e.expenseDate <= (:endDate) group by expenseType")
-    List<Object> weeklyPie(@Param("startDate")Date startDate, @Param("endDate")Date endDate);
+    @Query("SELECT SUM(e.cost)/300, e.expenseType FROM Expense e WHERE e.expenseDate >= (:startDate) and e.expenseDate <= (:endDate) and e.username = (:username) group by expenseType")
+    List<Object> weeklyPie(@Param("startDate")Date startDate, @Param("endDate")Date endDate, @Param("username")String username);
 
     @Query("SELECT expense FROM Expense expense where expense.username = (:username) order by expenseDate desc")
     Page<Expense> findAllOrderByDate(Pageable pageable, @Param("username")String username);

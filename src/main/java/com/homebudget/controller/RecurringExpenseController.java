@@ -10,7 +10,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.Map;
 
 @RestController
 public class RecurringExpenseController extends BaseController {
@@ -19,8 +18,8 @@ public class RecurringExpenseController extends BaseController {
 
     @GetMapping("/expenses/recurring")
     public ResponseEntity<Iterable<RecurringExpense>> getRecurringExpenses(HttpServletRequest servletRequest) throws UnauthorizedException {
-        Map<String, String> claims = validateToken(servletRequest);
-        String username = claims.get("username");
+        String username = getAndValidateUser(servletRequest);
+
         Iterable<RecurringExpense> recurringExpenses = recurringExpenseService.getRecurringExpenses(username);
 
         return new ResponseEntity<>(recurringExpenses, HttpStatus.OK);
@@ -28,7 +27,7 @@ public class RecurringExpenseController extends BaseController {
 
     @GetMapping("/expenses/recurring/{id}")
     public ResponseEntity<RecurringExpense> getRecurringExpenseById(HttpServletRequest servletRequest, @PathVariable Integer id) throws UnauthorizedException {
-        Map<String, String> claims = validateToken(servletRequest);
+        String username = getAndValidateUser(servletRequest);
         RecurringExpense recurringExpenses = recurringExpenseService.getRecurringExpenseById(id);
 
         return new ResponseEntity<>(recurringExpenses, HttpStatus.OK);
@@ -36,9 +35,9 @@ public class RecurringExpenseController extends BaseController {
 
     @PostMapping("/expenses/recurring")
     public ResponseEntity<RecurringExpense> createRecurringExpense(HttpServletRequest servletRequest, @RequestBody RecurringExpense recurringExpense) throws UnauthorizedException {
-        Map<String, String> claims = validateToken(servletRequest);
-        String username = claims.get("username");
+        String username = getAndValidateUser(servletRequest);
         recurringExpense.setUsername(username);
+
         RecurringExpense newRecurringExpense = recurringExpenseService.createRecurringExpense(recurringExpense);
 
         return new ResponseEntity<>(newRecurringExpense, HttpStatus.OK);
@@ -46,7 +45,7 @@ public class RecurringExpenseController extends BaseController {
 
     @PatchMapping("/expenses/recurring/{id}")
     public ResponseEntity<RecurringExpense> updateRecurringExpense(HttpServletRequest servletRequest, @RequestBody RecurringExpense recurringExpense, @PathVariable Integer id) throws UnauthorizedException {
-        Map<String, String> claims = validateToken(servletRequest);
+        String username = getAndValidateUser(servletRequest);
         recurringExpense.setId(id);
         //validate token user matches record user?
         RecurringExpense updatedRecurringExpense = recurringExpenseService.updateRecurringExpense(recurringExpense);
@@ -56,7 +55,7 @@ public class RecurringExpenseController extends BaseController {
 
     @DeleteMapping("/expenses/recurring/{id}")
     public ResponseEntity<String> deleteRecurringExpense(HttpServletRequest servletRequest, @PathVariable Integer id) throws UnauthorizedException {
-        Map<String, String> claims = validateToken(servletRequest);
+        String username = getAndValidateUser(servletRequest);
         //validate token user matches record user?
         recurringExpenseService.deleteRecurringExpense(id);
 
