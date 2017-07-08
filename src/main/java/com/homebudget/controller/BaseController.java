@@ -1,4 +1,4 @@
-package com.homebudget.controller.authentication;
+package com.homebudget.controller;
 
 import com.homebudget.exception.BudgetMasterException;
 import com.homebudget.exception.UnauthorizedException;
@@ -15,9 +15,14 @@ import java.util.Map;
 public class BaseController {
     @Autowired TokenService tokenService;
 
-    protected String getAndValidateUser(HttpServletRequest httpServletRequest) throws UnauthorizedException {
+    protected String getAndValidateUser(HttpServletRequest httpServletRequest, String requestedUser) throws UnauthorizedException {
         Map<String, String> claims = validateToken(httpServletRequest);
-        return claims.get("username");
+
+        String username = claims.get("username");
+
+        if(!requestedUser.equals(username)) throw new UnauthorizedException("You do not have permission to access this resource");
+
+        return username;
     }
 
     protected Map<String, String> validateToken(HttpServletRequest httpServletRequest) throws UnauthorizedException {

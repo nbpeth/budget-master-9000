@@ -13,6 +13,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+@Deprecated
 @Component
 public class LoginService {
     @Autowired private UserRepository userRepository;

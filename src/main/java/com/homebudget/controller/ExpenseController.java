@@ -1,6 +1,5 @@
 package com.homebudget.controller;
 
-import com.homebudget.controller.authentication.BaseController;
 import com.homebudget.domain.Expense;
 import com.homebudget.domain.Statistics;
 import com.homebudget.exception.UnauthorizedException;
@@ -21,9 +20,9 @@ public class ExpenseController extends BaseController {
     @Autowired StatisticsService statisticsService;
 
 
-    @PostMapping("/expenses")
-    public ResponseEntity<Expense> submitExpense(HttpServletRequest servletRequest, @RequestBody Expense expense) throws UnauthorizedException {
-        String username = getAndValidateUser(servletRequest);
+    @PostMapping("/expenses/{username}")
+    public ResponseEntity<Expense> submitExpense(HttpServletRequest servletRequest, @RequestBody Expense expense, @PathVariable String requestedUsername) throws UnauthorizedException {
+        String username = getAndValidateUser(servletRequest, requestedUsername);
 
         expense.setUsername(username);
 
@@ -31,31 +30,31 @@ public class ExpenseController extends BaseController {
         return new ResponseEntity<>(expense, HttpStatus.CREATED);
     }
 
-    @GetMapping("/expenses/stats")
-    public ResponseEntity<Statistics> getStats(HttpServletRequest servletRequest) throws UnauthorizedException {
-        String username = getAndValidateUser(servletRequest);
+    @GetMapping("/expenses/{username}/stats")
+    public ResponseEntity<Statistics> getStats(HttpServletRequest servletRequest, @PathVariable String requestedUsername) throws UnauthorizedException {
+        String username = getAndValidateUser(servletRequest, requestedUsername);
         Statistics statistics = statisticsService.getStats(username);
 
         return new ResponseEntity<>(statistics, HttpStatus.OK);
     }
 
-    @GetMapping("/expenses")
-    public ResponseEntity<Page<Expense>> getAllExpenses(HttpServletRequest servletRequest, Pageable pageable) throws UnauthorizedException {
-        String username = getAndValidateUser(servletRequest);
+    @GetMapping("/expenses/{username}")
+    public ResponseEntity<Page<Expense>> getAllExpenses(HttpServletRequest servletRequest, Pageable pageable, @PathVariable String requestedUsername) throws UnauthorizedException {
+        String username = getAndValidateUser(servletRequest, requestedUsername);
 
         return new ResponseEntity<>(expenseService.getAllExpenses(pageable, username), HttpStatus.OK);
     }
 
-    @GetMapping("/expenses/{id}")
-    public ResponseEntity<Expense> getById(HttpServletRequest servletRequest, @PathVariable Integer id) throws UnauthorizedException {
-        String username = getAndValidateUser(servletRequest);
+    @GetMapping("/expenses/{username}/{id}")
+    public ResponseEntity<Expense> getById(HttpServletRequest servletRequest, @PathVariable Integer id, @PathVariable String requestedUsername) throws UnauthorizedException {
+        String username = getAndValidateUser(servletRequest, requestedUsername);
 
         return new ResponseEntity<>(expenseService.getById(id), HttpStatus.OK);
     }
 
-    @DeleteMapping("/expenses/{id}")
-    public void deleteById(HttpServletRequest servletRequest, @PathVariable Integer id) throws UnauthorizedException {
-        String username = getAndValidateUser(servletRequest);
+    @DeleteMapping("/expenses/{username}/{id}")
+    public void deleteById(HttpServletRequest servletRequest, @PathVariable Integer id, @PathVariable String requestedUsername) throws UnauthorizedException {
+        String username = getAndValidateUser(servletRequest, requestedUsername);
 
         expenseService.deleteExpenseBy(id);
     }

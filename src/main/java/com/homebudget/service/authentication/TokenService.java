@@ -5,8 +5,6 @@ import com.google.api.client.googleapis.auth.oauth2.GoogleIdTokenVerifier;
 import com.google.api.client.http.javanet.NetHttpTransport;
 import com.google.api.client.json.jackson2.JacksonFactory;
 import com.homebudget.domain.authentication.User;
-import com.homebudget.exception.UnauthorizedException;
-import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.JwtBuilder;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -14,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.crypto.spec.SecretKeySpec;
-import javax.validation.constraints.Null;
 import javax.xml.bind.DatatypeConverter;
 import java.io.IOException;
 import java.security.GeneralSecurityException;

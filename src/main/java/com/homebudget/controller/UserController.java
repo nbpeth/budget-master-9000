@@ -1,6 +1,5 @@
 package com.homebudget.controller;
 
-import com.homebudget.controller.authentication.BaseController;
 import com.homebudget.domain.authentication.User;
 import com.homebudget.exception.NotFoundException;
 import com.homebudget.exception.UnauthorizedException;
