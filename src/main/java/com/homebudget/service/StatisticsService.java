@@ -36,7 +36,6 @@ public class StatisticsService {
     private List<PieChartData> weeklyPie(String username){
         java.sql.Date sqlDate = new java.sql.Date(new LocalDate().withDayOfWeek(DateTimeConstants.MONDAY).toDate().getTime());
         List<Object> prePie = expenseRepository.weeklyPie(sqlDate, new java.sql.Date(new Date().getTime()), username);
-        List<String> colors = Arrays.asList("red","blue","green","black","orange","purple");
 
         List<PieChartData> data = prePie.stream().map(group -> {
             Object[] arr = (Object[]) group;
@@ -47,7 +46,6 @@ public class StatisticsService {
             PieChartData pieData = new PieChartData();
             pieData.setLabel((String) key);
             pieData.setValue(formattedValue);
-            pieData.setColor(colors.get(0));
             return pieData;
         })
         .collect(Collectors.toList());
@@ -55,7 +53,6 @@ public class StatisticsService {
         return IntStream.range(0,data.size())
                 .mapToObj(i-> {
                     PieChartData pieChartData = data.get(i);
-                    pieChartData.setColor(colors.get(i));
                     return pieChartData;
                 })
                 .collect(Collectors.toList());
