@@ -20,7 +20,7 @@ public class ExpenseController extends BaseController {
     @Autowired StatisticsService statisticsService;
 
 
-    @PostMapping("/expenses/{requestedUsername}")
+    @PostMapping("/expenses/{requestedUsername:.+}")
     public ResponseEntity<Expense> submitExpense(HttpServletRequest servletRequest, @RequestBody Expense expense, @PathVariable String requestedUsername) throws UnauthorizedException {
         String username = getAndValidateUser(servletRequest, requestedUsername);
 
@@ -30,7 +30,7 @@ public class ExpenseController extends BaseController {
         return new ResponseEntity<>(expense, HttpStatus.CREATED);
     }
 
-    @GetMapping("/expenses/{requestedUsername}/stats")
+    @GetMapping("/expenses/{requestedUsername:.+}/stats")
     public ResponseEntity<Statistics> getStats(HttpServletRequest servletRequest, @PathVariable String requestedUsername) throws UnauthorizedException {
         String username = getAndValidateUser(servletRequest, requestedUsername);
         Statistics statistics = statisticsService.getStats(username);
@@ -46,14 +46,14 @@ public class ExpenseController extends BaseController {
         return new ResponseEntity<>(expenseService.getAllExpenses(pageable, username), HttpStatus.OK);
     }
 
-    @GetMapping("/expenses/{requestedUsername}/{id}")
+    @GetMapping("/expenses/{requestedUsername:.+}/{id}")
     public ResponseEntity<Expense> getById(HttpServletRequest servletRequest, @PathVariable Integer id, @PathVariable String requestedUsername) throws UnauthorizedException {
         String username = getAndValidateUser(servletRequest, requestedUsername);
 
         return new ResponseEntity<>(expenseService.getById(id), HttpStatus.OK);
     }
 
-    @DeleteMapping("/expenses/{requestedUsername}/{id}")
+    @DeleteMapping("/expenses/{requestedUsername:.+}/{id}")
     public void deleteById(HttpServletRequest servletRequest, @PathVariable Integer id, @PathVariable String requestedUsername) throws UnauthorizedException {
         String username = getAndValidateUser(servletRequest, requestedUsername);
 
