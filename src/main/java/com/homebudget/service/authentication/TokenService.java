@@ -26,7 +26,7 @@ public class TokenService {
     @Autowired
     private Map<String, String> environmentVariables;
 
-    public String generateToken(User user) {
+    String generateToken(User user) {
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
         Date now = new Date(System.currentTimeMillis());
 
@@ -69,17 +69,10 @@ public class TokenService {
         String email = payload.getEmail();
 
         Map<String, String> claims = new HashMap<>();
-        claims.put("username",email);
-        claims.put("userId",userId);
+        claims.put("username", email);
+        claims.put("userId", userId);
 
         return claims;
-
     }
-    //            boolean emailVerified = Boolean.valueOf(payload.getEmailVerified());
-    //            String name = (String) payload.get("name");
-    //            String pictureUrl = (String) payload.get("picture");
-    //            String locale = (String) payload.get("locale");
-    //            String familyName = (String) payload.get("family_name");
-    //            String givenName = (String) payload.get("given_name");
 
 }

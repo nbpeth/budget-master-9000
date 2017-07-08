@@ -13,19 +13,18 @@ import java.util.Map;
 
 @RestController
 public class BaseController {
-    @Autowired TokenService tokenService;
+    @Autowired private TokenService tokenService;
 
-    protected String getAndValidateUser(HttpServletRequest httpServletRequest, String requestedUser) throws UnauthorizedException {
+    String getAndValidateUser(HttpServletRequest httpServletRequest, String requestedUser) throws UnauthorizedException {
         Map<String, String> claims = validateToken(httpServletRequest);
-
         String username = claims.get("username");
 
-        if(!requestedUser.equals(username)) throw new UnauthorizedException("You do not have permission to access this resource");
+        if(!requestedUser.equals(username)) throw new UnauthorizedException("You do not have permission to access this resource.");
 
         return username;
     }
 
-    protected Map<String, String> validateToken(HttpServletRequest httpServletRequest) throws UnauthorizedException {
+    Map<String, String> validateToken(HttpServletRequest httpServletRequest) throws UnauthorizedException {
         String token = httpServletRequest.getHeader("Authorization");
 
         try{
