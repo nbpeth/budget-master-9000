@@ -25,8 +25,11 @@ public class ExpenseService {
         return expenseRepository.save(formattedExpense);
     }
 
-    public void deleteExpenseBy(Integer id) {
-        expenseRepository.delete(id);
+    public Expense deleteExpenseBy(Integer id) {
+        Expense expense = getById(id);
+        expenseRepository.delete(expense);
+
+        return expense;
     }
 
     public Page<Expense> getAllExpenses(Pageable pageable, String username) {

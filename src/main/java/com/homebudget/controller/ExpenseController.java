@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.xml.ws.Response;
 
 @RestController
 public class ExpenseController extends BaseController {
@@ -54,10 +55,12 @@ public class ExpenseController extends BaseController {
     }
 
     @DeleteMapping("/expenses/{requestedUsername:.+}/{id}")
-    public void deleteById(HttpServletRequest servletRequest, @PathVariable Integer id, @PathVariable String requestedUsername) throws UnauthorizedException {
+    public ResponseEntity<Expense> deleteById(HttpServletRequest servletRequest, @PathVariable Integer id, @PathVariable String requestedUsername) throws UnauthorizedException {
         String username = getAndValidateUser(servletRequest, requestedUsername);
 
-        expenseService.deleteExpenseBy(id);
+        Expense expense = expenseService.deleteExpenseBy(id);
+
+        return new ResponseEntity<>(expense, HttpStatus.OK);
     }
 
 }
