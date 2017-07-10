@@ -65,13 +65,17 @@ public class StatisticsService {
         return IntStream.range(0, 8)
             .mapToObj(i -> {
                 DateTime dateTime = new DateTime();
-                Date weekStart = truncateDate(dateTime.withDayOfWeek(DateTimeConstants.MONDAY).minusDays(7 * i)).toDate();
-                Date weekEnd = truncateDate(dateTime.withDayOfWeek(DateTimeConstants.SUNDAY).plusDays(1).minusDays(7 * i)).minusMillis(1).toDate();
+                Date weekStart;
+                Date weekEnd;
 
-                if (i == 0) {
-                    weekEnd = new Date();
-                    weekStart = truncateDate(dateTime.withDayOfWeek(DateTimeConstants.MONDAY)).toDate();
-                }
+                weekStart = truncateDate(dateTime.withDayOfWeek(DateTimeConstants.MONDAY)
+                        .minusDays(7 * i))
+                        .toDate();
+                weekEnd = truncateDate(dateTime.withDayOfWeek(DateTimeConstants.SUNDAY)
+                        .plusDays(1)
+                        .minusDays(7 * i))
+                        .minusMillis(1)
+                        .toDate();
 
                 return new WeekData(
                         new SimpleDateFormat(dateFormat).format(weekStart),
