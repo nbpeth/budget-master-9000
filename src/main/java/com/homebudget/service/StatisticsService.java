@@ -20,6 +20,32 @@ import java.util.stream.IntStream;
 public class StatisticsService {
     @Autowired
     ExpenseRepository expenseRepository;
+    private static final String dateFormat = "MM-dd-yyyy";
+
+
+    public WeekData getStatsForWeek(String username, Integer week){
+        return getDataForWeek(username, week);
+    }
+
+    private WeekData getDataForWeek(String username, Integer i){
+        DateTime dateTime = new DateTime();
+        Date weekStart;
+        Date weekEnd;
+
+        weekStart = truncateDate(dateTime.withDayOfWeek(DateTimeConstants.MONDAY)
+                .minusDays(7 * i))
+                .toDate();
+        weekEnd = truncateDate(dateTime.withDayOfWeek(DateTimeConstants.SUNDAY)
+                .plusDays(1)
+                .minusDays(7 * i))
+                .minusMillis(1)
+                .toDate();
+
+        return new WeekData(
+                new SimpleDateFormat(dateFormat).format(weekStart),
+                new SimpleDateFormat(dateFormat).format(weekEnd),
+                expenseRepository.weekly(new java.sql.Date(weekStart.getTime()), new java.sql.Date(weekEnd.getTime()), username));
+    }
 
     public Statistics getStats(String username) {
         return new Statistics()
@@ -60,29 +86,26 @@ public class StatisticsService {
     }
 
     private List<WeekData> weeklyRollUp(String username) {
-        final String dateFormat = "MM-dd-yyyy";
-
         return IntStream.range(0, 8)
-            .mapToObj(i -> {
-                DateTime dateTime = new DateTime();
-                Date weekStart;
-                Date weekEnd;
-
-                weekStart = truncateDate(dateTime.withDayOfWeek(DateTimeConstants.MONDAY)
-                        .minusDays(7 * i))
-                        .toDate();
-                weekEnd = truncateDate(dateTime.withDayOfWeek(DateTimeConstants.SUNDAY)
-                        .plusDays(1)
-                        .minusDays(7 * i))
-                        .minusMillis(1)
-                        .toDate();
-
-                return new WeekData(
-                        new SimpleDateFormat(dateFormat).format(weekStart),
-                        new SimpleDateFormat(dateFormat).format(weekEnd),
-                        expenseRepository.weekly(new java.sql.Date(weekStart.getTime()), new java.sql.Date(weekEnd.getTime()), username)
-                ).id(i);
-            })
+            .mapToObj(i -> getDataForWeek(username, i)
+//                DateTime dateTime = new DateTime();
+//                Date weekStart;
+//                Date weekEnd;
+//
+//                weekStart = truncateDate(dateTime.withDayOfWeek(DateTimeConstants.MONDAY)
+//                        .minusDays(7 * i))
+//                        .toDate();
+//                weekEnd = truncateDate(dateTime.withDayOfWeek(DateTimeConstants.SUNDAY)
+//                        .plusDays(1)
+//                        .minusDays(7 * i))
+//                        .minusMillis(1)
+//                        .toDate();
+//
+//                return new WeekData(
+//                        new SimpleDateFormat(dateFormat).format(weekStart),
+//                        new SimpleDateFormat(dateFormat).format(weekEnd),
+//                        expenseRepository.weekly(new java.sql.Date(weekStart.getTime()), new java.sql.Date(weekEnd.getTime()), username)
+            .id(i))
             .collect(Collectors.toList());
     }
 
