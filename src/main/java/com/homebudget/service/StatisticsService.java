@@ -20,7 +20,7 @@ import java.util.stream.IntStream;
 public class StatisticsService {
     @Autowired
     ExpenseRepository expenseRepository;
-    private static final String dateFormat = "MM-dd-yyyy";
+    private static final String dateFormat = "MM/dd/yyyy";
 
 
     public WeekData getStatsForWeek(String username, Integer week){
